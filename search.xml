@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[Windows 10 开机自动校时]]></title>
+    <url>%2Fposts%2F1082710414%2F</url>
+    <content type="text"><![CDATA[前言现在在一台 PC 上同时装了 Windows 10 和 MacOS，遇到了一个关于系统时间的问题。当从 MacOS 重启到 Windows 系统时，Windows 系统的时间会变得不正确，我也不知道是什么原因导致了这个问题。每次我都需要手动点一下同步时间，但是 Windows 系统自动同步时间的周期太长，每次手动更新时间也挺麻烦，所以我就在思考有没有什么办法能在开机的时候自动校时。开始的时候尝试了网络上的一些校时软件，但是我想到了一种更为优雅的方式，这里记录一下通过Windows 计划任务的方式在开机的时候自动同步网络时间。启动 Windows Time 服务运行services.msc命令或者在小娜处搜索服务来打开服务管理窗口。在服务列表里找到Windows Time，开启此服务并设置为开机启动。修改 NTP 服务器NTP 服务器提供标准时间，Windows 默认的服务器很多时候都同步失败，为了解决这个恼人的问题我们可以换一个稳定点的 NTP 服务器。在右键点击时间-&gt;调整日期/时间-&gt;日期、时间和区域格式设置-&gt;Internet 时间-&gt;更改设置中，勾选与 Internet 时间服务器同步，并在服务器后的输入框中填入 NTP 服务器地址。国内稳定的 NTP 服务器推荐：pool.ntp.org0.cn.pool.ntp.orgntp1.aliyun.com设置计划任务开启管理员账户普通用户在创建计划任务的时候遇到了一点问题，所以用管理员账户。在右键点击 Windows 按钮-&gt;计算机管理-&gt;系统工具-&gt;本地用户和组-&gt;用户中，打开 Administrator 的属性窗口，取消勾选账户已禁用选项，然后切换到 Administrator 用户登录。创建计划任务在小娜处搜索计划任务来打开计划任务管理窗口。创建新的计划任务，命名为Sync Time。在触发器选项卡中，新建一个触发器，选择在系统启动时运行。在操作选项卡中，依次添加三条命令：123net start w32timew32tm /registerw32tm /resync 在条件选项卡中，勾选只有在一下网络连接可用时才启动，并选中任何连接。最后，保存计划任务，完成。测试可以右键点击计划任务，手动运行一次，刷新一下任务列表，看看是否有错误信息出现。参考资料NTP服务器-推荐几个国内比较好用的NTP服务器讲不完的思新浪博客pool.ntp.org: NTP Servers in China, cn.pool.ntp.org]]></content>
+      <categories>
+        <category>代码宅</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+        <tag>计划任务</tag>
+        <tag>自动校时</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[macOS 最佳包管理器:Homebrew]]></title>
+    <url>%2Fposts%2F349537330%2F</url>
+    <content type="text"><![CDATA[前言换到了macOS，作为小菜鸟的我到处学到了很多新知识，看到很多文章都推荐这个Homebrew。随着使用时间的增加，我对这款包管理器的理解也更加深入，这里记录一下。在我的理解中，Homebrew就相当于CentOS中的yum，帮助你管理系统中安装的软件。开发者在Homebrew中提交自己的软件，用户就可以通过Homebrew很方便快捷地安装软件。安装Homebrew在Terminal中，一句命令安装：1/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"Homebrew中把软件分为了两个类别，分别是命令行工具Formulae(/ˈfôrmyələ/)，和带GUN界面的Cask。Formulaesearch无论是搜索Formulae还是Cask，都是用这个命令，结果会分类显示。1brew search &lt;name&gt;info查看给定Formulae的信息，包括软件说明、官网、安装量等信息。1brew info &lt;formulae&gt;install用于安装Formulae。12# brew install 用来安装 Formulaebrew install youtube-dlupgrade用于升级Formulae。1brew upgrade &lt;formulae&gt;list用于查看已安装的Formulae列表。1brew listhome打开给定Formulae的主页。1brew home &lt;formulae&gt;remove用于删除给定的Formulae。1brew remove &lt;formulae&gt;CaskCask用起来和Formulae大同小异，很多命令都相同，只是使用的对象转移到了Cask上，相同的就不说了。search无论是Formulae还是Cask，都是用brew search，而不用brew cask search，结果会分类显示出来。1brew cask search &lt;name&gt;install12# brew cask install 用来安装 Caskbrew cask install youtube-to-mp3uninstall/remove12brew cask uninstall &lt;cask&gt;brew cask remove &lt;cask&gt;zap删除应用并且清除所有相关数据。1brew cask zap &lt;cask&gt;更好的Cask升级方式Cask自带的升级有点迷，不太好用，这里有个更好用的cu，可以替代自带的upgrade。123456# 安装brew tap buo/cask-upgrade# 使用brew cu [cask]brew cu -a设置代理国外的服务在国内用都不太稳定，可以通过给Homebrew设置代理的方式来改善。我们可以通过更改环境变量ALL_PROXY来达到目的，Homebrew下载文件使用的curl命令会自动读取代理设置。12345# http 代理export ALL_PROXY="http://127.0.0.1:1087"# socks5 代理# export ALL_PROXY="socks5://127.0.0.1:1080"但是这种更改只是临时的，只在当前会话生效，为了使代理设置一直生效，我们可以把这句命令写在profile文件中。profile中的命令在每次启动终端时都会执行一次，就相当于每次都设置了一次代理。1sudo vi /etc/profile之后重启终端，再使用brew命令的时候就会通过代理了。Cakebrew有人开发出了一个Homebrew的Cask版本，不喜欢用命令行的可以试试，不过你先要用命令行安装。1brew cask install cakebrew后记Homebrew很强大。学无止境，Homebrew还有其他的功能，可以去官网学习。参考The missing package manager for macOS — The missing package manager for macOS9 条进阶命令，把 HomeBrew 打造成管理第三方应用的 App Store - 少数派Cakebrew]]></content>
+      <categories>
+        <category>代码宅</category>
+      </categories>
+      <tags>
+        <tag>macOS</tag>
+        <tag>Homebrew</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[宝塔面板+SSRPanel前后端安装记录]]></title>
+    <url>%2Fposts%2F1201673956%2F</url>
+    <content type="text"><![CDATA[前言之前使用的是ss-panel-v3-mod，功能挺多，但是觉得太臃肿了，最近又看到了这个SSRPanel，体验了一把，觉得挺不错，这里把搭建过程记录下来，供我以后参考或者帮助到其他有需要的人。这里使用了宝塔面板是为了降低难度，能用宝塔配置就用宝塔配置，能不输入命令就不输入命令。在安装过程中要记下一些重要的文本：宝塔面板的登录地址；宝塔面板的用户名和密码；网站的根目录；数据库名、用户名、密码；网站管理员账号、密码。搭建环境介绍本文所使用的机器配置：Provider: BandwagonHOSTOperating system: Centos 7 x86_64 bbrRAM: 512 MBDisk: 20GBSSRPanel环境要求：PHP 7.1 （必须）MySQL 5.5 （推荐5.6+）内存 1G+磁盘空间 10G+系统初始配置123yum -y install epel-releaseyum -y updateyum -y groupinstall "Development Tools"宝塔面板的安装及配置使用宝塔面板的好处可视化管理；一键安装网站环境；自动更改时区以及校时（SSRPanel要求多节点之间时区相同，时间一样）；端口管理方便。安装宝塔面板首先要安装宝塔面板啦，复制下面这条命令在控制台中执行就行了。1yum install -y wget &amp;&amp; wget -O install.sh http://download.bt.cn/install/install_6.0.sh &amp;&amp; bash install.sh安装完成之后你会得到一个访问网址，以及用户名和密码，在浏览器中打开给定网址就能访问宝塔面板的控制台了。安装LNMP第一次打开宝塔控制台时会提示你安装网站运行环境，按图选择即可（稍后补图）。PHP版本选择7.1。SSRPanel推荐使用MySQL 5.6+，低内存服务器就老老实实选择MySQL 5.5吧。添加网站在宝塔面板-&gt;网站-&gt;添加站点中来添加一个新的站点。配置的信息都很重要，要记下来。域名：填写你的域名；根目录：你的网站文件在服务器上的位置，要记住自己网站的根目录；FTP：是否创建FTP用户，可根据需求选择；数据库：类型选择MySQL，编码选择utf8mb4；数据库设置：数据库的用户名和密码；PHP版本：PHP-71。导入数据库在宝塔面板-&gt;数据库中，找到你刚刚创建的数据库，点击导入-&gt;从本地上传。数据库文件位于sql/db.sql，你可以从Github上下载到。SWAP配置SSRPanel依赖phpfileinfo扩展，phpfileinfo的安装对内存容量有一定的要求，如果内存太小的话会安装失败，所以小内存机器可以通过添加Swap的方式增大可用内存容量。在宝塔面板-&gt;首页-&gt;Linux工具箱-&gt;Swap/虚拟内存中，添加Swap为2048 MB。安装phpfileinfo扩展在宝塔面板-&gt;软件管理-&gt;PHP-7.1-&gt;安装扩展中，找到名为fileinfo的扩展并安装。删除禁用函数在宝塔面板-&gt;软件管理-&gt;PHP-7.1-&gt;禁用函数中，删除proc_开头的所有函数。网站配置拉取文件在之前，我们添加网站的时候已经设置了网站的根目录，现在我们在服务器控制台里输入命令，从Github拉取SSRPanel的文件。1234567891011121314151617# 进入网站根目录# 注意替换你自己的网站路径cd www/wwwroot/baidu.com# 拉取代码git clone https://github.com/ssrpanel/SSRPanel.git tmpmv tmp/.git .rm -rf tmpgit reset --hard# 更改权限chown -R www:www storage/chmod -R 755 storage/# 安装依赖php composer.phar installphp artisan key:generate编写配置文件因为网站需要用到MySQL数据库，这一步我们配置数据库连接信息。把.env.example复制一份命名为.env，按需更改配置。可以在宝塔面板-&gt;文件里操作，也可以在服务器控制台操作。12cp .env.example .envvi .envDB_HOST: 数据库地址，如果在本机就是127.0.0.1；DB_PORT: 数据库端口，默认3306；DB_DATABASE: 数据库名；DB_USERNAME: 数据库用户名；DB_PASSWORD: 数据库密码；REDIRECT_HTTPS: 是否启用HTTPS。运行目录宝塔面板-&gt;网站-&gt;设置-&gt;运行目录-&gt;选择/public。伪静态宝塔面板-&gt;网站-&gt;设置-&gt;伪静态-&gt;选择laravel5-&gt;保存。定时任务SSRPanel需要定时任务来完成自动维护。123456789# 必须给 www 用户创建一个目录，否则没法用其身份去运行crontabmkdir /home/www &amp;&amp; chown -R www:www /home/www/# 注意运行权限，必须跟SSRPanel项目权限一致，否则出现各种莫名其妙的错误# 宝塔默认生成的用户是wwwcrontab -e -u www# crontab加入下面的命令，自行替换路径* * * * * php /www/wwwroot/baidu.com/artisan schedule:run &gt;&gt; /dev/null 2&gt;&amp;1打开网站在打开网站之前，要先重启一下服务器，使网站环境重载配置。如果以上步骤都没出错，那么现在在浏览器输入你的域名就能访问网站了。默认登录账号是admin，密码是123456。修改管理员密码点击右上角头像-&gt;个人设置-&gt;修改密码。添加节点SSRPanel-&gt;管理面板-&gt;节点管理-&gt;添加节点。基础信息节点名称：起个名字；绑定域名：如果用域名解析可以填，不过没有可以忽略；SSH端口：填服务器的SSH端口，用于TCP阻断检测；IPV4地址：填SSR服务器的IP地址；标签：起一个标签名字，用户是通过标签与服务器关联起来的。扩展信息类型：Shadowsocks(R)；加密方式、协议、协议参数、混淆、混淆参数：可以改，但请务必与后端保持一致；填好之后保存，在节点列表你可以看到节点id，记下来，待会儿写在后端配置文件里。SSR后端搭建安装依赖12345678910111213141516# libsodiumcd /rootwget https://github.com/jedisct1/libsodium/releases/download/1.0.16/libsodium-1.0.16.tar.gztar xf libsodium-1.0.16.tar.gz &amp;&amp; cd libsodium-1.0.16./configure &amp;&amp; make -j2 &amp;&amp; make installecho /usr/local/lib &gt; /etc/ld.so.conf.d/usr_local_lib.confldconfig# 拉取SSR文件cd /rootgit clone https://github.com/ssrpanel/shadowsocksr.gitcd shadowsocksr# 安装依赖sh ./setup_cymysql2.shpip install -r requestment.txt编辑数据库连接信息1vi usermysql.jsonhost: 数据库地址；port: 数据库端口，默认3306；user: 数据库用户名；password: 数据库密码；db: 数据库名；node_id: 节点id，填之前在SSRPanel里添加的节点id。编辑节点配置1vi user-config.json前后端保持一致即可。运行12345678910111213# 试运行，如果没有错误输出则可以用Ctrl+C关闭，然后后台运行python server.py# 后台运行bash run.sh# 其他命令# 运行并记录日志sh logrun.sh# 停止sh stop.sh# 查看日志sh tail.sh放行端口在宝塔面板-&gt;安全-&gt;防火墙中可以放行端口，支持放行端口范围，如: 3000:3500。443: SSL端口，也可以用作单端口；10000-20000: SSRPanel默认用户端口范围。SSR开机启动12345chmod +x /etc/rc.d/rc.localvi /etc/rc.d/rc.local# 加入下面的命令，保存bash /root/shadowsocksr/run.sh后记安装完成之后SSRPanel就可以和后台的SSR联动起来了，SSRPanel和宝塔面板的其他功能要自己摸索摸索。可以自己设置网站备份、数据库备份的功能。如果过程中遇到问题可以去看看SSRPanel的Wiki，Wiki写的内容很多，值得一看。小问题前端和后端不在一台服务器上为了前端与后端能正常通信，需要在前端服务器上修改MySQL的访问权限，并且放行3306端口。在宝塔面板-&gt;数据库-&gt;权限中修改访问权限为指定IP或者所有人，指定IP是一种更为安全的方式。放行端口的操作可以参考上面。参考GitHub - ssrpanel/SSRPanel: An Account Managent Panel Which Is Used For ShadowsocksR &amp; V2RayHome · ssrpanel/SSRPanel Wiki · GitHub宝塔面板 - 简单好用的Linux/Windows服务器管理面板]]></content>
+      <categories>
+        <category>过程记录</category>
+      </categories>
+      <tags>
+        <tag>SSR</tag>
+        <tag>宝塔</tag>
+        <tag>SSRPANEL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hexo以及NexT中的标签插件]]></title>
+    <url>%2Fposts%2F1491584801%2F</url>
+    <content type="text"><![CDATA[前言Hexo 以及 NexT 提供了很多标签插件，虽然标签插件写着麻烦，也不能实时预览，不过显示出来的效果很好玩啊。Hexo 内置引用块（blockquote）在文章中插入引言，可包含作者、来源和标题。别号： quote代码123&#123;% blockquote [author[, source]] [link] [source_link_title] %&#125;content&#123;% endblockquote %&#125;样例123&#123;% blockquote David Levithan, Wide Awake %&#125;Do not just seek happiness for yourself. Seek happiness for all. Through kindness. Through mercy.&#123;% endblockquote %&#125;Do not just seek happiness for yourself. Seek happiness for all. Through kindness. Through mercy.David LevithanWide AwakePull Quote在文章中插入 Pull quote。123&#123;% pullquote [class] %&#125;content&#123;% endpullquote %&#125;jsFiddle在文章中嵌入 jsFiddle。1&#123;% jsfiddle shorttag [tabs] [skin] [width] [height] %&#125;Gist在文章中嵌入 Gist。1&#123;% gist gist_id [filename] %&#125;iframe在文章中插入 iframe。1&#123;% iframe url [width] [height] %&#125;Image在文章中插入指定大小的图片。1&#123;% img [class names] /path/to/image [width] [height] [title text [alt text]] %&#125;Link在文章中插入链接，并自动给外部链接添加 target=&quot;_blank&quot; 属性。1&#123;% link text url [external] [title] %&#125;Include Code插入 source 文件夹内的代码文件。1&#123;% include_code [title] [lang:language] path/to/file %&#125;Youtube在文章中插入 Youtube 视频。1&#123;% youtube video_id %&#125;Vimeo在文章中插入 Vimeo 视频。1&#123;% vimeo video_id %&#125;引用文章引用其他文章的链接。12&#123;% post_path slug %&#125;&#123;% post_link slug [title] %&#125;引用资源引用文章的资源。123&#123;% asset_path slug %&#125;&#123;% asset_img slug [title] %&#125;&#123;% asset_link slug [title] %&#125;NexT 内置文本居中的引用代码12345&lt;!-- 标签 方式，要求版本在0.4.5或以上 --&gt;&#123;% centerquote %&#125;blah blah blah&#123;% endcenterquote %&#125;&lt;!-- 标签别名 --&gt;&#123;% cq %&#125; blah blah blah &#123;% endcq %&#125;样例突破容器宽度限制的图片代码12345&lt;!-- 标签 方式，要求版本在0.4.5或以上 --&gt;&#123;% fullimage /image-url, alt, title %&#125;&lt;!-- 别名 --&gt;&#123;% fi /image-url, alt, title %&#125;样例Bootstrap Callout代码1&#123;% note class_name %&#125; Content (md partial supported) &#123;% endnote %&#125;其中，class_name 可以是以下列表中的一个值：defaultprimarysuccessinfowarningdanger样例第三方插件有好多好多第三方插件，列也列不完，去Github自己看吧。Search · hexo-tag · GitHub参考资料Tag Plugins | Hexo内置标签 - NexT 使用文档【Hexo插件系列】Hexo 插件推荐 | ESON]]></content>
+      <categories>
+        <category>收集控</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>NexT</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[NexT 主题的扩展以及设置]]></title>
+    <url>%2Fposts%2F2911810154%2F</url>
+    <content type="text"><![CDATA[前言NexT是一款足够优秀的Hexo主题，在众多网友的助攻下集成了很多实用的附加组件，实现很多巧妙功能。听说NexT和Hexo更搭哦。一起安装NexT 扩展都安装在themes/next/source/lib文件夹下。12345cd themes/nextgit clone https://github.com/theme-next/theme-next-fancybox3 source/lib/fancyboxgit clone https://github.com/theme-next/theme-next-han source/lib/Hangit clone https://github.com/theme-next/theme-next-pangu.git source/lib/pangugit clone https://github.com/theme-next/theme-next-reading-progress source/lib/reading_progressfancybox好用的图片灯箱。1234567# 「在Hexo配置文件里修改」# Fancybox. There is support for old version 2 and new version 3.# Please, choose only any one variant, do not need to install both.# For install 2.x: https://github.com/theme-next/theme-next-fancybox# For install 3.x: https://github.com/theme-next/theme-next-fancybox3fancybox: trueHan「漢字標準格式」是一套支援各種印刷效果的Sass + JavaScript排版框架。12345# 「在Hexo配置文件里修改」# Han Support# Dependencies: https://github.com/theme-next/theme-next-hanhan: truepangu如果你跟我一樣，每次看到網頁上的中文字和英文、數字、符號擠在一塊，就會坐立難安，忍不住想在它們之間加個空格。這個外掛（支援 Chrome 和 Firefox）正是你在網路世界走跳所需要的東西，它會自動替你在網頁中所有的中文字和半形的英文、數字、符號之間插入空白。123456# 「在Hexo配置文件里修改」# Pangu Support# Dependencies: https://github.com/theme-next/theme-next-pangu# For more information: https://github.com/vinta/pangu.jspangu: truereading_progress在网页顶部显示一个进度条来表示阅读进度。12345678# 「在Hexo配置文件里修改」# Reading progress bar# Dependencies: https://github.com/theme-next/theme-next-reading-progressreading_progress: enable: true color: "#ff1700" # 配合Copyright的红色。 height: 3px # 配合原本在顶部的3px黑条。]]></content>
+      <categories>
+        <category>代码宅</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>NexT</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[好用的 Hexo 插件推荐]]></title>
+    <url>%2Fposts%2F3159684541%2F</url>
+    <content type="text"><![CDATA[前言说好了不用Hexo了，但是Typecho又不太好用，还需要一个服务器才能运行，Gitbook访问经常有问题，所以我又滚回来了。之前Windows上的环境已经丢失，现在转到macOS上再折腾折腾。工欲善其事必先利其器，用上好用的插件才能有好的心情写文章呀。一起安装Hexo 插件都是用npm安装的。12345678910npm install -g hexagon-clinpm install hexo-abbrlink --savenpm install hexo-github-card --savenpm install hexo-related-popular-posts --savenpm install hexo-symbols-count-time --savenpm install hexo-all-minifier --savenpm install hexo-auto-category --savenpm install hexo-generator-feed --savenpm install hexo-generator-searchdb --saveHexagonHexo的插件管理器，我用来看插件列表。12hexagon -lhexa -lhexo-abbrlink这是一个根据文章标题生成一个相应的静态文章地址的插件。如果你跟我一样不喜欢中文标题被URL编码之后变得特别长特别难看，有不喜欢写英文标题，那么这个插件非常适合你。hexo-abbrlink会首先检测你文章的配置区域有没有abbrlink这个属性，如果没有的话会根据文章标题生成一个，如果有的话就会使用当前abbrlink。12345678910# 「在Hexo配置文件里修改」# 首先找到并修改permalink的格式permalink: posts/:abbrlink/# 然后再添加abbrlink的配置# abbrlink configabbrlink: alg: crc32 #support crc16(default) and crc32 rep: hex #support dec(default) and hexhexo-github-card因为经常在文章中插入Github仓库，直接插入链接不太好看，这个更高逼格，就是上面👆这个。githubCard的用法很简单，在写文章的时候写上标签就OK了，还有其他参数可以去Github看。1&#123;% githubCard user:Gisonrg repo:hexo-github-card %&#125;这个插件生成的默认卡片宽度是400，在一些宽度较窄的移动设备上会造成缩放问题。虽然说参数里面也能修改width，但是每一次都要写就很麻烦，所以我去修改了源文件。12345678// /node_modules/hexo-github-card/index.jsvar user = arg_obj.user, repo = arg_obj.repo, width = arg_obj.width ? arg_obj.width : '100%', // 把宽度改为100%就能自适应了。 theme = arg_obj.theme ? arg_obj.theme : 'default', client_id = arg_obj.client_id ? arg_obj.client_id : '', client_secret = arg_obj.client_secret ? arg_obj.client_secret : '';还有一个问题，点击githubCard是在当前页面打开链接，这样会对阅读连续性造成不小的影响。阅读了原作者 lepture 的说明，添加一个target并设置为blank即可。Hexo插件的作者 Gisonrg 好像并没有理会这个属性，但是他的代码写的很好，我们只需要稍微修改一下payload就可以达到目的了。12345678910// /node_modules/hexo-github-card/index.jsvar payload = &#123; user: user, repo: repo, width: width, theme: theme, target: 'blank', // 添加这一行 client_id: client_id, client_secret: client_secrethexo-related-popular-posts根据标签推荐相关文章，原版插件的使用要求编辑主题文件的，但是NexT主题集成了这个插件的配置，配置很方便。1234567891011121314# 「在NexT配置文件里修改」# Related popular posts# Dependencies: https://github.com/tea3/hexo-related-popular-postsrelated_posts: enable: true title: # custom header, leave empty to use the default one display_in_home: false params: maxCount: 5 #PPMixingRate: 0.0 #isDate: false #isImage: false #isExcerpt: falsehexo-symbols-count-time文章字数统计和阅读时间估计。1234567# 「在Hexo配置文件里添加」symbols_count_time: symbols: true # 文章字数 time: false # 文章阅读时间 total_symbols: true # 站点总字数 total_time: false # 站点总阅读时间NexT主题也对这个插件进行了集成，可以进行一些高级设置。12345678# 「在NexT配置文件里修改」symbols_count_time: separated_meta: true item_text_post: true item_text_total: false awl: 4 # Average Word Length wpm: 275 # Words Per Minutehexo-all-minifier对网页源代码压缩，就喜欢看这样的源代码。123# 「在Hexo配置文件里添加」all_minifier: truehexo-auto-category每个文章的配置区域都写一次分类名称太麻烦了，并且你如果想改一次分类名字就更折磨人。这个插件就很好地解决了这个问题。hexo-auto-category会根据目录级别自动填写分类，分类名就是目录名，并且支持多级目录生成多个分类。12345678# 「在Hexo配置文件里添加」# Generate categories from directory-tree# Dependencies: https://github.com/xu-song/hexo-auto-category# depth: the depth of directory-tree you want to generate, should &gt; 0auto_category: enable: true depth: 1]]></content>
+      <categories>
+        <category>代码宅</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[如何挑选一个合适的笔记本电脑]]></title>
+    <url>%2Fposts%2F3864402349%2F</url>
+    <content type="text"><![CDATA[前言好多人都来问我，如何购买笔记本电脑，有没有笔记本电脑推荐之类的问题。这篇文章作一个统一回复。正文首先推荐一个微信公众号：笔吧评测室在公众号文章里有一个「每周一推」的栏目，推荐时下热门的好产品。为什么要推荐这个公众号以及这篇文章呢？第一，每周更新，具有良好的时效性；第二，推荐热门产品，能直接避免很多雷区；第三，网友监督，这些产品网友使用过后的评价至少都是不差的。接下来说说如何通过这个列表来找到适合自己的笔记本电脑。首先，确定预算。最根本的，你得确定一下你能为你的笔记本电脑付多少钱。列表里提供了几个预算区间，比如3500−4500、4500−5500，选一个适合你经济能力的范围。其次，确定需求。列表里把笔记本电脑分为了三种类别：游戏本、全能本、超薄本。对三种类型作了解释并且用不同的颜色标注了出来。现在这一步就需要你在你的预算区间里选择一个类型筛选出来。最后，你已经得到了一个筛选过的列表，在这个列表里的电脑都是比较适合你的。你可以在京东上搜一搜，看一看电脑的相关信息。你还可以根据电脑外观、买家评论、品牌喜好来挑选笔记本电脑。其他注意事项如果自认为对电脑硬件了解不多，请一定、务必要在京东上购买笔记本电脑，避开实体店、电脑城、淘宝以及熟人，或者其他地方。看好具体型号，别买错了。如果想买二手的，可以把预算区间提高一个等级，然后在二手平台上搜一搜型号。]]></content>
+      <categories>
+        <category>碎碎念</category>
+      </categories>
+      <tags>
+        <tag>笔记本电脑</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[如何优雅地在IOS设备上科学上网：IOS科学上网客户端推荐]]></title>
+    <url>%2Fposts%2F3688548053%2F</url>
+    <content type="text"><![CDATA[前言IOS科学上网还是挺麻烦的，质量高的客户端不多，还都在国区下架了，国区能搜到的几个都收费并且看起来不好，写篇文章整理一下高质量的SSR客户端。Shadowrocket简介俗称“小火箭”，功能强大。目前已经在国区下架了，国区搜到的类似名字的都是赝品。✔️订阅✔️自定义ACL文件安装PP助手可以安装，用PP助手电脑版可以安装，但是是旧版本，不支持订阅。弄个已购买的美区账号安装，网上找或者淘宝买。自己注册个美区账号，自己买。Pharos简介没有Shadowrocket强大，但是功能够用。免费，可以用TestFlight下载到，不用换区。✔️订阅✔️自定义ACL文件安装TestFighthttps://testflight.apple.com/join/3i6uBkB4?from=singlemessage&amp;isappinstalled=0Potatso Lite简介最后的选择，不支持订阅，不支持自定义ACL，但是能用，也是在TestFlight下载。❌订阅❌自定义ACL文件安装https://testflight.apple.com/join/NkF46PRd?from=singlemessage&amp;isappinstalled=0ACLACL文件地址：https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/banAD.acl]]></content>
+      <categories>
+        <category>收集控</category>
+      </categories>
+      <tags>
+        <tag>IOS</tag>
+        <tag>科学上网</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[macOS 零零碎碎]]></title>
+    <url>%2Fposts%2F4063752098%2F</url>
+    <content type="text"><![CDATA[前言换到了macOS，不太熟悉，记录一下遇到的问题以及解决办法，或许能帮助到别的新人。疑难杂症How to fix homebrew error: “invalid active developer path” ?12sudo xcode-select --installsudo xcode-select -switch /Preview app not workinghttps://discussions.apple.com/thread/4560494In Finder, open ~/Library/Containers (to open the hidden Containers folder, in Finder use Shift-Command-G and type ~/Library/Containers in the pop-up window)Delete the entire com.apple.Preview folderRestart Preview信任任何来源的应用1sudo spctl --master-disable设置代理Proxychains-ng1234# 配置文件vi /usr/local/etc/proxychains.conf# http 127.0.0.1 1087proxychains4 brew cask install android-platform-tools系统代理1234567export ALL_PROXY=socks5://127.0.0.1:1080# 代理永久化# 在/etc/profile文件最后加入这条命令，每次打开终端自动执行，就达到永久化的目的了。# 用:wq!来覆写sudo vi /etc/profile# 重启终端或者使用下面的命令生效source /etc/profile常用命令LaunchPad123456789# 更改行数与列数defaults write com.apple.dock springboard-columns -int 列数defaults write com.apple.dock springboard-rows -int 行数# 模糊度 0~255defaults write com.apple.dock springboard-blur-radius -int 模糊度# 重置 Launchpaddefaults write com.apple.dock ResetLaunchPad -bool TRUE# 重启 Dockkillall DockHomebrew1234567891011121314151617181920# First update the formulae and Homebrew itselfbrew update# You can now find out what is outdated withbrew outdated# Upgrade everythingbrew upgrade &lt;formulae&gt;# To stop something from being updatedbrew pin &lt;formula&gt;# To allow that formulae to update againbrew unpin &lt;formula&gt;# clean up everythingbrew cleanup# see what would be cleaned upbrew cleanup -nbrew search# brew caskbrew tap brew cask install用 alias 设置别名1234567891011121314151617181920# 输出所有别名alias alias -p# 查看具体的别名alias &lt;name&gt; # 设置别名alias &lt;name&gt;='here is your instruction'alias pc='proxychains4 -p'# 删除别名unalias &lt;name&gt;# 别名永久化# 在/etc/profile文件最后加入alias命令，每次打开终端自动执行，就达到永久化的目的了。# 用:wq!来覆写sudo vi /etc/profile# 重启终端或者使用下面的命令生效source /etc/profile截图Cmd+Shift+3：全屏截图；截取整个屏幕，保存截图至桌面文件夹。Cmd+Shift+4：区域截图；鼠标光标变成带坐标的小十字，通过拖拽截取特定区域，保存截图至桌面文件夹。Cmd+Shift+4 - 单击空格键 - 鼠标单击指定窗口：窗口截图；出现小十字光标后对指定窗口按空格键，鼠标光标变成照相机，鼠标单击截取指定窗口，保存截图至桌面文件夹。###]]></content>
+      <categories>
+        <category>代码宅</category>
+      </categories>
+      <tags>
+        <tag>macOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[记一次斐讯 K2 的刷机过程]]></title>
+    <url>%2Fposts%2F1219694874%2F</url>
+    <content type="text"><![CDATA[前言偶然拾得一个斐讯 K2，拿回来折腾半天，记录一下。固件降级当前机器硬件版本 A5，软件版本 K2_V22.6.507.43。文中的工具不支持 22.6.507.43 及以上版本，所以需要先降级。找一个低版本的固件刷进去就行。开启 TelnetWindows 开启 Telnet控制面板-&gt;程序和功能-&gt;启用或关闭 Windows功能-&gt;勾选Telnet 客户端可能需要重启，根据提示操作即可。路由器开启 Telnet这里使用到RoutAckProV1B2这款工具。打开软件，填入路由器的IP地址，默认为192.168.2.1，然后点击打开Telnet即可，傻瓜操作，感谢作者。开始刷breed打开命令行，开始 telnet 连接：1telnet 192.168.2.1下载breed文件到路由器：12345678# 下载 breed 文件到路由器# 内置的 wget 不支持 https，所以需要找一个 http 服务器wget -T 10 http://iytc.net/tools/breed0416.bin -O /tmp/breed.bin# 验证 breed 文件的完整性# 164cb272152740b164b9caab84a33d0amd5sum /tmp/breed.bin|cut -d ' ' -f1# 刷入 breedmtd unlock Bootloader&amp;&amp;mtd -r write /tmp/breed.bin Bootloader刷入固件路由器关机状态下，按住 reset 键不松手，然后接上电源，继续不松手等待几秒。电脑连网线到路由器，192.168.1.1进入 breed。进入 breed 之后就可以为所欲为了。参考资料http://www.right.com.cn/forum/forum.php?mod=viewthread&amp;tid=208820&amp;highlight=%D6%D5%BC%AB%B4%F3%B7%A8https://breed.hackpascal.net/附件下载]]></content>
+      <categories>
+        <category>过程记录</category>
+      </categories>
+      <tags>
+        <tag>斐讯</tag>
+        <tag>K2</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[酷站收集]]></title>
+    <url>%2Fposts%2F4220134526%2F</url>
+    <content type="text"><![CDATA[选择主页各种主页大搜罗，帮你选择一个适合你的主页。作者还在百度脑图分享了完整的思维导图，带导航、带链接。International Internet详细阐述了How to Reach the International Internet这一问题。UserBenchmark电脑硬件参数查询、对比的好帮手。Awesome softwareAwesome WindowsAwesome MacAwesome macOS图床SM.MS即刻图床精品MAC应用分享小新博客IOS旧版应用安装以及Apple ID分享。IP测试http://ip111.cn/http://ip100.info/]]></content>
+      <categories>
+        <category>收集控</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[《Python可以这样学》]]></title>
+    <url>%2Fposts%2F24349%2F</url>
+    <content type="text"><![CDATA[如何学习Python一定要动手编写和调试书上的代码，踏踏实实把基础掌握好再有针对性地学习自己需要的扩展库，切忌只看不练。多看，多想，多交流。理解的越多，需要记忆的就越少。切不可把全部精力放在 Python 语言本身的学习上，而是要把主要精力放到自己的专业和知识学习上，最终再用 Python 把自己的思想或算法准确地表达出来。Python 基础Python 是一种什么样的语言当较新的 Python 版本推出之后，不要急于赶时髦，看到别人用高版本的 Python 也不用自卑，而是应该在确定自己必须使用的扩展库也推出了与之匹配的新版本之后再一起进行更新。Python 开发环境一般来说，建议在运算符两侧和逗号后面加一个空格，在不同功能的代码块之间增加一个空行。交互模式一般用来实现一些简单的业务逻辑，或者验证某些功能。Python 文件扩展名为.py，GUI 程序可以保存为.pyw为提高代码运行速度，同时也对 Python 源代码进行保密，可以在命令提示符环境中使用python -OO -m py_compile file.py将 Python 程序file.py伪编译成为.pyc文件。命令提示符cls清屏。变量、运算符与表达式标准库是 Python 默认安装的，但需要导入后才能使用其中的对象。扩展库则需要手动安装，然后导入之后才能使用其中的对象。不需要事先声明变量名及其类型，并且变量的类型是可以随时发生改变的。Python 字符串对象提供了一个方法isidentifier()可以用来判断指定字符串是否可以作为变量名、函数名、类名等标识符。Python 内置对象数字字符串列表字典元组文件 f = open(file.txt)集合 set(&#39;abc&#39;)，{&#39;a&#39;, &#39;b&#39;, &#39;c&#39;}布尔型 True，False空 None编程单元 函数(def)，类(class)可以通过内置函数help()查看某个函数的使用帮助。可以导入 sys 模块后使用print(sys.builtin_moudle_names)查看 Python 所有内置模块名称。可以使用help(&#39;moudles&#39;)查看本机所有可用模块的名称。Python 常用内置函数进制转换bin() 二进制oct() 八进制int() 十进制hex() 十六进制Unicodeord() 字符串转为 Unicodechr() Unicode 转为字符串变量类型转换bool()float()int()str()计算abs() 返回绝对值或复数的模max()min()sum()其他help() 查看指定方法的使用帮助dir()查看对象的所有成员dir(math) 查看模块中可用对象dir(&#39;&#39;) 查看字符串类型成员dir(3+4j) 查看复数类型成员type(3) 查看类型isinstance(3, init) 判断类型import this Python 之禅Python 运算符+ 加法，列表、元组、字符串合并- 减法，集合差集* 乘法，序列重复/ 真除法// 整商- 相反数% 余数，字符串格式化** 幂&lt; &lt;= &gt; &gt;= 大小比较，集合的包含关系比较== != 相等、不等比较or and not 或，与，非in not in 成员测试&amp; | ^ 集合的交集、并集、对称差集@ 矩阵相乘1print(value, ..., sep='', end='\n', file=sys.stout, flush=False)sep 指定数据之间的分隔符，默认为空格。file 参数用于指定输出位置，默认为标准控制台，也可以重定向输出到文件。模块的安装和使用常用 pip 命令pip install Package 安装模块pip list 列出已安装的所有模块pip install -upgrade Package 升级模块pip uninstall Package 卸载模块pip 可执行程序在 Python 安装目录的 Scripts 文件夹下。Python 序列列表与列表推导式可以用list()函数将元组、range 对象、字符串、字典、集合或其他类型的可迭代对象类型的数据转换为列表。需要注意的是，把字典转换为列表时默认是将字典的“键”转换为列表，如果想把字典的元素转换为列表，需要使用字典对象的items()方法明确说明。12345&gt;&gt;&gt; list(&#123;'a':3, 'b':9, 'c':78&#125;)['a', 'b', 'c']&gt;&gt;&gt; list(&#123;'a':3, 'b':9, 'c':78&#125;.items())[('a', 3), ('b', 9), ('c', 78)]工厂函数：list()，tuple()，set()，dict()。可以使用del将对象删除，适用于所有的 Python 对象。也可以用del命令删除可变序列中的部分元素。1234&gt;&gt;&gt; a = [1, 2, 3]&gt;&gt;&gt; del a[0]&gt;&gt;&gt; a[2, 3]常用的列表对象方法list.list.append(x) 将元素 x 添加至列表 list 尾部list.extend(L) 将列表 L 中的所有元素添加至列表 list 尾部list.insert() 在列表指定位置插入元素list.remove() 删除在列表中首次出现的元素list.pop(x) 删除并返回下标为 x 的元素，x 默认为-1list.clear() 删除列表中的所有元素list.index(x) 返回列表中第一个值为 x 的元素的下标list.count() 返回指定元素在列表中出现的次数list.reverse() 倒序1list.sort(key=None, reverse=False)排序sort()和reverse()是对列表进行原地排序。如果不想丢掉原来的顺序可以用内置函数sorted()和 reversed()。list.copy() 浅复制成员测试运算符in也可以测试列表中是否存在某个元素。zip()函数用于将多个列表中元素重新组合为元组并返回包含这些元组的 zip 对象。12345&gt;&gt;&gt; x = list(range(5))&gt;&gt;&gt; x[0, 1, 2, 3, 4]&gt;&gt;&gt; list(zip(x, [0]*5))[(0, 0), (1, 0), (2, 0), (3, 0), (4, 0)]enumerate()函数返回包含若干下标和值的迭代对象。12&gt;&gt;&gt; list(enumerate(x))[(0, 0), (1, 1), (2, 2), (3, 3), (4, 4)]map()可以将一个函数依次作用到一个序列上，并返回一个 map 对象作为结果。12345678&gt;&gt;&gt; def add5(v):... return v+5...&gt;&gt;&gt; add5(1)6&gt;&gt;&gt; list(map(add5, range(5)))[5, 6, 7, 8, 9]&gt;&gt;&gt;filter()将一个单参数函数作用到一个序列上，返回该序列中使得该函数返回值为 True 的那些元素组成的 filter 对象，如果指定函数为 None，则返回序列中等价于 True 的元素。[表达式 for 变量 in 序列或迭代对象] 列表推导式在逻辑上相当于一个循环，只是形式更加简洁。12&gt;&gt;&gt; [x*x for x in range(10)][0, 1, 4, 9, 16, 25, 36, 49, 64, 81]切片返回的是列表元素的浅复制，与列表对象的直接辅助并不一样。元组与生成器推导式元组是不可变序列。生成器推导式的结果是一个生成器对象，不是列表，也不是元组。可以根据需要将其转化为元组或列表，也可以使用生成器对象的1__next__()方法或者内置函数1next()进行遍历，或者直接将其作为迭代器对象来使用。当所有元素访问结束以后，如果需要访重新问其中的元素，必须重新创建该生成器对象。1234567891011121314151617181920&gt;&gt;&gt; g = (i*i for i in range(10))# 返回的是生成器对象&gt;&gt;&gt; g&lt;generator object &lt;genexpr&gt; at 0x00000158DCB9A620&gt;# 转为元组&gt;&gt;&gt; tuple(g)(0, 1, 4, 9, 16, 25, 36, 49, 64, 81)# 生成器对象已遍历结束，没有元素了&gt;&gt;&gt; list(g)[]# 重新生成&gt;&gt;&gt; g = (i*i for i in range(10))&gt;&gt;&gt; g.__next__()0&gt;&gt;&gt; next(g)1字典字典中的键不允许重复，值可以重复。dict() 可以通过已有数据创建字典。12345&gt;&gt;&gt; keys = ['a', 'b', 'c']&gt;&gt;&gt; values = [1, 2, 3]&gt;&gt;&gt; dictionary = dict(zip(keys, values))&gt;&gt;&gt; dictionary&#123;'a': 1, 'b': 2, 'c': 3&#125;dict() 可以根据给定的“键:值”来创建字典。12&gt;&gt;&gt; dict(name='Cat', age=5)&#123;'name': 'Cat', 'age': 5&#125;dict() 可以给定键，创建值为空的字典。12&gt;&gt;&gt; dict.fromkeys(['name', 'age'])&#123;'name': None, 'age': None&#125;dict.update() 将 B 字典的键值对都添加到 A 字典，如果有键重复会用 B 字典的值覆盖。dict.get() 返回字典里指定键的值，如果键不存在返回指定值。dict.setdefault() 返回指定键对应的值，不过不存在就添加一个键并设置对应值。内置函数globals()和locals()分别返回包含当前作用域内所有全局变量和局部变量的名称及值的字典。其他对象方法参考 list。集合同一个集合内每一个元素都是唯一的，不允许重复。set() 将可迭代对象转为集合，如果有重复值则只保留一个。集合只能包含数字、字符串、元组等不可变类型（或者说可哈希）的数据。set.add() 添加新元素，如果已存在则忽略。set.update() 合并集合。set.pop() 随机删除并返回一个元素。set.remove() 删除指定元素，如果不存在则报错。set.discard() 删除指定元素，如果不存在则忽略。其他对象方法参考 list。序列解包可以使用序列解包功能对多个变量同时赋值。1x, y, z = 1, 2, 3很方便地同时遍历多个序列1234keys = ['a', 'b', 'c']values = [1, 2, 3]for k, v in zip(keys, values): print(k, v)其他12&gt;&gt;&gt; print(* [1, 2, 3], 4, * (5, 6))1 2 3 4 5 6]]></content>
+      <categories>
+        <category>书</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[用 VSCoed 或 Sublime Text 运行 Python 时获取 input() 输入]]></title>
+    <url>%2Fposts%2F59370%2F</url>
+    <content type="text"><![CDATA[前言最近学 Python，用 Sublime Text 和 VS Code，内置的运行无法用 input() 获取输入，记录下解决办法。Sublime Text工具 -&gt; 编译系统 -&gt; 新编译系统 -&gt;输入以下内容 -&gt; 保存到*\SublimeText\Data\Packages\User，命名为Python_cmd.sublime-build123456&#123; "cmd": ["start", "cmd", "/k", "python", "$file"], "selector": "source.python", "shell": true, "working_dir": "$file_dir"&#125;之后在编译系统里选择Python_cmd，然后运行就可以了，快捷键Ctrl+B。缺点是运行在 cmd 里，会弹出一个 cmd 窗口。VS Code任务 -&gt; 配置任务 -&gt; 选择”echo” -&gt; 输入以下内容12345678910111213141516171819202122232425&#123; // See https://go.microsoft.com/fwlink/?LinkId=733558 // for the documentation about the tasks.json format "version": "2.0.0", "tasks": [ &#123; "label": "Python_cmd", "type": "shell", "command": "python", "args": [ "$&#123;file&#125;" ], "presentation": &#123; "echo": true, "reveal": "always", "focus": true, "panel": "shared" &#125;, "group": &#123; "kind": "build", "isDefault": true &#125; &#125; ]&#125;之后直接运行任务就可以了，快捷键Ctrl+Shift+B。]]></content>
+      <categories>
+        <category>代码宅</category>
+      </categories>
+      <tags>
+        <tag>Sublime Text</tag>
+        <tag>VS Code</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[零零碎碎]]></title>
+    <url>%2Fposts%2F22801%2F</url>
+    <content type="text"><![CDATA[前言记录一些以后可能翻看小玩意儿，供备忘用。手机 Chrome 状态栏变色1&lt;meta name="theme-color" content="#000000"&gt;关闭进程kill -pid1234# 查看pidps -ef# 杀掉进程kill -pidkillall1killall httpd后台运行进程12# 运行命令的结尾加一个 &amp;。make &amp;tar 命令123456789# -c: 建立压缩档案# -x：解压# -t：查看内容# -r：向压缩归档文件末尾追加文件# -u：更新原压缩包中的文件# -f：使用档案名字，切记，这个参数是最后一个参数，后面只能接档案名。# 解压 tar.gztar -xzvf file.tar.gzKMS 激活资料来源：https://03k.org/kms.htmlWindows管理员身份运行 cmd：12slmgr /skms kms.03k.orgslmgr /atoOffice在 Office 安装目录下应该有个 OSPP.VBS，在安装目录下以管理员身份运行 cmd：12cscript ospp.vbs /sethst:kms.03k.orgcscript ospp.vbs /act查看 Windows 10 版本号cmd 运行：winversysteminfo | findstr BuildHexo 更新1npm update -gALC for Android SSRACL文件地址：https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/banAD.acl]]></content>
+      <categories>
+        <category>碎碎念</category>
+      </categories>
+      <tags>
+        <tag>记录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[用 Dragonite-forwarder 加速你的 Shadowsocks]]></title>
+    <url>%2Fposts%2F51376%2F</url>
+    <content type="text"><![CDATA[前言最近折腾 SSR 的双边加速，这个软件效果还是可以的，记录一下。文中的 SS 和 SSR 是没有区别的，都可以使用加速。Dragonite介绍dragonite-forwarder 是一个可以用来加速任何 TCP 连接的双向转发加速工具。其可将原本通过 TCP 协议的程序通过端口转发的方式实际由 dragonite 协议在网络中传输。对于中国用户，一个常见的用途是可以利用 dragonite-forwarder 加速 Shadowsocks 连接速度。服务端配置安装 Java准备工作更新包：yum update。检查服务器上是否已安装旧版本的Java：java -version。如果有旧版本的Java则移除：yum remove java*。下载安装包在 Oracle 下载页 找到你需要的安装包，替换下面的链接：1wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/9.0.1+11/jdk-9.0.1_linux-x64_bin.rpm"安装 Java注意替换文件名。1rpm -ivh jdk-9.0.1_linux-x64_bin.rpm检查安装执行命令：java -version，如果 Java 正确安装则会出现以下结果：123java version &quot;9.0.1&quot;Java(TM) SE Runtime Environment (build 9.0.1+11)Java HotSpot(TM) 64-Bit Server VM (build 9.0.1+11, mixed mode)启动程序下载前往 Release 下载最新版 dragonite-forwarder 程序。将下载的压缩包在服务器 上解压后，得到文件夹 dragonite-forwarder-[版本号]。通过 cd dragonite-forwarder-[版本号]/bin 命令进入启动脚本所在目录。启动假设你的 Shadowsocks 服务器开启在 2333 端口，运行命令1./dragonite-forwarder -s -f 2333客户端配置安装 Java客户端也需要安装 Java。Windows 直接去下载安装就可以了。启动程序下载前往 Release 下载最新版 dragonite-forwarder 程序。将下载的压缩包在服务器 上解压后，得到文件夹 dragonite-forwarder-[版本号]。通过 cd dragonite-forwarder-[版本号]/bin 命令进入启动脚本所在目录。启动假设服务器的 IP 为 1.2.3.4，设置本地监听端口为8081，用以下命令启动客户端：1./dragonite-forwarder -a 1.2.3.4 -f 8081 -d 10 -u 5启动成功后在 SS 客户端里服务器 IP 填127.0.0.1，端口填 8081，加密协议和混淆都填 SS 服务端的设置，就能加速你的 SS 了。参数说明客户端服务端用的程序都是同一个，-s 参数表示是当作服务端使用。仅说明常用参数，全部参数请前往 官方 wiki 查看。服务端123-f 设置转发端口（SSR 端口）。-k 设置密码，如果服务端设置了那么客户端也要设置。-p 设置程序端口，默认用 UDP 5233 端口。客户端12345-a 服务器地址。-p 服务器端口。-k 密码。-u 客户端的上传速度（Mbps）。-p 客户端的下载速度（Mbps）。其他说明服务端可以用screen命令后台运行。Windows 客户端可以用 vbs 脚本 启动从而隐藏cmd窗口。注意替换命令。12set objShell=wscript.createObject("wscript.shell")objShell.Run("./dragonite-forwarder -a 1.2.3.4 -f 8081 -d 10 -u 5")参考资料CentOS下安装JDK的三种方法 - 51CTO.COMCentOS安装JDK 8 - 简书快速入门之：使用 dragonite forwarder 加速 Shadowsocks 连接 · dragonite-network/dragonite-java Wiki]]></content>
+      <categories>
+        <category>代码宅</category>
+      </categories>
+      <tags>
+        <tag>SSR</tag>
+        <tag>Dragonite</tag>
+        <tag>双边加速</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[安卓搞机常用网址]]></title>
+    <url>%2Fposts%2F44974%2F</url>
+    <content type="text"><![CDATA[前言安卓搞机常用网址，记下备用。ROMS类原生LineageOSMokeeResurrection Remix OSAospExtendedSudaModAICPSlimRomsPixel ExperiencedotOSMIUIChinaGlobalMIUI PolskaMIUI Russiaxiaomi.euEpic ROMmi-globeMIUI.AM极光MiuiProW大RecoveryTWRPRED WOLF工具电脑ADB Driver手机MagiskSuperSUThe Open GApps ProjectXposed论坛XDA ForumsLetITFly BBS]]></content>
+      <categories>
+        <category>收集控</category>
+      </categories>
+      <tags>
+        <tag>安卓</tag>
+        <tag>搞机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[VS Code 常用快捷键]]></title>
+    <url>%2Fposts%2F2061%2F</url>
+    <content type="text"><![CDATA[前言VS Code 还是我用的比较顺手的一个编辑器了，此篇文章记录下我常用的以及以后可能用到的快捷键。通用KeyValueCtrl+Shift+P, F1显示所有命令Ctrl+P快速打开Ctrl+Shift+N新建窗口Ctrl+Shift+W关闭窗口编辑KeyValueAlt+ ↑ / ↓移动行Shift+Alt + ↓ / ↑复制行Ctrl+Shift+K删除行Ctrl+Shift+\跳转到匹配的括号Ctrl+] / [缩进/取消缩进行（比TAB好用）Ctrl+Home/End跳转到文件开头/结尾Ctrl+↑ / ↓滚动Ctrl+Shift+[折叠/显示代码块Ctrl+/行注释Shift+Alt+A块注释导航KeyValueF8 / Shift+F8跳转到下一个/上一个错误或警告处Ctrl+F/H搜索/替换F3 / Shift+F3下一个/上一个结果多光标和区块KeyValueAlt+Click插入光标Ctrl+U上一次的光标操作Shift+Alt+I在选择的每一行的后面插入光标Ctrl+I选择当前行富文本编辑KeyValueCtrl+Space触发建议Ctrl+Shift+Space触发参数提示编辑器KeyValueCtrl+\分割编辑器文件管理KeyValueCtrl+K P复制当前文件的路径Ctrl+K R在资源管理器中显示当前文件调试KeyValueF9断点F5开始/继续Shift+F5停止F11 / Shift+F11Step into/outF10Step over内置终端KeyValueCtrl+`显示内置终端Ctrl+Shift+`创建新的终端Ctrl+Shift+C复制选中部分Ctrl+Shift+V粘贴]]></content>
+      <categories>
+        <category>收集控</category>
+      </categories>
+      <tags>
+        <tag>VS Code</tag>
+        <tag>快捷键</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[制作 LD42 动态喷图]]></title>
+    <url>%2Fposts%2F6982%2F</url>
+    <content type="text"><![CDATA[前言喷图也是此游戏的乐趣之一，特别是那些让人营养不良的动态图（此处应有滑稽）。此篇文章记录下动态喷图的制作过程，以后失忆了还能看看（此处应有滑稽）。准备工作一张动态图，不要太大，不要太长。GIF分解工具，把动态图的每一帧都提取出来。VTFEdit，制作vtf格式的动态喷图。分解GIF这里使用gifsplitter2.0.exe，其他具有相同功能的软件亦可。制作VTF打开VTFEdit.exe，左上角导入。找到刚刚分离出来的图片，全选导入，没什么好说的。接下来选择限定贴图尺寸，尺寸选择128*128，其他默认即可。在信息栏里查看文件大小，不要超过512KB否则无法喷出。如果文件太大可以删掉几帧，再不行就换图吧。左上角保存，保存到你容易找到的地方，不要使用中文文件名。游戏里导入的时候中文乱码，为了方便直接保存到E盘根目录。在游戏里导入选项-&gt;多人联机-&gt;导入喷漆图案]]></content>
+      <categories>
+        <category>游戏游戏</category>
+      </categories>
+      <tags>
+        <tag>求生之路</tag>
+        <tag>康纳</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[斐讯 K2 固件搜集]]></title>
+    <url>%2Fposts%2F1071%2F</url>
+    <content type="text"><![CDATA[前言K2 也出来不久了，我也上了两波车，此篇文章记录下一些精品的 K2 第三方固件，方便自己也方便他人。高恪固件优点：稳定，多播和流控很强，基本上完美。缺点：没有SSR和去广告。官网：http://www.gocloud.cn下载：http://www.gocloud.cn/bbs/forum.php?mod=viewthread&amp;tid=543&amp;extra=page%3D1Padavan@hiboy优点：更新频率快，SSR 协议与时俱进，支持 auth_chain_b/c/d/e/f，功能丰富。缺点：臃肿。更新地址：恩山无线论坛下载地址：百度云备用下载：http://opt.cn2qq.com/padavanPadavan@荒野无灯优点：精简，刚需软件都有。缺点：只有 SS，没有 SSR。并且最新版本还取消了 SS 入口。官网：http://p4davan.80x86.io/下载地址：http://p4davan.80x86.io/download/备用下载：http://files.80x86.io/router/rom/在网页控制台输入以下命令可恢复 SS 入口：1234nvram set google_fu_mode=0xDEADBEEFKMSnvram set ext_show_lse=1nvram commit官改固件@abccba94优点：基于官方修改，稳定。缺点：软件少了一些，但是我要个 SSR 和 ADbyby 就够了。更新地址：恩山无线论坛下载地址：http://woo.iytc.net/?dir=uploads/K2支持 SSR，支持 auth_chain_a。显示“无法识别的固件” ：前往 breed 下载页。下载breed-mt7620-phicomm-psg1208.bin。在 breed 中刷入 bootloader，选择刚刚下载的文件。重新进入 breed，刷入新固件。Pandorabox@lean优点：软件齐全，功能强大，可玩性高。缺点：可能有点不稳定。更新地址：恩山无线论坛下载地址：百度云提取密码：g66eadbyby 误杀：不知道作者跟小米结下了什么梁子，adbyby 域名黑名单里很多小米域名，导致我的小米台灯无法用米家控制，在域名黑名单里去掉 data.mistat.xiaomi.com 以及 api.io.mi.com 两个域名即可正常使用。并且那个域名黑名单列表不能清空，空内容它会认为没有改变，如果想清空的话随便输入一些东西。]]></content>
+      <categories>
+        <category>收集控</category>
+      </categories>
+      <tags>
+        <tag>斐讯</tag>
+        <tag>K2</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[手机版 Chrome 浏览器调教]]></title>
+    <url>%2Fposts%2F18593%2F</url>
+    <content type="text"><![CDATA[前言Chrome确实好用，但是在某些方面确实反人类，本文章记录下常用的flags设置，作备忘用。进入设置chrome://flags新标签新闻chrome://flags/#enable-ntp-remote-suggestions建议配置：Disabled作用：关闭新标签页新闻推荐。新标签重复网页chrome://flags/#ntp-switch-to-existing-tab建议配置：Match by URL作用：新标签打开已存在的网页会直接切换到已存在的标签，不会重复打开，根据网址匹配新标签简化去掉新标签页Google的Logochrome://flags/#ntp-condensed-layout建议配置：Enabled搜索栏中显示彩色Gchrome://flags/#ntp-google-g-in-omnibox建议配置：Enabled新标签瓷贴chrome://flags/#ntp-condensed-tile-layout建议配置：Enabled(large screens)作用：大屏下显示10个瓷贴。关闭稍后下载chrome://flags/#offline-pages-async-download建议配置：Disabled作用：避免手滑。地址栏下移chrome://flags/#enable-chrome-home作用：地址栏放下面，可能有莫名其妙的bug，可以尝试一下。]]></content>
+      <categories>
+        <category>收集控</category>
+      </categories>
+      <tags>
+        <tag>Chrome</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[ThinkPHP 下的 cron 任务]]></title>
+    <url>%2Fposts%2F7188%2F</url>
+    <content type="text"><![CDATA[前言SSCheckin 需要定时执行一些任务来保证程序正常运行，比如签到、备份、清理等任务。前一段时间是直接用外部的网站监控服务，定时访问网站下index.php/Home/Task来执行任务的，昨天配置了 https，发现网站监控不能用了，就想着能不能在内部定时执行。首先就想到了cron，用php xxx.php直接运行，但是这样不就不能指定控制器和模块了吗，于是查了查，找到了可行的解决方法。模式扩展ThinkPHP有一个cli模式，即命令模式，用于支持命令行模式下面的PHP应用。首先复制一份入口文件index.php，命名为cli.php。在开头加入：1define('MODE_NAME','cli');因为官方引用文件的时候用的是相对路径，cron执行任务的时候相对路径就不一样了，为了避免出现文件缺失的情况，我们需要把相对路径改为绝对路径：12345// 定义应用目录define('APP_PATH',dirname(__FILE__).'/Application/' );// 引入ThinkPHP入口文件require dirname( __FILE__).'/ThinkPHP/ThinkPHP.php';再去ThinkPHP/Mode目录下复制一份common.php，命名为cli.php。现在就有两个入口文件了，index.php是普通访问的入口文件，cli.php是命令行入口文件。在命令行模式下，我们可以这样调用控制器和模块：1php index.php module/action/id/4其他用法请参考官方手册（模式扩展 - ThinkPHP完全开发手册 - 3.1）。配置cron任务这里以DirectAdmin为例，没有ssh权限。我们需要每分钟执行一次，就在计划任务里添加1php /home/mianliuc/domains/sscheckin.17mianliu.com/public_html/cli.php Home/Task注意这个路径是绝对路径，home/mianliuc/是你的用户目录，默认会显示，如图。cli.php文件的路径可以在文件管理中找到，也就是你网站根目录下的cli.php，如图。只需要运行cli.php即可，后面Home/Task指定控制器和模块。经测试一切正常运行。结语ThinkPHP真是太强大了。不仅仅是ThinkPHP，所有的框架都让开发更方便、高效、规范。感谢开发者的无私奉献！参考资料thinkphp3.2 cli模式的正确使用方法模式扩展 - ThinkPHP完全开发手册 - 3.1crontab - cron thinkphp - SegmentFault]]></content>
+      <categories>
+        <category>代码宅</category>
+      </categories>
+      <tags>
+        <tag>ThinkPHP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[整理一些 DNS]]></title>
+    <url>%2Fposts%2F63696%2F</url>
+    <content type="text"><![CDATA[前言且用且珍惜。NameWebsiteNotePureDNShttps://puredns.cn/博客XsicoDNShttps://dns.xsico.cn/PdoMo-DNShttps://pdomo.me/Mogu DNShttps://mogudns.net/AIXYZ DNShttps://aixyz.com/FUN DNShttp://www.fundns.cn/CuteDNShttps://www.cutedns.cc/OpenDNShttps://www.opendns.com/setupguide/#familyshield支持443端口阿里 DNShttp://www.alidns.com/DNSPodhttps://www.dnspod.cn/Products/Public.DNSoneDNShttps://www.onedns.net/Cloudflare DNShttps://1.1.1.1/]]></content>
+      <categories>
+        <category>收集控</category>
+      </categories>
+      <tags>
+        <tag>DNS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Git 基础]]></title>
+    <url>%2Fposts%2F32569%2F</url>
+    <content type="text"><![CDATA[初始配置配置用户名密码，告诉Git你是谁12git config --global user.name "xxx"git config --global user.email "xxx@gmail.com"创建代码库1git init文件管理1234567891011# 把文件放入暂存区git add &lt;name&gt;# 把文件从暂存区移除git rm --cached -r &lt;file&gt;# 删除文件git rm &lt;name&gt;# 移动/改名git mv &lt;file&gt; &lt;newfile&gt;版本管理1234567891011121314151617181920# 提交git commit -m &lt;comment&gt;# 撤销工作区的修改，恢复成暂存区的内容git checkout -- &lt;file&gt;# 放弃暂存区的内容git reset HEAD &lt;file&gt;# 看由近到远的提交历史，可看3次# 如果嫌输出信息太多，看得眼花缭乱的，可以试试加上--pretty=oneline参数git log# 查看命令历史git reflog# 版本回退，HEAD表示当前版本，HEAD^表示上一版本，HEAD^^表示前两个版本，HEAD~100表示前100个版本…git reset --hard HEAD^# 也可以直接用commit id回退，commit id可以只写前几位git reset --hard 3628164分支1234567891011121314151617# 查看分支git branch# 创建分支git branch &lt;name&gt;# 切换分支git checkout &lt;name&gt;# 创建并切换分支git checkout -b &lt;name&gt;# 合并某分支到当前分支git merge &lt;name&gt;# 删除分支git branch -d &lt;name&gt;标签1234567# 查看所有标签git tag# 添加新标签，name是要打的标签的名字，默认打在最新的commit上，也可以指定commit_id打标签git tag &lt;name&gt; [commit_id]# 还可以打带说明的标签，-a指定标签，-m指定说明git tag -a "v1.0" -m "1.0 released" [commit_id]远程仓库1234567891011# 查看远程仓库git remote# 查看仓库地址git remote -v# 添加远程仓库git remote add &lt;别名&gt; &lt;地址&gt;# 删除远程仓库git remote remove &lt;name&gt;提交代码到GithubHTTP提交1234# 没有配置远程仓库别名git push https://github.com/user/repo master# 配置了远程仓库别名git push origin masterSSH提交123456789101112# 配置SSH协议的远程仓库git remote add origin git@github.com:user/repo.git# 生成SSH公钥ssh-keygen -t rsa -C "email@github.com"# 把id_rsa.pub内容添加到Github的公钥中# 之后再push本地仓库到远程就不用密码了# 测试ssh -T git@github.com# Hi username! You've successfully authenticated, but GitHub does not provide shell access.]]></content>
+      <categories>
+        <category>代码宅</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+        <tag>Github</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[获取天翼光猫 F412 超级管理员帐号密码]]></title>
+    <url>%2Fposts%2F7971%2F</url>
+    <content type="text"><![CDATA[开启 telnet 服务控制面板 -&gt; 所有控制面板项 -&gt; 程序和功能 -&gt; 启用或关闭Windows功能获取帐号密码打开cmd，输入：telnet 192.168.1.1登录帐号：root登录密码：Zte521输入命令：sendcmd 1 DB p UserInfo]]></content>
+      <categories>
+        <category>过程记录</category>
+      </categories>
+      <tags>
+        <tag>天翼光猫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[重置 MySQl root 密码]]></title>
+    <url>%2Fposts%2F53619%2F</url>
+    <content type="text"><![CDATA[前言注意：如果你的数据库中存有重要数据，请在保证机器离线的情况下进行以下的操作，最稳妥的办法就是拔掉网线！方法一：修改配置文件开启安全模式修改MySQL的登录设置1vi /etc/my.cnf在[mysqld]段里加上一行skip-grant-tables，保存并退出。重新启动MySQL1service mysqld restart修改密码1mysql -uroot1234use mysql;update user set Password=password('newpass') where User='root';flush privileges;exit;关闭安全模式将第一步在MySQL配置文件里加入的skip-grant-tables删掉。完成重启MySQL之后就可以用新密码登录了。1service mysqld restart方法二：以不检查权限的方式启动MySQL停止MySQL1service mysqld stop以不检查权限的方式启动MySQL1mysqld --skip-grant-tables &amp;修改密码1mysql -uroot1234use mysql;update user set Password=password('newpass') where User='root';flush privileges;exit;完成用正常的方式重启MySQL之后就可以用新密码登录了。1service mysqld restart]]></content>
+      <categories>
+        <category>代码宅</category>
+      </categories>
+      <tags>
+        <tag>CentOS</tag>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[CentOS 网络修复]]></title>
+    <url>%2Fposts%2F11247%2F</url>
+    <content type="text"><![CDATA[前言每次装CentOS后无法上网都要去搜教程，现在记下来以后就不用到处去搜了（滑稽）。启用网卡12345# 启用ifconfig eth0 up# 关闭ifconfig eth0 down`编辑网络配置文件1vi /etc/sysconfig/network-scripts/ifcfg-eth0按 i 进入编辑模式，按 ESC 进入命令模式.命令模式中输入:w保存，:q退出，:wq即为退出并保存。打开应该是这个样子的：1234567DEVICE=eth0HWADDR=08:00:27:A6:5D:89TYPE=EthernetUUID=db391271-1cdf-4df2-b040-12f259d5e361ONBOOT=noNM_CONTROLLED=yesBOOTPROTO=dhcp其中，ONBOOT 为是否开机启动，值可为yse/no；BOOTPROTO 为获取IP地址的方式，值可为dhcp/static/bootp；ONBOOT 修改为yes，BOOTPROTO 按需修改，其他的不需要修改，下面是示例。两种获取IP的方式动态获取IP(dhcp)1234567DEVICE=eth0HWADDR=08:00:27:A6:5D:89TYPE=EthernetUUID=db391271-1cdf-4df2-b040-12f259d5e361ONBOOT=yes #开机启动NM_CONTROLLED=yesBOOTPROTO=dhcp #动态静态获取IP(static)12345678910DEVICE=eth0HWADDR=08:00:27:A6:5D:89TYPE=EthernetUUID=db391271-1cdf-4df2-b040-12f259d5e361ONBOOT=yes #开机启动NM_CONTROLLED=yesBOOTPROTO=static #静态IPADDR=192.168.233.234 #IP地址NETMASK=255.255.255.0 #子网掩码GATEWAY=192.168.233.1 #网关static方式还要手动设置DNS：1vi /etc/resolv.conf重启网络服务1service network restart]]></content>
+      <categories>
+        <category>代码宅</category>
+      </categories>
+      <tags>
+        <tag>CentOS</tag>
+      </tags>
+  </entry>
+</search>
