@@ -1,4 +1,706 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta http-equiv="X-UA-Compatible" content="IE=edge"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=7.4.0"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=7.4.0"><link rel="mask-icon" href="/safari_pinned_tab.svg?v=7.4.0" color="#222"><link rel="manifest" href="/site.webmanifest"><meta name="msapplication-config" content="/browserconfig.xml"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="stylesheet" href="/css/main.css?v=7.4.0"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css"><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Muse",version:"7.4.0",exturl:!1,sidebar:{position:"left",display:"post",offset:12,onmobile:!1},copycode:{enable:!0,show_result:!0,style:null},back2top:{enable:!0,sidebar:!1,scrollpercent:!0},bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!0,mediumzoom:!1,lazyload:!0,pangu:!0,algolia:{appID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},path:"search.xml",motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},translation:{copy_button:"复制",copy_success:"复制成功",copy_failure:"复制失败"},sidebarPadding:40}</script><meta name="description" content="前言现在在一台 PC 上同时装了 Windows 10 和 MacOS，遇到了一个关于系统时间的问题。当从 MacOS 重启到 Windows 系统时，Windows 系统的时间会变得不正确，我也不知道是什么原因导致了这个问题。每次我都需要手动点一下同步时间，但是 Windows 系统自动同步时间的周期太长，每次手动更新时间也挺麻烦，所以我就在思考有没有什么办法能在开机的时候自动校时。开始的时候尝"><meta name="keywords" content="Windows,计划任务,自动校时"><meta property="og:type" content="article"><meta property="og:title" content="Windows 10 开机自动校时"><meta property="og:url" content="https://iuok.me/posts/1082710414/index.html"><meta property="og:site_name" content="咸鱼的博客"><meta property="og:description" content="前言现在在一台 PC 上同时装了 Windows 10 和 MacOS，遇到了一个关于系统时间的问题。当从 MacOS 重启到 Windows 系统时，Windows 系统的时间会变得不正确，我也不知道是什么原因导致了这个问题。每次我都需要手动点一下同步时间，但是 Windows 系统自动同步时间的周期太长，每次手动更新时间也挺麻烦，所以我就在思考有没有什么办法能在开机的时候自动校时。开始的时候尝"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-03-27T12:04:35.215Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Windows 10 开机自动校时"><meta name="twitter:description" content="前言现在在一台 PC 上同时装了 Windows 10 和 MacOS，遇到了一个关于系统时间的问题。当从 MacOS 重启到 Windows 系统时，Windows 系统的时间会变得不正确，我也不知道是什么原因导致了这个问题。每次我都需要手动点一下同步时间，但是 Windows 系统自动同步时间的周期太长，每次手动更新时间也挺麻烦，所以我就在思考有没有什么办法能在开机的时候自动校时。开始的时候尝"><link rel="alternate" href="/atom.xml" title="咸鱼的博客" type="application/atom+xml"><link rel="canonical" href="https://iuok.me/posts/1082710414/"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,isPage:!1,isArchive:!1}</script><title>Windows 10 开机自动校时 | 咸鱼的博客</title><meta name="generator" content="Hexo 3.9.0"><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container use-motion"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-meta"><div><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">咸鱼的博客</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle">做人如果没博客，跟咸鱼有什么分别</p></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul></nav><div class="site-search"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-container"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"></div></div><div class="search-pop-overlay"></div></div></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><div class="reading-progress-bar"></div><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article itemscope itemtype="http://schema.org/Article"><div class="post-block post"><link itemprop="mainEntityOfPage" href="https://iuok.me/posts/1082710414/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="失去梦想的咸鱼"><meta itemprop="description" content=""><meta itemprop="image" content="/android-chrome-256x256.png"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="咸鱼的博客"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">Windows 10 开机自动校时</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time title="创建时间：2019-02-26 01:21:59" itemprop="dateCreated datePublished" datetime="2019-02-26T01:21:59+08:00">2019-02-26</time> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i> </span><span class="post-meta-item-text">更新于</span> <time title="修改时间：2019-03-27 20:04:35" itemprop="dateModified" datetime="2019-03-27T20:04:35+08:00">2019-03-27</time> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/代码宅/" itemprop="url" rel="index"><span itemprop="name">代码宅</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>现在在一台 PC 上同时装了 Windows 10 和 MacOS，遇到了一个关于系统时间的问题。</p><p>当从 MacOS 重启到 Windows 系统时，Windows 系统的时间会变得不正确，我也不知道是什么原因导致了这个问题。每次我都需要手动点一下同步时间，但是 Windows 系统自动同步时间的周期太长，每次手动更新时间也挺麻烦，所以我就在思考有没有什么办法能在开机的时候自动校时。</p><p>开始的时候尝试了网络上的一些校时软件，但是我想到了一种更为优雅的方式，这里记录一下通过<strong>Windows 计划任务</strong>的方式在开机的时候自动同步网络时间。</p><a id="more"></a><h2 id="启动-Windows-Time-服务"><a href="#启动-Windows-Time-服务" class="headerlink" title="启动 Windows Time 服务"></a>启动 Windows Time 服务</h2><p>运行<code>services.msc</code>命令或者在小娜处搜索<code>服务</code>来打开服务管理窗口。</p><img title="打开服务管理窗口" data-src="/posts/1082710414/打开服务管理窗口.png"><p>在服务列表里找到<code>Windows Time</code>，开启此服务并设置为开机启动。</p><h2 id="修改-NTP-服务器"><a href="#修改-NTP-服务器" class="headerlink" title="修改 NTP 服务器"></a>修改 NTP 服务器</h2><p>NTP 服务器提供标准时间，Windows 默认的服务器很多时候都同步失败，为了解决这个恼人的问题我们可以换一个稳定点的 NTP 服务器。</p><p>在<strong>右键点击时间-&gt;调整日期/时间-&gt;日期、时间和区域格式设置-&gt;Internet 时间-&gt;更改设置</strong>中，勾选<strong>与 Internet 时间服务器同步</strong>，并在服务器后的输入框中填入 NTP 服务器地址。</p><p>国内稳定的 NTP 服务器推荐（道听途说）：</p><ul><li>pool.ntp.org</li><li>0.cn.pool.ntp.org</li><li>ntp1.aliyun.com</li></ul><img title="设置 NTP 服务器" data-src="/posts/1082710414/设置ntp服务器.png"><h2 id="设置计划任务"><a href="#设置计划任务" class="headerlink" title="设置计划任务"></a>设置计划任务</h2><h3 id="创建计划任务"><a href="#创建计划任务" class="headerlink" title="创建计划任务"></a>创建计划任务</h3><p>在小娜处搜索<code>计划任务</code>来打开计划任务管理窗口。</p><p>创建新的计划任务，命名为<code>Sync Time</code>。</p><p>在<strong>触发器</strong>选项卡中，新建一个触发器，选择在系统启动时运行。</p><img title="触发器" data-src="/posts/1082710414/触发器.png"><p>在<strong>操作</strong>选项卡中，依次添加三条命令：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">net start w32time</span><br><span class="line">w32tm /register</span><br><span class="line">w32tm /resync</span><br></pre></td></tr></table></figure><img title="操作" data-src="/posts/1082710414/操作.png"> <img title="编辑操作" data-src="/posts/1082710414/编辑操作.png"><p>在<strong>条件</strong>选项卡中，<strong>勾选只有在一下网络连接可用时才启动</strong>，并选中<strong>任何连接</strong>。</p><img title="条件" data-src="/posts/1082710414/条件.png"><p>最后，保存计划任务，完成。</p><h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>可以右键点击计划任务，手动运行一次，刷新一下任务列表，看看是否有错误信息出现。</p><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul><li><a href="https://www.pool.ntp.org/zh/zone/cn" target="_blank" rel="noopener">pool.ntp.org: NTP Servers in China, cn.pool.ntp.org</a></li><li><a href="https://my.oschina.net/body/blog/1083088" target="_blank" rel="noopener">国内常用NTP服务器地址及IP - 无知的小孩的个人页面 - 开源中国</a></li></ul></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者： </strong>失去梦想的咸鱼</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://iuok.me/posts/1082710414/" title="Windows 10 开机自动校时">https://iuok.me/posts/1082710414/</a></li><li class="post-copyright-license"><strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/windows/" rel="tag"># Windows</a> <a href="/tags/计划任务/" rel="tag"># 计划任务</a> <a href="/tags/自动校时/" rel="tag"># 自动校时</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/posts/349537330/" rel="next" title="macOS 最佳包管理器:Homebrew"><i class="fa fa-chevron-left"></i> macOS 最佳包管理器:Homebrew</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/posts/1565008014/" rel="prev" title="交换机远程访问配置">交换机远程访问配置 <i class="fa fa-chevron-right"></i></a></div></div></footer></div></article></div></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc">文章目录</li><li class="sidebar-nav-overview">站点概览</li></ul><div class="post-toc-wrap sidebar-panel"><div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动-Windows-Time-服务"><span class="nav-number">2.</span> <span class="nav-text">启动 Windows Time 服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改-NTP-服务器"><span class="nav-number">3.</span> <span class="nav-text">修改 NTP 服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置计划任务"><span class="nav-number">4.</span> <span class="nav-text">设置计划任务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建计划任务"><span class="nav-number">4.1.</span> <span class="nav-text">创建计划任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">4.2.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/android-chrome-256x256.png" alt="失去梦想的咸鱼"><p class="site-author-name" itemprop="name">失去梦想的咸鱼</p><div class="site-description" itemprop="description"></div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">28</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">8</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">38</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="feed-link motion-element"><a href="/atom.xml" rel="alternate"><i class="fa fa-rss"></i>RSS</a></div><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://t.me/Mroboot" title="Telegram &rarr; https://t.me/Mroboot" rel="noopener" target="_blank"><i class="fa fa-fw fa-telegram"></i>Telegram</a></span></div></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span> <span class="with-love" id="animate"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">失去梦想的咸鱼</span></div><div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div><span class="post-meta-divider">|</span><div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a></div><div class="busuanzi-count"><script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="post-meta-item-icon"><i class="fa fa-user"></i> </span><span class="site-uv" title="总访客量"><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span></div></div></footer></div><script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script><script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script><script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script><script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script><script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script><script src="/js/schemes/muse.js?v=7.4.0"></script><script src="/js/next-boot.js?v=7.4.0"></script><script>var pjax = new Pjax({
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=7.4.0">
+  <link rel="mask-icon" href="/safari_pinned_tab.svg?v=7.4.0" color="#222">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="msapplication-config" content="/browserconfig.xml">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: true,
+    lazyload: true,
+    pangu: true,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前言遇到了校时需求，开始的时候尝试了网络上的一些校时软件，但是觉得不够优雅。 这里记录一下通过 Windows 计划任务 的方式在开机的时候自动同步网络时间。">
+<meta name="keywords" content="Windows,计划任务,时间同步">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows 10 开机自动校时">
+<meta property="og:url" content="https://iuok.me/posts/1082710414/index.html">
+<meta property="og:site_name" content="咸鱼的博客">
+<meta property="og:description" content="前言遇到了校时需求，开始的时候尝试了网络上的一些校时软件，但是觉得不够优雅。 这里记录一下通过 Windows 计划任务 的方式在开机的时候自动同步网络时间。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://iuok.me/posts/1082710414/ntp.png">
+<meta property="og:image" content="https://iuok.me/posts/1082710414/常规.png">
+<meta property="og:image" content="https://iuok.me/posts/1082710414/触发器.png">
+<meta property="og:image" content="https://iuok.me/posts/1082710414/新建触发器.png">
+<meta property="og:image" content="https://iuok.me/posts/1082710414/操作.png">
+<meta property="og:image" content="https://iuok.me/posts/1082710414/新建操作.png">
+<meta property="og:image" content="https://iuok.me/posts/1082710414/条件.png">
+<meta property="og:updated_time" content="2019-09-07T08:47:21.833Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Windows 10 开机自动校时">
+<meta name="twitter:description" content="前言遇到了校时需求，开始的时候尝试了网络上的一些校时软件，但是觉得不够优雅。 这里记录一下通过 Windows 计划任务 的方式在开机的时候自动同步网络时间。">
+<meta name="twitter:image" content="https://iuok.me/posts/1082710414/ntp.png">
+  <link rel="alternate" href="/atom.xml" title="咸鱼的博客" type="application/atom+xml">
+  <link rel="canonical" href="https://iuok.me/posts/1082710414/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Windows 10 开机自动校时 | 咸鱼的博客</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">咸鱼的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">做人如果没博客，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://iuok.me/posts/1082710414/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失去梦想的咸鱼">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/android-chrome-256x256.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Windows 10 开机自动校时
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-26 01:21:59" itemprop="dateCreated datePublished" datetime="2019-02-26T01:21:59+08:00">2019-02-26</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-07 16:47:21" itemprop="dateModified" datetime="2019-09-07T16:47:21+08:00">2019-09-07</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/代码宅/" itemprop="url" rel="index"><span itemprop="name">代码宅</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>遇到了校时需求，开始的时候尝试了网络上的一些校时软件，但是觉得不够优雅。</p>
+<p>这里记录一下通过 <strong>Windows 计划任务</strong> 的方式在开机的时候自动同步网络时间。</p>
+<a id="more"></a>
+
+<h2 id="修改-NTP-服务器"><a href="#修改-NTP-服务器" class="headerlink" title="修改 NTP 服务器"></a>修改 NTP 服务器</h2><p>Windows 自带的 NTP 服务器不太稳定，你需要设置一个稳定的 NTP 服务器，例如 <code>cn.pool.ntp.org</code>。</p>
+<img src="/posts/1082710414/ntp.png" title="设置 NTP 服务器">
+
+<h2 id="同步时间脚本"><a href="#同步时间脚本" class="headerlink" title="同步时间脚本"></a>同步时间脚本</h2><p>下面的命令会通知操作系统同步时间，你需要保存在电脑的某个位置，例如 <code>C:\sync.bat</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">net stop w32time</span><br><span class="line">w32tm /unregister</span><br><span class="line">w32tm /register</span><br><span class="line">net start w32time</span><br><span class="line">w32tm /resync</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建计划任务"><a href="#创建计划任务" class="headerlink" title="创建计划任务"></a>创建计划任务</h2><p>现在只需要使脚本开机执行一次就能达成开机自动校时的目的了。</p>
+<p>新建计划任务，在“常规”选项卡中，填好<em>名称</em>和<em>描述</em>，记得勾选<em>使用最高权限运行</em>。</p>
+<img src="/posts/1082710414/常规.png" title="创建计划任务">
+
+<p>在“触发器”选项卡中，新建一个触发器，<em>开始任务</em>选择“启动时”。</p>
+<img src="/posts/1082710414/触发器.png" title="创建计划任务">
+
+<img src="/posts/1082710414/新建触发器.png" title="创建计划任务">
+
+<p>在“操作”选项卡中，新建一个操作，执行上一步保存的脚本文件。</p>
+<img src="/posts/1082710414/操作.png" title="创建计划任务">
+
+<img src="/posts/1082710414/新建操作.png" title="创建计划任务">
+
+<p>在“条件”选项卡中，做一些其他设置。</p>
+<img src="/posts/1082710414/条件.png" title="创建计划任务">
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://www.pool.ntp.org/zh/zone/cn" target="_blank" rel="noopener">pool.ntp.org: NTP Servers in China, cn.pool.ntp.org</a></li>
+<li><a href="https://answers.microsoft.com/zh-hans/windows/forum/windows_7-performance/windows-%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5/bb635aa5-bf19-4d31-82a5-c902d57c57a9" target="_blank" rel="noopener">Windows 时间同步 - Microsoft Community</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+
+        
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>失去梦想的咸鱼</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://iuok.me/posts/1082710414/" title="Windows 10 开机自动校时">https://iuok.me/posts/1082710414/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/windows/" rel="tag"># Windows</a>
+            
+              <a href="/tags/计划任务/" rel="tag"># 计划任务</a>
+            
+              <a href="/tags/时间同步/" rel="tag"># 时间同步</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/posts/349537330/" rel="next" title="macOS 最佳包管理器:Homebrew">
+                  <i class="fa fa-chevron-left"></i> macOS 最佳包管理器:Homebrew
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/posts/1565008014/" rel="prev" title="交换机远程访问配置">
+                  交换机远程访问配置 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改-NTP-服务器"><span class="nav-number">2.</span> <span class="nav-text">修改 NTP 服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步时间脚本"><span class="nav-number">3.</span> <span class="nav-text">同步时间脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建计划任务"><span class="nav-number">4.</span> <span class="nav-text">创建计划任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/android-chrome-256x256.png"
+      alt="失去梦想的咸鱼">
+  <p class="site-author-name" itemprop="name">失去梦想的咸鱼</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:bobojiangg@gmail" title="E-Mail &rarr; mailto:bobojiangg@gmail" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://t.me/Mroboot" title="Telegram &rarr; https://t.me/Mroboot" rel="noopener" target="_blank"><i class="fa fa-fw fa-telegram"></i>Telegram</a>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失去梦想的咸鱼</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a></div>
+
+        
+<div class="busuanzi-count">
+  <script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+  <script>
+var pjax = new Pjax({
   selectors: [
     'head title',
     '#page-configurations',
@@ -44,4 +746,43 @@ window.addEventListener('pjax:success', () => {
       .bootstrap();
   }
   NexT.utils.updateSidebarPosition();
-});</script><script src="/js/local-search.js?v=7.4.0"></script><div id="pjax"></div></body></html>
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+    </div>
+</body>
+</html>

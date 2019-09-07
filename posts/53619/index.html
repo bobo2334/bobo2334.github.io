@@ -1,4 +1,705 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta http-equiv="X-UA-Compatible" content="IE=edge"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=7.4.0"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=7.4.0"><link rel="mask-icon" href="/safari_pinned_tab.svg?v=7.4.0" color="#222"><link rel="manifest" href="/site.webmanifest"><meta name="msapplication-config" content="/browserconfig.xml"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="stylesheet" href="/css/main.css?v=7.4.0"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css"><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Muse",version:"7.4.0",exturl:!1,sidebar:{position:"left",display:"post",offset:12,onmobile:!1},copycode:{enable:!0,show_result:!0,style:null},back2top:{enable:!0,sidebar:!1,scrollpercent:!0},bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!0,mediumzoom:!1,lazyload:!0,pangu:!0,algolia:{appID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},path:"search.xml",motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},translation:{copy_button:"复制",copy_success:"复制成功",copy_failure:"复制失败"},sidebarPadding:40}</script><meta name="description" content="前言注意：如果你的数据库中存有重要数据，请在保证机器离线的情况下进行以下的操作，最稳妥的办法就是拔掉网线！"><meta name="keywords" content="CentOS,MySQL"><meta property="og:type" content="article"><meta property="og:title" content="重置 MySQl root 密码"><meta property="og:url" content="https://iuok.me/posts/53619/index.html"><meta property="og:site_name" content="咸鱼的博客"><meta property="og:description" content="前言注意：如果你的数据库中存有重要数据，请在保证机器离线的情况下进行以下的操作，最稳妥的办法就是拔掉网线！"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-03-27T11:24:59.185Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="重置 MySQl root 密码"><meta name="twitter:description" content="前言注意：如果你的数据库中存有重要数据，请在保证机器离线的情况下进行以下的操作，最稳妥的办法就是拔掉网线！"><link rel="alternate" href="/atom.xml" title="咸鱼的博客" type="application/atom+xml"><link rel="canonical" href="https://iuok.me/posts/53619/"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,isPage:!1,isArchive:!1}</script><title>重置 MySQl root 密码 | 咸鱼的博客</title><meta name="generator" content="Hexo 3.9.0"><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container use-motion"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-meta"><div><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">咸鱼的博客</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle">做人如果没博客，跟咸鱼有什么分别</p></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul></nav><div class="site-search"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-container"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"></div></div><div class="search-pop-overlay"></div></div></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><div class="reading-progress-bar"></div><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article itemscope itemtype="http://schema.org/Article"><div class="post-block post"><link itemprop="mainEntityOfPage" href="https://iuok.me/posts/53619/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="失去梦想的咸鱼"><meta itemprop="description" content=""><meta itemprop="image" content="/android-chrome-256x256.png"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="咸鱼的博客"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">重置 MySQl root 密码</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time title="创建时间：2017-01-14 00:00:00" itemprop="dateCreated datePublished" datetime="2017-01-14T00:00:00+08:00">2017-01-14</time> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i> </span><span class="post-meta-item-text">更新于</span> <time title="修改时间：2019-03-27 19:24:59" itemprop="dateModified" datetime="2019-03-27T19:24:59+08:00">2019-03-27</time> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/代码宅/" itemprop="url" rel="index"><span itemprop="name">代码宅</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>注意：如果你的数据库中存有重要数据，请在保证机器离线的情况下进行以下的操作，最稳妥的办法就是拔掉网线！</p><a id="more"></a><h2 id="方法一：修改配置文件"><a href="#方法一：修改配置文件" class="headerlink" title="方法一：修改配置文件"></a>方法一：修改配置文件</h2><h3 id="开启安全模式"><a href="#开启安全模式" class="headerlink" title="开启安全模式"></a>开启安全模式</h3><p>修改MySQL的登录设置</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/my.cnf</span><br></pre></td></tr></table></figure><p>在[mysqld]段里加上一行<code>skip-grant-tables</code>，保存并退出。</p><h3 id="重新启动MySQL"><a href="#重新启动MySQL" class="headerlink" title="重新启动MySQL"></a>重新启动MySQL</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysqld restart</span><br></pre></td></tr></table></figure><h3 id="修改密码"><a href="#修改密码" class="headerlink" title="修改密码"></a>修改密码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot</span><br></pre></td></tr></table></figure><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">update user <span class="built_in">set</span> Password=password(<span class="string">'newpass'</span>) <span class="built_in">where</span> User=<span class="string">'root'</span>;</span><br><span class="line">flush privileges;</span><br><span class="line"><span class="built_in">exit</span>;</span><br></pre></td></tr></table></figure><h3 id="关闭安全模式"><a href="#关闭安全模式" class="headerlink" title="关闭安全模式"></a>关闭安全模式</h3><p>将第一步在MySQL配置文件里加入的<code>skip-grant-tables</code>删掉。</p><h3 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h3><p>重启MySQL之后就可以用新密码登录了。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysqld restart</span><br></pre></td></tr></table></figure><h2 id="方法二：以不检查权限的方式启动MySQL"><a href="#方法二：以不检查权限的方式启动MySQL" class="headerlink" title="方法二：以不检查权限的方式启动MySQL"></a>方法二：以不检查权限的方式启动MySQL</h2><h3 id="停止MySQL"><a href="#停止MySQL" class="headerlink" title="停止MySQL"></a>停止MySQL</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysqld stop</span><br></pre></td></tr></table></figure><h3 id="以不检查权限的方式启动MySQL"><a href="#以不检查权限的方式启动MySQL" class="headerlink" title="以不检查权限的方式启动MySQL"></a>以不检查权限的方式启动MySQL</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld --skip-grant-tables &amp;</span><br></pre></td></tr></table></figure><h3 id="修改密码-1"><a href="#修改密码-1" class="headerlink" title="修改密码"></a>修改密码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot</span><br></pre></td></tr></table></figure><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">update user <span class="built_in">set</span> Password=password(<span class="string">'newpass'</span>) <span class="built_in">where</span> User=<span class="string">'root'</span>;</span><br><span class="line">flush privileges;</span><br><span class="line"><span class="built_in">exit</span>;</span><br></pre></td></tr></table></figure><h3 id="完成-1"><a href="#完成-1" class="headerlink" title="完成"></a>完成</h3><p>用正常的方式重启MySQL之后就可以用新密码登录了。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysqld restart</span><br></pre></td></tr></table></figure></div><div class="popular-posts-header">相关文章</div><ul class="popular-posts"><li class="popular-posts-item"><div class="popular-posts-title"><a href="/posts/11247/" rel="bookmark">CentOS 网络修复</a></div></li></ul><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者： </strong>失去梦想的咸鱼</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://iuok.me/posts/53619/" title="重置 MySQl root 密码">https://iuok.me/posts/53619/</a></li><li class="post-copyright-license"><strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/centos/" rel="tag"># CentOS</a> <a href="/tags/mysql/" rel="tag"># MySQL</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/posts/11247/" rel="next" title="CentOS 网络修复"><i class="fa fa-chevron-left"></i> CentOS 网络修复</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/posts/7971/" rel="prev" title="获取天翼光猫 F412 超级管理员帐号密码">获取天翼光猫 F412 超级管理员帐号密码 <i class="fa fa-chevron-right"></i></a></div></div></footer></div></article></div></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc">文章目录</li><li class="sidebar-nav-overview">站点概览</li></ul><div class="post-toc-wrap sidebar-panel"><div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一：修改配置文件"><span class="nav-number">2.</span> <span class="nav-text">方法一：修改配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开启安全模式"><span class="nav-number">2.1.</span> <span class="nav-text">开启安全模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重新启动MySQL"><span class="nav-number">2.2.</span> <span class="nav-text">重新启动MySQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改密码"><span class="nav-number">2.3.</span> <span class="nav-text">修改密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭安全模式"><span class="nav-number">2.4.</span> <span class="nav-text">关闭安全模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完成"><span class="nav-number">2.5.</span> <span class="nav-text">完成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二：以不检查权限的方式启动MySQL"><span class="nav-number">3.</span> <span class="nav-text">方法二：以不检查权限的方式启动MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#停止MySQL"><span class="nav-number">3.1.</span> <span class="nav-text">停止MySQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以不检查权限的方式启动MySQL"><span class="nav-number">3.2.</span> <span class="nav-text">以不检查权限的方式启动MySQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改密码-1"><span class="nav-number">3.3.</span> <span class="nav-text">修改密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完成-1"><span class="nav-number">3.4.</span> <span class="nav-text">完成</span></a></li></ol></li></ol></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/android-chrome-256x256.png" alt="失去梦想的咸鱼"><p class="site-author-name" itemprop="name">失去梦想的咸鱼</p><div class="site-description" itemprop="description"></div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">28</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">8</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">38</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="feed-link motion-element"><a href="/atom.xml" rel="alternate"><i class="fa fa-rss"></i>RSS</a></div><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://t.me/Mroboot" title="Telegram &rarr; https://t.me/Mroboot" rel="noopener" target="_blank"><i class="fa fa-fw fa-telegram"></i>Telegram</a></span></div></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span> <span class="with-love" id="animate"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">失去梦想的咸鱼</span></div><div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div><span class="post-meta-divider">|</span><div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a></div><div class="busuanzi-count"><script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="post-meta-item-icon"><i class="fa fa-user"></i> </span><span class="site-uv" title="总访客量"><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span></div></div></footer></div><script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script><script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script><script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script><script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script><script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script><script src="/js/schemes/muse.js?v=7.4.0"></script><script src="/js/next-boot.js?v=7.4.0"></script><script>var pjax = new Pjax({
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=7.4.0">
+  <link rel="mask-icon" href="/safari_pinned_tab.svg?v=7.4.0" color="#222">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="msapplication-config" content="/browserconfig.xml">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: true,
+    lazyload: true,
+    pangu: true,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前言注意：如果你的数据库中存有重要数据，请在保证机器离线的情况下进行以下的操作，最稳妥的办法就是拔掉网线！">
+<meta name="keywords" content="CentOS,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重置 MySQl root 密码">
+<meta property="og:url" content="https://iuok.me/posts/53619/index.html">
+<meta property="og:site_name" content="咸鱼的博客">
+<meta property="og:description" content="前言注意：如果你的数据库中存有重要数据，请在保证机器离线的情况下进行以下的操作，最稳妥的办法就是拔掉网线！">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-27T11:24:59.185Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="重置 MySQl root 密码">
+<meta name="twitter:description" content="前言注意：如果你的数据库中存有重要数据，请在保证机器离线的情况下进行以下的操作，最稳妥的办法就是拔掉网线！">
+  <link rel="alternate" href="/atom.xml" title="咸鱼的博客" type="application/atom+xml">
+  <link rel="canonical" href="https://iuok.me/posts/53619/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>重置 MySQl root 密码 | 咸鱼的博客</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">咸鱼的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">做人如果没博客，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://iuok.me/posts/53619/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失去梦想的咸鱼">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/android-chrome-256x256.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">重置 MySQl root 密码
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2017-01-14 00:00:00" itemprop="dateCreated datePublished" datetime="2017-01-14T00:00:00+08:00">2017-01-14</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-03-27 19:24:59" itemprop="dateModified" datetime="2019-03-27T19:24:59+08:00">2019-03-27</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/代码宅/" itemprop="url" rel="index"><span itemprop="name">代码宅</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>注意：如果你的数据库中存有重要数据，请在保证机器离线的情况下进行以下的操作，最稳妥的办法就是拔掉网线！</p>
+<a id="more"></a>
+
+
+
+<h2 id="方法一：修改配置文件"><a href="#方法一：修改配置文件" class="headerlink" title="方法一：修改配置文件"></a>方法一：修改配置文件</h2><h3 id="开启安全模式"><a href="#开启安全模式" class="headerlink" title="开启安全模式"></a>开启安全模式</h3><p>修改MySQL的登录设置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/my.cnf</span><br></pre></td></tr></table></figure>
+
+<p>在[mysqld]段里加上一行<code>skip-grant-tables</code>，保存并退出。</p>
+<h3 id="重新启动MySQL"><a href="#重新启动MySQL" class="headerlink" title="重新启动MySQL"></a>重新启动MySQL</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysqld restart</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改密码"><a href="#修改密码" class="headerlink" title="修改密码"></a>修改密码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">update user <span class="built_in">set</span> Password=password(<span class="string">'newpass'</span>) <span class="built_in">where</span> User=<span class="string">'root'</span>;</span><br><span class="line">flush privileges;</span><br><span class="line"><span class="built_in">exit</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="关闭安全模式"><a href="#关闭安全模式" class="headerlink" title="关闭安全模式"></a>关闭安全模式</h3><p>将第一步在MySQL配置文件里加入的<code>skip-grant-tables</code>删掉。</p>
+<h3 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h3><p>重启MySQL之后就可以用新密码登录了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysqld restart</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法二：以不检查权限的方式启动MySQL"><a href="#方法二：以不检查权限的方式启动MySQL" class="headerlink" title="方法二：以不检查权限的方式启动MySQL"></a>方法二：以不检查权限的方式启动MySQL</h2><h3 id="停止MySQL"><a href="#停止MySQL" class="headerlink" title="停止MySQL"></a>停止MySQL</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysqld stop</span><br></pre></td></tr></table></figure>
+
+<h3 id="以不检查权限的方式启动MySQL"><a href="#以不检查权限的方式启动MySQL" class="headerlink" title="以不检查权限的方式启动MySQL"></a>以不检查权限的方式启动MySQL</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld --skip-grant-tables &amp;</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改密码-1"><a href="#修改密码-1" class="headerlink" title="修改密码"></a>修改密码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">use mysql;</span><br><span class="line">update user <span class="built_in">set</span> Password=password(<span class="string">'newpass'</span>) <span class="built_in">where</span> User=<span class="string">'root'</span>;</span><br><span class="line">flush privileges;</span><br><span class="line"><span class="built_in">exit</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="完成-1"><a href="#完成-1" class="headerlink" title="完成"></a>完成</h3><p>用正常的方式重启MySQL之后就可以用新密码登录了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysqld restart</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/posts/11247/" rel="bookmark">CentOS 网络修复</a></div>
+      
+    </li>
+  
+  </ul>
+
+        
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>失去梦想的咸鱼</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://iuok.me/posts/53619/" title="重置 MySQl root 密码">https://iuok.me/posts/53619/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/centos/" rel="tag"># CentOS</a>
+            
+              <a href="/tags/mysql/" rel="tag"># MySQL</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/posts/11247/" rel="next" title="CentOS 网络修复">
+                  <i class="fa fa-chevron-left"></i> CentOS 网络修复
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/posts/7971/" rel="prev" title="获取天翼光猫 F412 超级管理员帐号密码">
+                  获取天翼光猫 F412 超级管理员帐号密码 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一：修改配置文件"><span class="nav-number">2.</span> <span class="nav-text">方法一：修改配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开启安全模式"><span class="nav-number">2.1.</span> <span class="nav-text">开启安全模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重新启动MySQL"><span class="nav-number">2.2.</span> <span class="nav-text">重新启动MySQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改密码"><span class="nav-number">2.3.</span> <span class="nav-text">修改密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭安全模式"><span class="nav-number">2.4.</span> <span class="nav-text">关闭安全模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完成"><span class="nav-number">2.5.</span> <span class="nav-text">完成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二：以不检查权限的方式启动MySQL"><span class="nav-number">3.</span> <span class="nav-text">方法二：以不检查权限的方式启动MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#停止MySQL"><span class="nav-number">3.1.</span> <span class="nav-text">停止MySQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以不检查权限的方式启动MySQL"><span class="nav-number">3.2.</span> <span class="nav-text">以不检查权限的方式启动MySQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改密码-1"><span class="nav-number">3.3.</span> <span class="nav-text">修改密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完成-1"><span class="nav-number">3.4.</span> <span class="nav-text">完成</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/android-chrome-256x256.png"
+      alt="失去梦想的咸鱼">
+  <p class="site-author-name" itemprop="name">失去梦想的咸鱼</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:bobojiangg@gmail" title="E-Mail &rarr; mailto:bobojiangg@gmail" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://t.me/Mroboot" title="Telegram &rarr; https://t.me/Mroboot" rel="noopener" target="_blank"><i class="fa fa-fw fa-telegram"></i>Telegram</a>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失去梦想的咸鱼</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a></div>
+
+        
+<div class="busuanzi-count">
+  <script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+  <script>
+var pjax = new Pjax({
   selectors: [
     'head title',
     '#page-configurations',
@@ -44,4 +745,43 @@ window.addEventListener('pjax:success', () => {
       .bootstrap();
   }
   NexT.utils.updateSidebarPosition();
-});</script><script src="/js/local-search.js?v=7.4.0"></script><div id="pjax"></div></body></html>
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+    </div>
+</body>
+</html>

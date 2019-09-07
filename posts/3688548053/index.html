@@ -1,4 +1,708 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta http-equiv="X-UA-Compatible" content="IE=edge"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=7.4.0"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=7.4.0"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=7.4.0"><link rel="mask-icon" href="/safari_pinned_tab.svg?v=7.4.0" color="#222"><link rel="manifest" href="/site.webmanifest"><meta name="msapplication-config" content="/browserconfig.xml"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="stylesheet" href="/css/main.css?v=7.4.0"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css"><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Muse",version:"7.4.0",exturl:!1,sidebar:{position:"left",display:"post",offset:12,onmobile:!1},copycode:{enable:!0,show_result:!0,style:null},back2top:{enable:!0,sidebar:!1,scrollpercent:!0},bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!0,mediumzoom:!1,lazyload:!0,pangu:!0,algolia:{appID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!0,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},path:"search.xml",motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},translation:{copy_button:"复制",copy_success:"复制成功",copy_failure:"复制失败"},sidebarPadding:40}</script><meta name="description" content="前言IOS科学上网还是挺麻烦的，质量高的客户端不多，还都在国区下架了，国区能搜到的几个都收费并且看起来不好，写篇文章整理一下高质量的SSR客户端。"><meta name="keywords" content="IOS,科学上网"><meta property="og:type" content="article"><meta property="og:title" content="如何优雅地在IOS设备上科学上网：IOS科学上网客户端推荐"><meta property="og:url" content="https://iuok.me/posts/3688548053/index.html"><meta property="og:site_name" content="咸鱼的博客"><meta property="og:description" content="前言IOS科学上网还是挺麻烦的，质量高的客户端不多，还都在国区下架了，国区能搜到的几个都收费并且看起来不好，写篇文章整理一下高质量的SSR客户端。"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-03-27T11:24:59.194Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="如何优雅地在IOS设备上科学上网：IOS科学上网客户端推荐"><meta name="twitter:description" content="前言IOS科学上网还是挺麻烦的，质量高的客户端不多，还都在国区下架了，国区能搜到的几个都收费并且看起来不好，写篇文章整理一下高质量的SSR客户端。"><link rel="alternate" href="/atom.xml" title="咸鱼的博客" type="application/atom+xml"><link rel="canonical" href="https://iuok.me/posts/3688548053/"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,isPage:!1,isArchive:!1}</script><title>如何优雅地在IOS设备上科学上网：IOS科学上网客户端推荐 | 咸鱼的博客</title><meta name="generator" content="Hexo 3.9.0"><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container use-motion"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-meta"><div><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">咸鱼的博客</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle">做人如果没博客，跟咸鱼有什么分别</p></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul></nav><div class="site-search"><div class="popup search-popup"><div class="search-header"><span class="search-icon"><i class="fa fa-search"></i></span><div class="search-input-container"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input"></div><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span></div><div id="search-result"></div></div><div class="search-pop-overlay"></div></div></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><div class="reading-progress-bar"></div><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article itemscope itemtype="http://schema.org/Article"><div class="post-block post"><link itemprop="mainEntityOfPage" href="https://iuok.me/posts/3688548053/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="失去梦想的咸鱼"><meta itemprop="description" content=""><meta itemprop="image" content="/android-chrome-256x256.png"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="咸鱼的博客"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">如何优雅地在IOS设备上科学上网：IOS科学上网客户端推荐</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time title="创建时间：2018-10-14 12:19:39" itemprop="dateCreated datePublished" datetime="2018-10-14T12:19:39+08:00">2018-10-14</time> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i> </span><span class="post-meta-item-text">更新于</span> <time title="修改时间：2019-03-27 19:24:59" itemprop="dateModified" datetime="2019-03-27T19:24:59+08:00">2019-03-27</time> </span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/收集控/" itemprop="url" rel="index"><span itemprop="name">收集控</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>IOS科学上网还是挺麻烦的，质量高的客户端不多，还都在国区下架了，国区能搜到的几个都收费并且看起来不好，写篇文章整理一下高质量的SSR客户端。</p><a id="more"></a><h2 id="Shadowrocket"><a href="#Shadowrocket" class="headerlink" title="Shadowrocket"></a>Shadowrocket</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>俗称“小火箭”，功能强大。目前已经在国区下架了，国区搜到的类似名字的都是赝品。</p><p>✔️订阅</p><p>✔️自定义ACL文件</p><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ol><li><p>PP助手可以安装，用PP助手电脑版可以安装，但是是旧版本，不支持订阅。</p></li><li><p>弄个已购买的美区账号安装，网上找或者淘宝买。</p></li><li><p>自己注册个美区账号，自己买。</p></li></ol><h2 id="Pharos"><a href="#Pharos" class="headerlink" title="Pharos"></a>Pharos</h2><h3 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h3><p>没有Shadowrocket强大，但是功能够用。</p><p>免费，可以用TestFlight下载到，不用换区。</p><p>✔️订阅</p><p>✔️自定义ACL文件</p><h3 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h3><h4 id="TestFight"><a href="#TestFight" class="headerlink" title="TestFight"></a>TestFight</h4><p><a href="https://testflight.apple.com/join/3i6uBkB4?from=singlemessage&amp;isappinstalled=0" target="_blank" rel="noopener">https://testflight.apple.com/join/3i6uBkB4?from=singlemessage&amp;isappinstalled=0</a></p><img title="Pharos in TestFlight" data-src="/posts/3688548053/Pharos_testflight.png"><h2 id="Potatso-Lite"><a href="#Potatso-Lite" class="headerlink" title="Potatso Lite"></a>Potatso Lite</h2><h3 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h3><p>最后的选择，不支持订阅，不支持自定义ACL，但是能用，也是在TestFlight下载。</p><p>❌订阅</p><p>❌自定义ACL文件</p><h3 id="安装-2"><a href="#安装-2" class="headerlink" title="安装"></a>安装</h3><p><a href="https://testflight.apple.com/join/NkF46PRd?from=singlemessage&amp;isappinstalled=0" target="_blank" rel="noopener">https://testflight.apple.com/join/NkF46PRd?from=singlemessage&amp;isappinstalled=0</a></p><img title="Potatso Lite in TestFlight" data-src="/posts/3688548053/Potatso_Lite_testfilght.png"><h2 id="ACL"><a href="#ACL" class="headerlink" title="ACL"></a>ACL</h2><div style="text-align:center"><div class="github-card" data-user="ACL4SSR" data-repo="ACL4SSR" data-height="200" data-width="400" data-theme="default" data-target="" data-client-id="" data-client-secret=""></div></div><script src="/github-card-lib/githubcard.js"></script><p>ACL文件地址：<a href="https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/banAD.acl" target="_blank" rel="noopener">https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/banAD.acl</a></p></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者： </strong>失去梦想的咸鱼</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://iuok.me/posts/3688548053/" title="如何优雅地在IOS设备上科学上网：IOS科学上网客户端推荐">https://iuok.me/posts/3688548053/</a></li><li class="post-copyright-license"><strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/ios/" rel="tag"># IOS</a> <a href="/tags/科学上网/" rel="tag"># 科学上网</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/posts/4063752098/" rel="next" title="macOS 零零碎碎"><i class="fa fa-chevron-left"></i> macOS 零零碎碎</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/posts/3864402349/" rel="prev" title="如何挑选一个合适的笔记本电脑">如何挑选一个合适的笔记本电脑 <i class="fa fa-chevron-right"></i></a></div></div></footer></div></article></div></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc">文章目录</li><li class="sidebar-nav-overview">站点概览</li></ul><div class="post-toc-wrap sidebar-panel"><div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shadowrocket"><span class="nav-number">2.</span> <span class="nav-text">Shadowrocket</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">2.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">2.2.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pharos"><span class="nav-number">3.</span> <span class="nav-text">Pharos</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介-1"><span class="nav-number">3.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-1"><span class="nav-number">3.2.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TestFight"><span class="nav-number">3.2.1.</span> <span class="nav-text">TestFight</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Potatso-Lite"><span class="nav-number">4.</span> <span class="nav-text">Potatso Lite</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介-2"><span class="nav-number">4.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-2"><span class="nav-number">4.2.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ACL"><span class="nav-number">5.</span> <span class="nav-text">ACL</span></a></li></ol></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/android-chrome-256x256.png" alt="失去梦想的咸鱼"><p class="site-author-name" itemprop="name">失去梦想的咸鱼</p><div class="site-description" itemprop="description"></div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">28</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">8</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">38</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="feed-link motion-element"><a href="/atom.xml" rel="alternate"><i class="fa fa-rss"></i>RSS</a></div><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://t.me/Mroboot" title="Telegram &rarr; https://t.me/Mroboot" rel="noopener" target="_blank"><i class="fa fa-fw fa-telegram"></i>Telegram</a></span></div></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span> <span class="with-love" id="animate"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">失去梦想的咸鱼</span></div><div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div><span class="post-meta-divider">|</span><div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a></div><div class="busuanzi-count"><script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="post-meta-item-icon"><i class="fa fa-user"></i> </span><span class="site-uv" title="总访客量"><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span></div></div></footer></div><script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script><script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script><script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script><script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script><script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script><script src="/js/schemes/muse.js?v=7.4.0"></script><script src="/js/next-boot.js?v=7.4.0"></script><script>var pjax = new Pjax({
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=7.4.0">
+  <link rel="mask-icon" href="/safari_pinned_tab.svg?v=7.4.0" color="#222">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="msapplication-config" content="/browserconfig.xml">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: true,
+    lazyload: true,
+    pangu: true,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前言IOS科学上网还是挺麻烦的，质量高的客户端不多，还都在国区下架了，国区能搜到的几个都收费并且看起来不好，写篇文章整理一下高质量的SSR客户端。">
+<meta name="keywords" content="IOS,科学上网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何优雅地在IOS设备上科学上网：IOS科学上网客户端推荐">
+<meta property="og:url" content="https://iuok.me/posts/3688548053/index.html">
+<meta property="og:site_name" content="咸鱼的博客">
+<meta property="og:description" content="前言IOS科学上网还是挺麻烦的，质量高的客户端不多，还都在国区下架了，国区能搜到的几个都收费并且看起来不好，写篇文章整理一下高质量的SSR客户端。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://iuok.me/posts/3688548053/Pharos_testflight.png">
+<meta property="og:image" content="https://iuok.me/posts/3688548053/Potatso_Lite_testfilght.png">
+<meta property="og:updated_time" content="2019-03-27T11:24:59.194Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何优雅地在IOS设备上科学上网：IOS科学上网客户端推荐">
+<meta name="twitter:description" content="前言IOS科学上网还是挺麻烦的，质量高的客户端不多，还都在国区下架了，国区能搜到的几个都收费并且看起来不好，写篇文章整理一下高质量的SSR客户端。">
+<meta name="twitter:image" content="https://iuok.me/posts/3688548053/Pharos_testflight.png">
+  <link rel="alternate" href="/atom.xml" title="咸鱼的博客" type="application/atom+xml">
+  <link rel="canonical" href="https://iuok.me/posts/3688548053/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>如何优雅地在IOS设备上科学上网：IOS科学上网客户端推荐 | 咸鱼的博客</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">咸鱼的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">做人如果没博客，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://iuok.me/posts/3688548053/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="失去梦想的咸鱼">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/android-chrome-256x256.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="咸鱼的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">如何优雅地在IOS设备上科学上网：IOS科学上网客户端推荐
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-14 12:19:39" itemprop="dateCreated datePublished" datetime="2018-10-14T12:19:39+08:00">2018-10-14</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-03-27 19:24:59" itemprop="dateModified" datetime="2019-03-27T19:24:59+08:00">2019-03-27</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/收集控/" itemprop="url" rel="index"><span itemprop="name">收集控</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>IOS科学上网还是挺麻烦的，质量高的客户端不多，还都在国区下架了，国区能搜到的几个都收费并且看起来不好，写篇文章整理一下高质量的SSR客户端。</p>
+<a id="more"></a>
+
+
+
+<h2 id="Shadowrocket"><a href="#Shadowrocket" class="headerlink" title="Shadowrocket"></a>Shadowrocket</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>俗称“小火箭”，功能强大。目前已经在国区下架了，国区搜到的类似名字的都是赝品。</p>
+<p>✔️订阅</p>
+<p>✔️自定义ACL文件</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ol>
+<li><p>PP助手可以安装，用PP助手电脑版可以安装，但是是旧版本，不支持订阅。</p>
+</li>
+<li><p>弄个已购买的美区账号安装，网上找或者淘宝买。</p>
+</li>
+<li><p>自己注册个美区账号，自己买。</p>
+</li>
+</ol>
+<h2 id="Pharos"><a href="#Pharos" class="headerlink" title="Pharos"></a>Pharos</h2><h3 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h3><p>没有Shadowrocket强大，但是功能够用。</p>
+<p>免费，可以用TestFlight下载到，不用换区。</p>
+<p>✔️订阅</p>
+<p>✔️自定义ACL文件</p>
+<h3 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h3><h4 id="TestFight"><a href="#TestFight" class="headerlink" title="TestFight"></a>TestFight</h4><p><a href="https://testflight.apple.com/join/3i6uBkB4?from=singlemessage&amp;isappinstalled=0" target="_blank" rel="noopener">https://testflight.apple.com/join/3i6uBkB4?from=singlemessage&amp;isappinstalled=0</a></p>
+<img src="/posts/3688548053/Pharos_testflight.png" title="Pharos in TestFlight">
+
+
+
+<h2 id="Potatso-Lite"><a href="#Potatso-Lite" class="headerlink" title="Potatso Lite"></a>Potatso Lite</h2><h3 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h3><p>最后的选择，不支持订阅，不支持自定义ACL，但是能用，也是在TestFlight下载。</p>
+<p>❌订阅</p>
+<p>❌自定义ACL文件</p>
+<h3 id="安装-2"><a href="#安装-2" class="headerlink" title="安装"></a>安装</h3><p><a href="https://testflight.apple.com/join/NkF46PRd?from=singlemessage&amp;isappinstalled=0" target="_blank" rel="noopener">https://testflight.apple.com/join/NkF46PRd?from=singlemessage&amp;isappinstalled=0</a></p>
+<img src="/posts/3688548053/Potatso_Lite_testfilght.png" title="Potatso Lite in TestFlight">
+
+
+
+<h2 id="ACL"><a href="#ACL" class="headerlink" title="ACL"></a>ACL</h2><div style="text-align: center">
+  <div class="github-card" data-user="ACL4SSR" data-repo="ACL4SSR" data-height="200" data-width="400" data-theme="default" data-target="" data-client-id="" data-client-secret=""></div>
+</div>
+<script src="/github-card-lib/githubcard.js"></script>
+
+
+<p>ACL文件地址：<a href="https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/banAD.acl" target="_blank" rel="noopener">https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/banAD.acl</a></p>
+
+    </div>
+
+    
+    
+    
+      
+
+        
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>失去梦想的咸鱼</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://iuok.me/posts/3688548053/" title="如何优雅地在IOS设备上科学上网：IOS科学上网客户端推荐">https://iuok.me/posts/3688548053/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/ios/" rel="tag"># IOS</a>
+            
+              <a href="/tags/科学上网/" rel="tag"># 科学上网</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/posts/4063752098/" rel="next" title="macOS 零零碎碎">
+                  <i class="fa fa-chevron-left"></i> macOS 零零碎碎
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/posts/3864402349/" rel="prev" title="如何挑选一个合适的笔记本电脑">
+                  如何挑选一个合适的笔记本电脑 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shadowrocket"><span class="nav-number">2.</span> <span class="nav-text">Shadowrocket</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">2.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">2.2.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pharos"><span class="nav-number">3.</span> <span class="nav-text">Pharos</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介-1"><span class="nav-number">3.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-1"><span class="nav-number">3.2.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TestFight"><span class="nav-number">3.2.1.</span> <span class="nav-text">TestFight</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Potatso-Lite"><span class="nav-number">4.</span> <span class="nav-text">Potatso Lite</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介-2"><span class="nav-number">4.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-2"><span class="nav-number">4.2.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ACL"><span class="nav-number">5.</span> <span class="nav-text">ACL</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/android-chrome-256x256.png"
+      alt="失去梦想的咸鱼">
+  <p class="site-author-name" itemprop="name">失去梦想的咸鱼</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:bobojiangg@gmail" title="E-Mail &rarr; mailto:bobojiangg@gmail" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://t.me/Mroboot" title="Telegram &rarr; https://t.me/Mroboot" rel="noopener" target="_blank"><i class="fa fa-fw fa-telegram"></i>Telegram</a>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">失去梦想的咸鱼</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a></div>
+
+        
+<div class="busuanzi-count">
+  <script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+  <script>
+var pjax = new Pjax({
   selectors: [
     'head title',
     '#page-configurations',
@@ -44,4 +748,43 @@ window.addEventListener('pjax:success', () => {
       .bootstrap();
   }
   NexT.utils.updateSidebarPosition();
-});</script><script src="/js/local-search.js?v=7.4.0"></script><div id="pjax"></div></body></html>
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+    </div>
+</body>
+</html>
