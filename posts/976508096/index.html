@@ -59,18 +59,18 @@
   };
 </script>
 
-  <meta name="description" content="简介NCU（npm-check-updates）是一款 node.js 工具，帮助你快速升级 package.json 文件里的依赖版本。">
+  <meta name="description" content="简介NCU（npm-check-updates）是一款 node.js 工具，它可以帮助你快速升级 package.json 文件里的依赖包版本信息。">
 <meta name="keywords" content="NPM,Node.js,包管理器,NCU">
 <meta property="og:type" content="article">
-<meta property="og:title" content="高效升级node.js包：ncu">
+<meta property="og:title" content="高效升级 Node.js 依赖：ncu">
 <meta property="og:url" content="https://iuok.me/posts/976508096/index.html">
 <meta property="og:site_name" content="咸鱼的博客">
-<meta property="og:description" content="简介NCU（npm-check-updates）是一款 node.js 工具，帮助你快速升级 package.json 文件里的依赖版本。">
+<meta property="og:description" content="简介NCU（npm-check-updates）是一款 node.js 工具，它可以帮助你快速升级 package.json 文件里的依赖包版本信息。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-07T15:16:04.738Z">
+<meta property="og:updated_time" content="2019-09-07T15:21:19.312Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="高效升级node.js包：ncu">
-<meta name="twitter:description" content="简介NCU（npm-check-updates）是一款 node.js 工具，帮助你快速升级 package.json 文件里的依赖版本。">
+<meta name="twitter:title" content="高效升级 Node.js 依赖：ncu">
+<meta name="twitter:description" content="简介NCU（npm-check-updates）是一款 node.js 工具，它可以帮助你快速升级 package.json 文件里的依赖包版本信息。">
   <link rel="alternate" href="/atom.xml" title="咸鱼的博客" type="application/atom+xml">
   <link rel="canonical" href="https://iuok.me/posts/976508096/">
 
@@ -86,7 +86,7 @@
   };
 </script>
 
-  <title>高效升级node.js包：ncu | 咸鱼的博客</title>
+  <title>高效升级 Node.js 依赖：ncu | 咸鱼的博客</title>
   <meta name="generator" content="Hexo 3.9.0">
   
 
@@ -244,7 +244,7 @@
       <meta itemprop="name" content="咸鱼的博客">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">高效升级node.js包：ncu
+        <h1 class="post-title" itemprop="name headline">高效升级 Node.js 依赖：ncu
 
           
         </h1>
@@ -260,7 +260,7 @@
                 
               
 
-              <time title="创建时间：2019-09-07 22:53:18 / 修改时间：23:16:04" itemprop="dateCreated datePublished" datetime="2019-09-07T22:53:18+08:00">2019-09-07</time>
+              <time title="创建时间：2019-09-07 22:53:18 / 修改时间：23:21:19" itemprop="dateCreated datePublished" datetime="2019-09-07T22:53:18+08:00">2019-09-07</time>
             </span>
           
             
@@ -292,7 +292,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>NCU（npm-check-updates）是一款 node.js 工具，帮助你快速升级 <code>package.json</code> 文件里的依赖版本。</p>
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>NCU（npm-check-updates）是一款 node.js 工具，它可以帮助你快速升级 <code>package.json</code> 文件里的依赖包版本信息。</p>
 <a id="more"></a>
 
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g npm-check-updates</span><br></pre></td></tr></table></figure>
@@ -308,6 +308,9 @@
 <p>其中，不指定参数的时候默认为 <code>--filter</code>，<code>-x</code> 是 <code>--reject</code> 的短命令版本。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># match mocha and should packages exactly </span></span><br><span class="line">$ ncu mocha             <span class="comment"># shorthand for ncu -f mocha (or --filter) </span></span><br><span class="line">$ ncu one, two, three</span><br><span class="line"> </span><br><span class="line"><span class="comment"># exclude packages </span></span><br><span class="line">$ ncu -x nodemon        <span class="comment"># shorthand for ncu --reject nodemon </span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># match packages that start with "gulp-" using regex </span></span><br><span class="line">$ ncu <span class="string">'/^gulp-.*$/'</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># match packages that do not start with "gulp-". Note: single quotes are required </span></span><br><span class="line"><span class="comment"># here to avoid inadvertent bash parsing </span></span><br><span class="line">$ ncu <span class="string">'/^(?!gulp-).*$/'</span></span><br></pre></td></tr></table></figure>
 
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://www.npmjs.com/package/npm-check-updates" target="_blank" rel="noopener">npm-check-updates - npm</a></li>
+</ul>
 
     </div>
 
@@ -320,7 +323,7 @@
     <li class="popular-posts-item">
       
       
-      <div class="popular-posts-title"><a href="/posts/2223806495/" rel="bookmark">快速切换npm源：nrm</a></div>
+      <div class="popular-posts-title"><a href="/posts/2223806495/" rel="bookmark">快速切换 NPM 源：nrm</a></div>
       
     </li>
   
@@ -336,7 +339,7 @@
     <strong>本文作者： </strong>失去梦想的咸鱼</li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://iuok.me/posts/976508096/" title="高效升级node.js包：ncu">https://iuok.me/posts/976508096/</a>
+    <a href="https://iuok.me/posts/976508096/" title="高效升级 Node.js 依赖：ncu">https://iuok.me/posts/976508096/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
@@ -377,8 +380,8 @@
 
             <div class="post-nav-prev post-nav-item">
               
-                <a href="/posts/2223806495/" rel="prev" title="快速切换npm源：nrm">
-                  快速切换npm源：nrm <i class="fa fa-chevron-right"></i>
+                <a href="/posts/2223806495/" rel="prev" title="快速切换 NPM 源：nrm">
+                  快速切换 NPM 源：nrm <i class="fa fa-chevron-right"></i>
                 </a>
               
             </div>
@@ -428,7 +431,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用"><span class="nav-number">3.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看更新"><span class="nav-number">3.1.</span> <span class="nav-text">查看更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行更新"><span class="nav-number">3.2.</span> <span class="nav-text">执行更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#白名单和黑名单"><span class="nav-number">3.3.</span> <span class="nav-text">白名单和黑名单</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用"><span class="nav-number">3.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看更新"><span class="nav-number">3.1.</span> <span class="nav-text">查看更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行更新"><span class="nav-number">3.2.</span> <span class="nav-text">执行更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#白名单和黑名单"><span class="nav-number">3.3.</span> <span class="nav-text">白名单和黑名单</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
