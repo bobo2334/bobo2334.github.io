@@ -67,18 +67,10 @@
 <meta property="og:site_name" content="咸鱼的博客">
 <meta property="og:description" content="前言遇到了校时需求，开始的时候尝试了网络上的一些校时软件，但是觉得不够优雅。 这里记录一下通过 Windows 计划任务 的方式在开机的时候自动同步网络时间。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://iuok.me/posts/1082710414/ntp.png">
-<meta property="og:image" content="https://iuok.me/posts/1082710414/常规.png">
-<meta property="og:image" content="https://iuok.me/posts/1082710414/触发器.png">
-<meta property="og:image" content="https://iuok.me/posts/1082710414/新建触发器.png">
-<meta property="og:image" content="https://iuok.me/posts/1082710414/操作.png">
-<meta property="og:image" content="https://iuok.me/posts/1082710414/新建操作.png">
-<meta property="og:image" content="https://iuok.me/posts/1082710414/条件.png">
 <meta property="og:updated_time" content="2019-09-07T08:47:21.833Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Windows 10 开机自动校时">
 <meta name="twitter:description" content="前言遇到了校时需求，开始的时候尝试了网络上的一些校时软件，但是觉得不够优雅。 这里记录一下通过 Windows 计划任务 的方式在开机的时候自动同步网络时间。">
-<meta name="twitter:image" content="https://iuok.me/posts/1082710414/ntp.png">
   <link rel="alternate" href="/atom.xml" title="咸鱼的博客" type="application/atom+xml">
   <link rel="canonical" href="https://iuok.me/posts/1082710414/">
 
@@ -313,27 +305,27 @@
 <a id="more"></a>
 
 <h2 id="修改-NTP-服务器"><a href="#修改-NTP-服务器" class="headerlink" title="修改 NTP 服务器"></a>修改 NTP 服务器</h2><p>Windows 自带的 NTP 服务器不太稳定，你需要设置一个稳定的 NTP 服务器，例如 <code>cn.pool.ntp.org</code>。</p>
-<img src="/posts/1082710414/ntp.png" title="设置 NTP 服务器">
+<img title="设置 NTP 服务器" data-src="/posts/1082710414/ntp.png">
 
 <h2 id="同步时间脚本"><a href="#同步时间脚本" class="headerlink" title="同步时间脚本"></a>同步时间脚本</h2><p>下面的命令会通知操作系统同步时间，你需要保存在电脑的某个位置，例如 <code>C:\sync.bat</code>。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">net stop w32time</span><br><span class="line">w32tm /unregister</span><br><span class="line">w32tm /register</span><br><span class="line">net start w32time</span><br><span class="line">w32tm /resync</span><br></pre></td></tr></table></figure>
 
 <h2 id="创建计划任务"><a href="#创建计划任务" class="headerlink" title="创建计划任务"></a>创建计划任务</h2><p>现在只需要使脚本开机执行一次就能达成开机自动校时的目的了。</p>
 <p>新建计划任务，在“常规”选项卡中，填好<em>名称</em>和<em>描述</em>，记得勾选<em>使用最高权限运行</em>。</p>
-<img src="/posts/1082710414/常规.png" title="创建计划任务">
+<img title="创建计划任务" data-src="/posts/1082710414/常规.png">
 
 <p>在“触发器”选项卡中，新建一个触发器，<em>开始任务</em>选择“启动时”。</p>
-<img src="/posts/1082710414/触发器.png" title="创建计划任务">
+<img title="创建计划任务" data-src="/posts/1082710414/触发器.png">
 
-<img src="/posts/1082710414/新建触发器.png" title="创建计划任务">
+<img title="创建计划任务" data-src="/posts/1082710414/新建触发器.png">
 
 <p>在“操作”选项卡中，新建一个操作，执行上一步保存的脚本文件。</p>
-<img src="/posts/1082710414/操作.png" title="创建计划任务">
+<img title="创建计划任务" data-src="/posts/1082710414/操作.png">
 
-<img src="/posts/1082710414/新建操作.png" title="创建计划任务">
+<img title="创建计划任务" data-src="/posts/1082710414/新建操作.png">
 
 <p>在“条件”选项卡中，做一些其他设置。</p>
-<img src="/posts/1082710414/条件.png" title="创建计划任务">
+<img title="创建计划任务" data-src="/posts/1082710414/条件.png">
 
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><a href="https://www.pool.ntp.org/zh/zone/cn" target="_blank" rel="noopener">pool.ntp.org: NTP Servers in China, cn.pool.ntp.org</a></li>

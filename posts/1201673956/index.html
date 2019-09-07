@@ -67,19 +67,10 @@
 <meta property="og:site_name" content="咸鱼的博客">
 <meta property="og:description" content="前言        之前使用的是ss-panel-v3-mod，功能挺多，但是觉得太臃肿了，最近又看到了这个SSRPanel，体验了一把，觉得挺不错，这里把搭建过程记录下来，供我以后参考或者帮助到其他有需要的人。 这里使用了宝塔面板是为了降低难度，能用宝塔配置就用宝塔配置，能不输入命令就不输入命令。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://iuok.me/posts/1201673956/添加网站.png">
-<meta property="og:image" content="https://iuok.me/posts/1201673956/Swap配置.png">
-<meta property="og:image" content="https://iuok.me/posts/1201673956/安装扩展.png">
-<meta property="og:image" content="https://iuok.me/posts/1201673956/删除禁用函数.png">
-<meta property="og:image" content="https://iuok.me/posts/1201673956/运行目录.png">
-<meta property="og:image" content="https://iuok.me/posts/1201673956/伪静态.png">
-<meta property="og:image" content="https://iuok.me/posts/1201673956/网站首页.png">
-<meta property="og:image" content="https://iuok.me/posts/1201673956/防火墙.png">
 <meta property="og:updated_time" content="2019-03-27T11:24:59.214Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="宝塔面板+SSRPanel前后端安装记录">
 <meta name="twitter:description" content="前言        之前使用的是ss-panel-v3-mod，功能挺多，但是觉得太臃肿了，最近又看到了这个SSRPanel，体验了一把，觉得挺不错，这里把搭建过程记录下来，供我以后参考或者帮助到其他有需要的人。 这里使用了宝塔面板是为了降低难度，能用宝塔配置就用宝塔配置，能不输入命令就不输入命令。">
-<meta name="twitter:image" content="https://iuok.me/posts/1201673956/添加网站.png">
   <link rel="alternate" href="/atom.xml" title="咸鱼的博客" type="application/atom+xml">
   <link rel="canonical" href="https://iuok.me/posts/1201673956/">
 
@@ -365,16 +356,16 @@
 <li>数据库设置：数据库的用户名和密码；</li>
 <li>PHP版本：PHP-71。</li>
 </ul>
-<p><img src="/posts/1201673956/添加网站.png"></p>
+<p><img data-src="/posts/1201673956/添加网站.png"></p>
 <h3 id="导入数据库"><a href="#导入数据库" class="headerlink" title="导入数据库"></a>导入数据库</h3><p>在<strong>宝塔面板-&gt;数据库</strong>中，找到你刚刚创建的数据库，点击<strong>导入-&gt;从本地上传</strong>。</p>
 <p>数据库文件位于<code>sql/db.sql</code>，你可以从Github上下载到。</p>
 <h3 id="SWAP配置"><a href="#SWAP配置" class="headerlink" title="SWAP配置"></a>SWAP配置</h3><p>SSRPanel依赖phpfileinfo扩展，phpfileinfo的安装对内存容量有一定的要求，如果内存太小的话会安装失败，所以小内存机器可以通过添加Swap的方式增大可用内存容量。</p>
 <p>在<strong>宝塔面板-&gt;首页-&gt;Linux工具箱-&gt;Swap/虚拟内存</strong>中，添加Swap为<code>2048 MB</code>。</p>
-<p><img src="/posts/1201673956/Swap配置.png"></p>
+<p><img data-src="/posts/1201673956/Swap配置.png"></p>
 <h3 id="安装phpfileinfo扩展"><a href="#安装phpfileinfo扩展" class="headerlink" title="安装phpfileinfo扩展"></a>安装phpfileinfo扩展</h3><p>在<strong>宝塔面板-&gt;软件管理-&gt;PHP-7.1-&gt;安装扩展</strong>中，找到名为<code>fileinfo</code>的扩展并安装。</p>
-<p><img src="/posts/1201673956/安装扩展.png"></p>
+<p><img data-src="/posts/1201673956/安装扩展.png"></p>
 <h3 id="删除禁用函数"><a href="#删除禁用函数" class="headerlink" title="删除禁用函数"></a>删除禁用函数</h3><p>在<strong>宝塔面板-&gt;软件管理-&gt;PHP-7.1-&gt;禁用函数</strong>中，删除proc_开头的所有函数。</p>
-<p><img src="/posts/1201673956/删除禁用函数.png"></p>
+<p><img data-src="/posts/1201673956/删除禁用函数.png"></p>
 <h2 id="网站配置"><a href="#网站配置" class="headerlink" title="网站配置"></a>网站配置</h2><h3 id="拉取文件"><a href="#拉取文件" class="headerlink" title="拉取文件"></a>拉取文件</h3><p>在之前，我们添加网站的时候已经设置了网站的根目录，现在我们在服务器控制台里输入命令，从Github拉取SSRPanel的文件。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入网站根目录</span></span><br><span class="line"><span class="comment"># 注意替换你自己的网站路径</span></span><br><span class="line"><span class="built_in">cd</span> www/wwwroot/baidu.com</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拉取代码</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/ssrpanel/SSRPanel.git tmp</span><br><span class="line">mv tmp/.git .</span><br><span class="line">rm -rf tmp</span><br><span class="line">git reset --hard</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更改权限</span></span><br><span class="line">chown -R www:www storage/</span><br><span class="line">chmod -R 755 storage/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line">php composer.phar install</span><br><span class="line">php artisan key:generate</span><br></pre></td></tr></table></figure>
 
@@ -392,16 +383,16 @@
 <li>REDIRECT_HTTPS: 是否启用HTTPS。</li>
 </ul>
 <h3 id="运行目录"><a href="#运行目录" class="headerlink" title="运行目录"></a>运行目录</h3><p><strong>宝塔面板-&gt;网站-&gt;设置-&gt;运行目录-&gt;选择<code>/public</code></strong>。</p>
-<p><img src="/posts/1201673956/运行目录.png"></p>
+<p><img data-src="/posts/1201673956/运行目录.png"></p>
 <h3 id="伪静态"><a href="#伪静态" class="headerlink" title="伪静态"></a>伪静态</h3><p><strong>宝塔面板-&gt;网站-&gt;设置-&gt;伪静态-&gt;选择<code>laravel5</code>-&gt;保存</strong>。</p>
-<p><img src="/posts/1201673956/伪静态.png"></p>
+<p><img data-src="/posts/1201673956/伪静态.png"></p>
 <h3 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h3><p>SSRPanel需要定时任务来完成自动维护。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 必须给 www 用户创建一个目录，否则没法用其身份去运行crontab</span></span><br><span class="line">mkdir /home/www &amp;&amp; chown -R www:www /home/www/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 注意运行权限，必须跟SSRPanel项目权限一致，否则出现各种莫名其妙的错误</span></span><br><span class="line"><span class="comment"># 宝塔默认生成的用户是www</span></span><br><span class="line">crontab -e -u www</span><br><span class="line"></span><br><span class="line"><span class="comment"># crontab加入下面的命令，自行替换路径</span></span><br><span class="line">* * * * * php /www/wwwroot/baidu.com/artisan schedule:run &gt;&gt; /dev/null 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
 
 <h2 id="打开网站"><a href="#打开网站" class="headerlink" title="打开网站"></a>打开网站</h2><p>在打开网站之前，要先<strong>重启一下服务器</strong>，使网站环境重载配置。</p>
 <p>如果以上步骤都没出错，那么现在在浏览器输入你的域名就能访问网站了。</p>
 <p>默认登录账号是<code>admin</code>，密码是<code>123456</code>。</p>
-<p><img src="/posts/1201673956/网站首页.png"></p>
+<p><img data-src="/posts/1201673956/网站首页.png"></p>
 <h3 id="修改管理员密码"><a href="#修改管理员密码" class="headerlink" title="修改管理员密码"></a>修改管理员密码</h3><p>点击<strong>右上角头像-&gt;个人设置-&gt;修改密码</strong>。</p>
 <h3 id="添加节点"><a href="#添加节点" class="headerlink" title="添加节点"></a>添加节点</h3><p><strong>SSRPanel-&gt;管理面板-&gt;节点管理-&gt;添加节点</strong>。</p>
 <ul>
@@ -442,7 +433,7 @@
 <li>443: SSL端口，也可以用作单端口；</li>
 <li>10000-20000: SSRPanel默认用户端口范围。</li>
 </ul>
-<p><img src="/posts/1201673956/防火墙.png"></p>
+<p><img data-src="/posts/1201673956/防火墙.png"></p>
 <h3 id="SSR开机启动"><a href="#SSR开机启动" class="headerlink" title="SSR开机启动"></a>SSR开机启动</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chmod +x /etc/rc.d/rc.local</span><br><span class="line">vi /etc/rc.d/rc.local</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入下面的命令，保存</span></span><br><span class="line">bash /root/shadowsocksr/run.sh</span><br></pre></td></tr></table></figure>
 
 <h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>安装完成之后SSRPanel就可以和后台的SSR联动起来了，SSRPanel和宝塔面板的其他功能要自己摸索摸索。</p>

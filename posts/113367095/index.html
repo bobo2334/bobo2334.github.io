@@ -67,21 +67,10 @@
 <meta property="og:site_name" content="咸鱼的博客">
 <meta property="og:description" content="前言在 Cisco Packet Tracer 模拟环境中配置 VLAN，记录一下。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://iuok.me/posts/113367095/links.png">
-<meta property="og:image" content="https://iuok.me/posts/113367095/PC0-IP.png">
-<meta property="og:image" content="https://iuok.me/posts/113367095/ping-1.png">
-<meta property="og:image" content="https://iuok.me/posts/113367095/links-2.png">
-<meta property="og:image" content="https://iuok.me/posts/113367095/switch1-trunk.png">
-<meta property="og:image" content="https://iuok.me/posts/113367095/ping-2.png">
-<meta property="og:image" content="https://iuok.me/posts/113367095/switch0-vlan.png">
-<meta property="og:image" content="https://iuok.me/posts/113367095/switch1-vlan.png">
-<meta property="og:image" content="https://iuok.me/posts/113367095/ping-3.png">
-<meta property="og:image" content="https://iuok.me/posts/113367095/ping-4.png">
 <meta property="og:updated_time" content="2019-09-07T08:28:17.173Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跨交换机 VLAN 配置">
 <meta name="twitter:description" content="前言在 Cisco Packet Tracer 模拟环境中配置 VLAN，记录一下。">
-<meta name="twitter:image" content="https://iuok.me/posts/113367095/links.png">
   <link rel="alternate" href="/atom.xml" title="咸鱼的博客" type="application/atom+xml">
   <link rel="canonical" href="https://iuok.me/posts/113367095/">
 
@@ -318,34 +307,34 @@
 
 <h2 id="连线"><a href="#连线" class="headerlink" title="连线"></a>连线</h2><h3 id="PC-连交换机"><a href="#PC-连交换机" class="headerlink" title="PC 连交换机"></a>PC 连交换机</h3><p>如图，PC0 与 PC1 分别连接 Switch0 的 FastEthernet0/1 与 FastEthernet0/2 端口；</p>
 <p>PC2 与 PC3 分别连接 Switch1 的 FastEthernet0/1 与 FastEthernet0/2 端口。</p>
-<img src="/posts/113367095/links.png">
+<img data-src="/posts/113367095/links.png">
 
 
 
 <p>分别设置四台 PC 的 IP 地址为<code>192.168.1.1</code>~<code>192.168.1.4</code>。</p>
-<img src="/posts/113367095/PC0-IP.png">
+<img data-src="/posts/113367095/PC0-IP.png">
 
 
 
 <p>通过 Ping 命令测试结果可以看出，此时 PC0 与 PC1 可以连通， PC2 与 PC3 可以连通。</p>
-<img src="/posts/113367095/ping-1.png">
+<img data-src="/posts/113367095/ping-1.png">
 
 
 
 <h3 id="交换机连交换机"><a href="#交换机连交换机" class="headerlink" title="交换机连交换机"></a>交换机连交换机</h3><p>用交叉线把两个交换机的 FastEthernet0/24 口相连接。</p>
-<img src="/posts/113367095/links-2.png">
+<img data-src="/posts/113367095/links-2.png">
 
 
 
 <p>之后分别在两个交换机上把 FastEthernet0/24 端口设置为<code>trunk</code>模式。</p>
-<img src="/posts/113367095/switch1-trunk.png">
+<img data-src="/posts/113367095/switch1-trunk.png">
 
 
 
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Switch&gt;<span class="built_in">enable</span></span><br><span class="line">Switch<span class="comment">#config terminal</span></span><br><span class="line">Enter configuration commands, one per line.  End with CNTL/Z.</span><br><span class="line">Switch(config)<span class="comment">#interface f0/24</span></span><br><span class="line">Switch(config-if)<span class="comment">#switch mode trunk</span></span><br><span class="line"></span><br><span class="line">Switch(config-if)<span class="comment">#</span></span><br><span class="line">%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/24, changed state to down</span><br><span class="line"></span><br><span class="line">%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/24, changed state to up</span><br></pre></td></tr></table></figure>
 
 <p>此时，四台 PC 都是可以连通的。</p>
-<img src="/posts/113367095/ping-2.png">
+<img data-src="/posts/113367095/ping-2.png">
 
 
 
@@ -353,21 +342,21 @@
 <p>在 Switch0 上把 PC0 的端口（f0/1）设置为 VLAN1000，把 PC1 的端口（f0/2）设置为 VLAN1001；</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Switch(config)<span class="comment">#vlan 1000</span></span><br><span class="line">Switch(config-vlan)<span class="comment">#exit</span></span><br><span class="line">Switch(config)<span class="comment">#interface f0/1</span></span><br><span class="line">Switch(config-if)<span class="comment">#switch access vlan 1000</span></span><br><span class="line">Switch(config-if)<span class="comment">#vlan 1001</span></span><br><span class="line">Switch(config-vlan)<span class="comment">#exit</span></span><br><span class="line">Switch(config)<span class="comment">#interface f0/2</span></span><br><span class="line">Switch(config-if)<span class="comment">#switch access vlan 1001</span></span><br><span class="line">Switch(config-if)<span class="comment">#</span></span><br></pre></td></tr></table></figure>
 
-<img src="/posts/113367095/switch0-vlan.png">
+<img data-src="/posts/113367095/switch0-vlan.png">
 
 
 
 <p>在 Switch1 上把 PC2 的端口（f0/1）设置为 VLAN1000，把 PC3 的端口（f0/2）设置为 VLAN1001。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Switch&gt;<span class="built_in">enable</span></span><br><span class="line">Switch<span class="comment">#config terminal</span></span><br><span class="line">Enter configuration commands, one per line.  End with CNTL/Z.</span><br><span class="line">Switch(config)<span class="comment">#vlan 1000</span></span><br><span class="line">Switch(config-vlan)<span class="comment">#exit</span></span><br><span class="line">Switch(config)<span class="comment">#vlan 1001</span></span><br><span class="line">Switch(config-vlan)<span class="comment">#exit</span></span><br><span class="line">Switch(config)<span class="comment">#interface f0/1</span></span><br><span class="line">Switch(config-if)<span class="comment">#switch access vlan 1000</span></span><br><span class="line">Switch(config-if)<span class="comment">#interface f0/2</span></span><br><span class="line">Switch(config-if)<span class="comment">#switch access vlan 1001</span></span><br><span class="line">Switch(config-if)<span class="comment">#</span></span><br></pre></td></tr></table></figure>
 
-<img src="/posts/113367095/switch1-vlan.png">
+<img data-src="/posts/113367095/switch1-vlan.png">
 
 
 
 <h2 id="结果验证"><a href="#结果验证" class="headerlink" title="结果验证"></a>结果验证</h2><p>相同 VLAN 内可以连通，不同 VLAN 无法连通。</p>
-<img src="/posts/113367095/ping-3.png">
+<img data-src="/posts/113367095/ping-3.png">
 
-<img src="/posts/113367095/ping-4.png">
+<img data-src="/posts/113367095/ping-4.png">
 
 
 

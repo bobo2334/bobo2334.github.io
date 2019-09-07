@@ -67,16 +67,10 @@
 <meta property="og:site_name" content="咸鱼的博客">
 <meta property="og:description" content="前言刚学，简略记录一下交换机的IP、网关、访问密码、远程控制的配置过程。 由于没有实物，这里拿 Cisco Packet Tracer 的模拟环境配图。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://iuok.me/posts/1565008014/交换机与PC的连接.png">
-<meta property="og:image" content="https://iuok.me/posts/1565008014/PC0.png">
-<meta property="og:image" content="https://iuok.me/posts/1565008014/PC1-IP.png">
-<meta property="og:image" content="https://iuok.me/posts/1565008014/PC1-PING.png">
-<meta property="og:image" content="https://iuok.me/posts/1565008014/PC1-TELNET.png">
 <meta property="og:updated_time" content="2019-09-07T08:28:17.173Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="交换机远程访问配置">
 <meta name="twitter:description" content="前言刚学，简略记录一下交换机的IP、网关、访问密码、远程控制的配置过程。 由于没有实物，这里拿 Cisco Packet Tracer 的模拟环境配图。">
-<meta name="twitter:image" content="https://iuok.me/posts/1565008014/交换机与PC的连接.png">
   <link rel="alternate" href="/atom.xml" title="咸鱼的博客" type="application/atom+xml">
   <link rel="canonical" href="https://iuok.me/posts/1565008014/">
 
@@ -357,7 +351,7 @@
 </tr>
 </tbody></table>
 <h2 id="连接交换机与-PC"><a href="#连接交换机与-PC" class="headerlink" title="连接交换机与 PC"></a>连接交换机与 PC</h2><p>如图，PC0 的 RS232 接口连接交换机的 Console 接口，PC1 的 FastEthernet 接口连接交换机的 FastEthernet 接口。</p>
-<img src="/posts/1565008014/交换机与PC的连接.png">
+<img data-src="/posts/1565008014/交换机与PC的连接.png">
 
 
 
@@ -370,7 +364,7 @@
 </blockquote>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Switch&gt;</span><br><span class="line"><span class="comment">## 切换到特权模式</span></span><br><span class="line">Switch&gt;<span class="built_in">enable</span></span><br><span class="line"><span class="comment">## 切换到全局配置模式</span></span><br><span class="line">Switch<span class="comment">#config terminal</span></span><br><span class="line">Enter configuration commands, one per line.  End with CNTL/Z.</span><br><span class="line"><span class="comment">## 设置全局配置的密码</span></span><br><span class="line">Switch(config)<span class="comment">#enable password test</span></span><br><span class="line"><span class="comment">## 设置 Console 接口的密码</span></span><br><span class="line">Switch(config)<span class="comment">#line console 0</span></span><br><span class="line">Switch(config-line)<span class="comment">#password test1</span></span><br><span class="line">Switch(config-line)<span class="comment">#login</span></span><br><span class="line">Switch(config-line)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">## 设置线路口的密码(0 4指的是线路0到线路4)</span></span><br><span class="line">Switch(config)<span class="comment">#line vty 0 4</span></span><br><span class="line">Switch(config-line)<span class="comment">#password test2</span></span><br><span class="line">Switch(config-line)<span class="comment">#login</span></span><br><span class="line">Switch(config-line)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">## 配置交换机的 IP 信息</span></span><br><span class="line">Switch(config)<span class="comment">#interface vlan1</span></span><br><span class="line">Switch(config-if)<span class="comment">#ip address 192.168.1.1 255.255.255.0</span></span><br><span class="line">Switch(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">Switch(config-if)<span class="comment">#</span></span><br><span class="line">%LINK-5-CHANGED: Interface Vlan1, changed state to up</span><br><span class="line"></span><br><span class="line">%LINEPROTO-5-UPDOWN: Line protocol on Interface Vlan1, changed state to up</span><br><span class="line"></span><br><span class="line">Switch(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">## 配置路由器的默认网关</span></span><br><span class="line">Switch(config)<span class="comment">#ip default-gateway 192.168.1.1</span></span><br></pre></td></tr></table></figure>
 
-<img src="/posts/1565008014/PC0.png">
+<img data-src="/posts/1565008014/PC0.png">
 
 
 
@@ -378,7 +372,7 @@
 <blockquote>
 <p>注：实际操作的时候在网络适配器的设置里更改 IPv4 协议的配置。</p>
 </blockquote>
-<img src="/posts/1565008014/PC1-IP.png">
+<img data-src="/posts/1565008014/PC1-IP.png">
 
 
 
@@ -387,7 +381,7 @@
 </blockquote>
 <p>打开命令提示符，输入命令<code>ping 192.168.1.1</code>，检查 PC1 与交换机之前的连通性，其中<code>192.168.1.1</code>是交换机的 IP 地址。</p>
 <p>如果能连通就下一步，不能连通就先排错。</p>
-<img src="/posts/1565008014/PC1-PING.png">
+<img data-src="/posts/1565008014/PC1-PING.png">
 
 
 
@@ -398,7 +392,7 @@
 <p>连接成功后输入三次密码，分别是之前在 PC0 上设置的三个密码，输入正确后即可看到<code>Switch&gt;</code>的回显。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Packet Tracer PC Command Line 1.0</span><br><span class="line">C:\&gt;telnet 192.168.1.1</span><br><span class="line">Trying 192.168.1.1 ...Open</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">User Access Verification</span><br><span class="line"></span><br><span class="line">Password: </span><br><span class="line">Password: </span><br><span class="line">Password: </span><br><span class="line">Switch&gt;<span class="built_in">enable</span></span><br><span class="line">Password: </span><br><span class="line">Switch<span class="comment">#</span></span><br></pre></td></tr></table></figure>
 
-<img src="/posts/1565008014/PC1-TELNET.png">
+<img data-src="/posts/1565008014/PC1-TELNET.png">
 
 
 
