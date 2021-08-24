@@ -1,1 +1,0 @@
-const t={key:"v-2df1b9f1",path:"/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/JavaScript/TypeScript.html",title:"TypeScript",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:2,title:"基本类型",slug:"基本类型",children:[]}],filePathRelative:"学习笔记/JavaScript/TypeScript.md",git:{updatedTime:1629813597e3,contributors:[]}};export{t as data};
