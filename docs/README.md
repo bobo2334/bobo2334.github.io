@@ -10,8 +10,8 @@
 
 ### JavaScript
 
-- [Vue.js](学习笔记/JavaScript/Vue.js.md)
-- [TypeScript](学习笔记/JavaScript/TypeScript.md)
+- [Vue.js](./notes/javascript/vue.js.md)
+- [TypeScript](./notes/javascript/typescript.md)
 
 ### 操作系统
 
@@ -19,7 +19,7 @@
 
 ### 实用工具
 
--  [EditorConfig](学习笔记/实用工具/EditorConfig.md)
+-  [EditorConfig](./notes/utilities/editorconfig.md)
 
 ### 数据库
 
@@ -29,7 +29,7 @@
 
 ### 2021
 
-- [利用 Github Actions 部署 Vuepress 项目到 Github Pages](文章/deploy-vuepress-project-to-github-pages-with-github-actions.md)
+- [利用 Github Actions 部署 Vuepress 项目到 Github Pages](./articles/deploy-vuepress-project-to-github-pages-with-github-actions.md)
 
 ## 读书笔记
 
