@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkvuepress_notes=self.webpackChunkvuepress_notes||[]).push([[88],{1801:(e,t,n)=>{n.r(t),n.d(t,{data:()=>s});const s={key:"v-3706649a",path:"/404.html",title:"",lang:"zh-CN",frontmatter:{layout:"404"},excerpt:"",headers:[],filePathRelative:null,git:{}}},3881:(e,t,n)=>{n.r(t),n.d(t,{default:()=>s});const s={render:function(e,t){return null}}}}]);
