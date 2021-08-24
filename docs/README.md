@@ -29,6 +29,8 @@
 
 ### 2021
 
+- [利用 Github Actions 部署 Vuepress 项目到 Github Pages](文章/deploy-vuepress-project-to-github-pages-with-github-actions.md)
+
 ## 读书笔记
 
 ## TODO
@@ -62,5 +64,4 @@ State3 --> [*] : Succeeded / Save Result
 State3 --> [*] : Aborted
 
 @enduml
-
 
