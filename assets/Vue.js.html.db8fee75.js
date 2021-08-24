@@ -1,0 +1,1 @@
+const e={key:"v-3a6135e5",path:"/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/JavaScript/Vue.js.html",title:"Vue.js",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:2,title:"参考资料",slug:"参考资料",children:[]},{level:2,title:"Vue简介",slug:"vue简介",children:[]}],filePathRelative:"学习笔记/JavaScript/Vue.js.md",git:{updatedTime:1629813597e3,contributors:[]}};export{e as data};
