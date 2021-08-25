@@ -1,1 +1,0 @@
-const e={key:"v-14cef4a6",path:"/notes/javascript/vue.js.html",title:"Vue.js",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:2,title:"参考资料",slug:"参考资料",children:[]},{level:2,title:"Vue简介",slug:"vue简介",children:[]}],filePathRelative:"notes/javascript/vue.js.md",git:{updatedTime:162982096e4,contributors:[]}};export{e as data};
