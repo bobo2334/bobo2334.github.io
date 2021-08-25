@@ -19,3 +19,5 @@
 
 ## 消息队列
 
+- [RocketMQ](./message-queuing/rocketmq.md)
+
