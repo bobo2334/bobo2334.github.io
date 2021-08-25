@@ -7,4 +7,5 @@
 - [x] `Markdown-it`脚注；
 - [ ] favicon
 - [x] plantuml
+- [x] pwa
 
