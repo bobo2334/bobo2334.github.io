@@ -1,6 +1,8 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "我的学习笔记",
+    "short_name": "我的学习笔记",
+    "description": "Just playing around",
+    "start_url": "/index.html",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",

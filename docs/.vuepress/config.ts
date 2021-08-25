@@ -16,7 +16,7 @@ export default defineUserConfig<DefaultThemeOptions>({
   ],
   plugins: [
     "@vuepress/plugin-search",
-    ["@vuepress/pwa", { updatePopup: true }]
+    ["@vuepress/pwa", { skipWaiting: true }]
     // "@vuepress/plugin-shiki",
   ],
   extendsMarkdown: (md) => {
