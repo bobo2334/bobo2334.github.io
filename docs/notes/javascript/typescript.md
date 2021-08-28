@@ -1,8 +1,3 @@
----
-category: 学习笔记
-tags:
-    - TypeScript
----
 # TypeScript
 
 ## 基本类型

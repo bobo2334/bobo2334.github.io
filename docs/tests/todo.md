@@ -1,8 +1,3 @@
----
-category: 测试
-tags:
-    - todo
----
 # TODO 测试
 
 - [x] 集成`pangu.js`，就不用自己手动加空格了；
