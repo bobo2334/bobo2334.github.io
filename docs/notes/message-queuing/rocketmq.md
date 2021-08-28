@@ -1,3 +1,8 @@
+---
+category: 学习笔记
+tags:
+    - RocketMQ
+---
 # RocketMQ
 
 ## MQ

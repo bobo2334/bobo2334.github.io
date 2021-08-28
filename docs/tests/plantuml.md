@@ -1,3 +1,9 @@
+---
+category: 测试
+tags:
+    - mermaid
+    - chart
+---
 # PlantUML 测试
 
 - [开源工具，使用简单的文字描述画UML图。](https://plantuml.com/zh/)
