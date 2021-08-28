@@ -1,0 +1,876 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <atom:link href="https://bobo2334.github.io/rss.xml" rel="self" type="application/rss+xml"/>
+    <title>我的学习笔记</title>
+    <link>https://bobo2334.github.io/</link>
+    <description>Just playing around</description>
+    <language>en-US</language>
+    <pubDate>Sat, 28 Aug 2021 16:57:01 GMT</pubDate>
+    <lastBuildDate>Sat, 28 Aug 2021 16:57:01 GMT</lastBuildDate>
+    <generator>@mr-hope/vuepress-plugin-feed</generator>
+    <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+    <copyright>Copyright by Who Knows</copyright>
+    <category>文章</category>
+    <category>学习笔记</category>
+    <category>测试</category>
+    <item>
+      <title>利用 Github Actions 部署 Vuepress 项目到 Github Pages</title>
+      <link>https://bobo2334.github.io/articles/deploy-vuepress-project-to-github-pages-with-github-actions/</link>
+      <guid>https://bobo2334.github.io/articles/deploy-vuepress-project-to-github-pages-with-github-actions/</guid>
+      <source url="https://bobo2334.github.io/rss.xml">利用 Github Actions 部署 Vuepress 项目到 Github Pages</source>
+      <category>文章</category>
+      <pubDate>Sat, 28 Aug 2021 16:54:59 GMT</pubDate>
+      <content:encoded><![CDATA[<h1 id="利用-github-actions-部署-vuepress-项目到-github-pages"> 利用 Github Actions 部署 Vuepress 项目到 Github Pages</h1>
+<h2 id="前言"> 前言</h2>
+<p>Vuepress<sup></sup> 是一个基于 Vue 的静态网站生成器；Github Pages<sup></sup> 是 Github 提供的免费的静态网站托管服务；Github Actions<sup></sup> 是 Github 仓库中集成的 CI/CD<sup></sup> 服务。</p>
+<p>Vuepress 是一个 Node.js 项目，它可以根据配置将 Markdown 文件转为 HTML 文件。你可以将输出的静态文件托管在 Github Pages 中，这样你就得到了一个可以访问的域名来展示这些静态的 HTML 文件。</p>
+<p>传统的做法是在本地安装好 Noed.js 环境，自己手动构建项目之后将构建产物上传到 Github 仓库，从而触发 Github Pages 的构建。现在可以利用 Github Actions 来代替手工劳动，Github Actions 可以自动被触发，它运行在 Github 提供的虚拟环境中，可以执行一系列任务从而代替重复枯燥的手动构建和部署的步骤。</p>
+<h2 id="创建-github-仓库"> 创建 Github 仓库</h2>
+<p>在创建的 Github 仓库时要注意仓库名称，假如你的用户名是 foo。</p>
+<p>如果你创建了一个名为 <code>foo.github.io</code>  的仓库，你将可以通过 <code>https://foo.github.io</code>  来访问此仓库的 Github Pages 内容；</p>
+<p>如果你创建其他名称的仓库如 <code>bar</code> ，你可以通过 <code>https://foo.github.io/bar/</code>  来访问此仓库的 Github Pages 内容。</p>
+<p>你可以根据你期望的访问方式来选择仓库名称。</p>
+<h2 id="配置-github-actions"> 配置 Github Actions</h2>
+<p>Github Actions 的配置文件应该放在项目根目录下的 <code>.github/workflows/</code>  文件夹中，你可以在一个项目中配置多个 Actions。配置文件是 YAML 格式，文件名形如 <code>*.yml</code> 。</p>
+<p>每一个 Action 中可以包括多个 job，每个 job 可以包括多个 step。在 step 中你可以直接运行命令，或者引用其他人编写好的 Action 脚本。在本文的配置文件中，我们引用了 github-pages-deploy-action<sup></sup> 来完成 Github Pages 部署，而不用关系其实现细节。</p>
+<p>完成本文目标的 Github Actions 配置文件内容如下。</p>
+<div><pre><code><span>name</span><span>:</span> <span>"github actions build and deploy gh-pages"</span>
+<span>on</span><span>:</span>
+  <span>push</span><span>:</span>
+    <span>branches</span><span>:</span>
+      <span>-</span> master
+<span>jobs</span><span>:</span>
+  <span>build-and-deploy</span><span>:</span>
+    <span>runs-on</span><span>:</span> ubuntu<span>-</span>latest
+    <span>steps</span><span>:</span>
+      <span>-</span> <span>name</span><span>:</span> Checkout
+        <span>uses</span><span>:</span> actions/checkout@v2.3.1
+        <span>with</span><span>:</span>
+          <span>persist-credentials</span><span>:</span> <span>false</span>
+      <span>-</span> <span>name</span><span>:</span> install and build
+        <span>run</span><span>:</span> <span>|</span><span>
+          npm install
+          npm run build</span>
+      <span>-</span> <span>name</span><span>:</span> Deploy
+        <span>uses</span><span>:</span> JamesIves/github<span>-</span>pages<span>-</span>deploy<span>-</span>action@4.1.4
+        <span>with</span><span>:</span>
+          <span>BRANCH</span><span>:</span> gh<span>-</span>pages
+          <span>FOLDER</span><span>:</span> docs/.vuepress/dist
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br></div></div><p>其中的一些关键配置解释如下。</p>
+<ul>
+<li><code>on.push.branches</code> ，在推送到 <code>master</code>  分支时触发此 Action；</li>
+<li><code>jobs.build-and-deploy</code> ，在一个 Action 中可以有多个 job，这是其中的一个，名称是自己取的；每个任务可以有多个 step；</li>
+<li><code>jobs.build-and-deploy.steps[0]</code> ，用 <code>actions/checkout</code>  检出仓库内容；</li>
+<li><code>jobs.build-and-deploy.steps[1]</code> ，执行 <code>npm</code>  命令安装开发环境；</li>
+<li><code>jobs.build-and-deploy.steps[2]</code> ，用 <code>JamesIves/github-pages-deploy-action</code>  部署 <code>docs/.vuepress/dist</code>  文件夹中的内容到 <code>gh-pages</code>  分支中。</li>
+</ul>
+<p>在编写好配置文件后可以提交并推送文件至 master 分支，这会自动触发 Action 的执行，并且你可以在 Actions 栏目中查看执行日志。</p>
+<p><img src="./deploy-vuepress-project-to-github-pages-with-github-actions.assets/image-20210824225724791.png" alt="image-20210824225724791" /></p>
+<h2 id="配置-github-pages"> 配置 Github Pages</h2>
+<p>我们的构建产物放在 gh-pages 分支，我们需要告诉 Github Pages 源文件位置。</p>
+<p>在 Github 仓库的 Settings 栏目中，从左侧的设置导航栏找到 Pages 设置。在这里你可以设置 gh-pages 为数据源。</p>
+<p><img src="./deploy-vuepress-project-to-github-pages-with-github-actions.assets/image-20210824230246146.png" alt="image-20210824230246146" /></p>
+<p>如果没出错的话，在配置完成之后你就可以通过 Github Pages 给你提供的域名来访问你的静态网站了。</p>
+<hr>
+<section>
+<ol>
+<li id="footnote1"><p><a href="https://v2.vuepress.vuejs.org/zh/" target="_blank" rel="noopener noreferrer">首页 | VuePress</a> </p>
+</li>
+<li id="footnote2"><p><a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages | Websites for you and your projects, hosted directly from your GitHub repository. Just edit, push, and your changes are live.</a> </p>
+</li>
+<li id="footnote3"><p><a href="https://docs.github.com/en/actions/learn-github-actions" target="_blank" rel="noopener noreferrer">Learn GitHub Actions - GitHub Docs</a> </p>
+</li>
+<li id="footnote4"><p><a href="https://www.redhat.com/zh/topics/devops/what-is-ci-cd" target="_blank" rel="noopener noreferrer">什么是 CI/CD？一文带你理解 CI 持续集成和 CD 持续交付 / 部署 - 红帽</a> </p>
+</li>
+<li id="footnote5"><p><a href="https://github.com/JamesIves/github-pages-deploy-action" target="_blank" rel="noopener noreferrer">JamesIves/github-pages-deploy-action: Automatically deploy your project to GitHub Pages using GitHub Actions. This action can be configured to push your production-ready code into any branch you'd like.</a> </p>
+</li>
+</ol>
+</section>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>TypeScript</title>
+      <link>https://bobo2334.github.io/notes/javascript/typescript/</link>
+      <guid>https://bobo2334.github.io/notes/javascript/typescript/</guid>
+      <source url="https://bobo2334.github.io/rss.xml">TypeScript</source>
+      <category>学习笔记</category>
+      <pubDate>Sat, 28 Aug 2021 16:54:59 GMT</pubDate>
+      <content:encoded><![CDATA[<h1 id="typescript"> TypeScript</h1>
+<h2 id="基本类型"> 基本类型</h2>
+<p>在声明变量时指定类型。如果在声明时直接赋值则 TS 会自动推断类型。</p>
+<div><pre><code><span>let</span> a<span>:</span> <span>number</span><span>;</span>
+<span>let</span> b <span>=</span> <span>true</span><span>;</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br></div></div><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>例子</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>number</td>
+<td></td>
+<td>数字</td>
+</tr>
+<tr>
+<td>string</td>
+<td></td>
+<td>字符串</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td></td>
+<td>布尔值</td>
+</tr>
+<tr>
+<td>字面量</td>
+<td></td>
+<td>限制类型和值就只能是当前字面量本身</td>
+</tr>
+<tr>
+<td>any</td>
+<td></td>
+<td>任意类型</td>
+</tr>
+<tr>
+<td>unknown</td>
+<td></td>
+<td>类型安全的 any</td>
+</tr>
+<tr>
+<td>void</td>
+<td></td>
+<td>没有值或 undefined</td>
+</tr>
+<tr>
+<td>never</td>
+<td></td>
+<td>没有值，不能是任何值</td>
+</tr>
+<tr>
+<td>object</td>
+<td></td>
+<td>任意 JavaScript 对象</td>
+</tr>
+<tr>
+<td>array</td>
+<td></td>
+<td>数组</td>
+</tr>
+<tr>
+<td>tuple</td>
+<td></td>
+<td>固定长度数组</td>
+</tr>
+<tr>
+<td>enum</td>
+<td></td>
+<td>枚举</td>
+</tr>
+</tbody>
+</table>
+<p>可以使用 <code>|</code>  来连接多个类型。</p>
+<div><pre><code><span>let</span> a<span>:</span> <span>"male"</span> <span>|</span> <span>"female"</span>
+<span>let</span> b<span>:</span> <span>number</span> <span>|</span> <span>boolean</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br></div></div>]]></content:encoded>
+    </item>
+    <item>
+      <title>Vue.js</title>
+      <link>https://bobo2334.github.io/notes/javascript/vue.js/</link>
+      <guid>https://bobo2334.github.io/notes/javascript/vue.js/</guid>
+      <source url="https://bobo2334.github.io/rss.xml">Vue.js</source>
+      <category>学习笔记</category>
+      <pubDate>Sat, 28 Aug 2021 16:54:59 GMT</pubDate>
+      <content:encoded><![CDATA[<h1 id="vue-js"> Vue.js</h1>
+<h2 id="参考资料"> 参考资料</h2>
+<ul>
+<li><a href="https://cn.vuejs.org/" target="_blank" rel="noopener noreferrer">Vue.js</a></li>
+<li><a href="https://www.bilibili.com/video/BV1Zy4y1K7SH?p=2" target="_blank" rel="noopener noreferrer">【尚硅谷】Web 前端迅速上手 Vue 教程丨 vue3.0 入门到精通_哔哩哔哩_bilibili</a></li>
+</ul>
+<h2 id="vue简介"> Vue 简介</h2>
+<p>Vue.js 是一套<strong>构建用户界面</strong>的<strong>渐进式</strong> JavaScript 框架。</p>
+<ul>
+<li><strong>构建用户界面</strong>：将数据渲染在页面上；</li>
+<li><strong>渐进式</strong>：Vue 可以自底向上逐层应用。如果是简单应用只需要引入核心库；如果是复杂应用，可以引入各种各样的 Vue 插件。</li>
+</ul>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>RocketMQ</title>
+      <link>https://bobo2334.github.io/notes/message-queuing/rocketmq/</link>
+      <guid>https://bobo2334.github.io/notes/message-queuing/rocketmq/</guid>
+      <source url="https://bobo2334.github.io/rss.xml">RocketMQ</source>
+      <category>学习笔记</category>
+      <pubDate>Sat, 28 Aug 2021 16:54:59 GMT</pubDate>
+      <content:encoded><![CDATA[<h1 id="rocketmq"> RocketMQ</h1>
+<h2 id="mq"> MQ</h2>
+<p>MQ（Message Queue，消息队列），是一种 FIFO 的队列。</p>
+<p>它的作用有：</p>
+<ol>
+<li>异步</li>
+<li>解耦</li>
+<li>削峰</li>
+</ol>
+<h2 id="rocketmq介绍"> RocketMQ 介绍</h2>
+<p>RcoketMQ 是一款低延迟、高可靠、可伸缩、易于使用的消息中间件。</p>
+<h3 id="nameserver"> NameServer</h3>
+<p>注册中心，可以集群。</p>
+<h3 id="broker"> Broker</h3>
+<p>真正负责消息收发和存储的实体，可以主从。</p>
+<h2 id="单机部署"> 单机部署</h2>
+<p>可以使用 Docker Compose 来快速部署 RocketMQ。</p>
+<p>RockerMQ 分为 NameServer<sup></sup> 和 Broker<sup></sup>，前者类似于注册中心，后者才是进行存储消息的服务。还有一个第三方服务 <code>rocket-mq-console-ng</code> <sup></sup><sup></sup>，是 RocketMQ 的网页控制台。</p>
+<p>RocketMQ 的 NameServer 和 Broker 是同一套代码，只是启动的时候参数不一样。 <code>apacherocketmq/rocketmq-nameserver</code>  和</p>
+<p><code>apacherocketmq/rocketmq-broker</code>  在启动参数上有不同。</p>
+<p>RocketMQ 的数据存储在 <code>user.home</code>  目录下，你可以设置 <code>user.home</code>  环境变量来自定义存储路径。在这两个 Docker 镜像中，该环境变量的值为 <code>/opt</code> 。</p>
+<div><pre><code><span>version</span><span>:</span> <span>"3"</span>
+<span>services</span><span>:</span>
+  <span>nameserver</span><span>:</span>
+    <span>image</span><span>:</span> apacherocketmq/rocketmq<span>-</span>nameserver<span>:</span>4.5.0<span>-</span>alpine
+    <span>volumes</span><span>:</span>
+      <span>-</span> nameserver_logs<span>:</span>/root/logs
+    <span>ports</span><span>:</span>
+      <span>-</span> 9876<span>:</span><span>9876</span>
+    <span>environment</span><span>:</span>
+      <span>JAVA_OPT_EXT</span><span>:</span> <span>" -Xms128m -Xmx128m -Xmn128m"</span>
+    <span>command</span><span>:</span> sh mqnamesrv
+  <span>broker</span><span>:</span>
+    <span>image</span><span>:</span> apacherocketmq/rocketmq<span>-</span>broker<span>:</span>4.5.0<span>-</span>alpine
+    <span>depends_on</span><span>:</span>
+      <span>-</span> nameserver
+    <span>volumes</span><span>:</span>
+      <span>-</span> broker_data<span>:</span>/root/store
+      <span>-</span> broker_logs<span>:</span>/root/logs
+      <span>-</span> /root/docker<span>-</span>compose/rocketmq/broker.conf<span>:</span>/home/rocketmq/broker.conf
+    <span>ports</span><span>:</span>
+      <span>-</span> 10909<span>:</span><span>10909</span>
+      <span>-</span> 10911<span>:</span><span>10911</span>
+      <span>-</span> 10912<span>:</span><span>10912</span>
+    <span>environment</span><span>:</span>
+      <span>JAVA_OPT_EXT</span><span>:</span> <span>" -Xms128m -Xmx128m -Xmn128m"</span>
+    <span>command</span><span>:</span> sh mqbroker <span>-</span>c /home/rocketmq/broker.conf
+  <span>console</span><span>:</span>
+    <span>image</span><span>:</span> apacherocketmq/rocketmq<span>-</span>console<span>:</span>2.0.0
+    <span>depends_on</span><span>:</span>
+      <span>-</span> nameserver
+      <span>-</span> broker
+    <span>ports</span><span>:</span>
+      <span>-</span> 8088<span>:</span><span>8080</span>
+    <span>environment</span><span>:</span>
+      <span>LOGGIN_LEVEL_ROOT</span><span>:</span> info
+      <span>ROCKETMQ_CONFIG_NAMESRVADDR</span><span>:</span> nameserver<span>:</span><span>9876</span>
+      <span>JAVA_OPTS</span><span>:</span> <span>" -Xms128m -Xmx128m -Xmn128m"</span>
+<span>volumes</span><span>:</span>
+  <span>nameserver_logs</span><span>:</span>
+  <span>broker_data</span><span>:</span>
+  <span>broker_logs</span><span>:</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br><span>27</span><br><span>28</span><br><span>29</span><br><span>30</span><br><span>31</span><br><span>32</span><br><span>33</span><br><span>34</span><br><span>35</span><br><span>36</span><br><span>37</span><br><span>38</span><br><span>39</span><br><span>40</span><br><span>41</span><br></div></div><p>根据上面的文件中的配置内容，你还需要为 Broker 提供配置文件，位于 <code>/root/docker-compose/rocketmq/broker.conf</code> 。</p>
+<p>需要配置 Broker 的外部 IP，不然客户端连接不上。</p>
+<div><pre><code><span>brokerClusterName</span> <span>=</span> <span>DefaultCluster</span>
+<span>brokerName</span> <span>=</span> <span>broker-a</span>
+<span>brokerId</span> <span>=</span> <span>0</span>
+<span>deleteWhen</span> <span>=</span> <span>04</span>
+<span>fileReservedTime</span> <span>=</span> <span>48</span>
+<span>brokerRole</span> <span>=</span> <span>ASYNC_MASTER</span>
+<span>flushDiskType</span> <span>=</span> <span>ASYNC_FLUSH</span>
+
+<span>namesrvAddr</span><span>=</span><span>nameserver:9876</span>
+<span>brokerIP1</span><span>=</span><span>192.168.229.129</span>
+<span>defaultTopicQueueNums</span><span>=</span><span>4</span>
+<span>autoCreateTopicEnable</span><span>=</span><span>true</span>
+<span>autoCreateSubscriptionGroup</span><span>=</span><span>true</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br></div></div><p>接着使用 <code>docker compose up -d</code>  就可以启动容器了，容器名字都会加上当前文件夹名作为前缀。</p>
+<p>可以使用 <code>docker compose ps</code>  查看容器的运行状态。</p>
+<h2 id="集群部署"> 集群部署</h2>
+<p>// TODO 还没学，学了再写</p>
+<h2 id="开发"> 开发</h2>
+<p>首先为了使用方便，定义了一些常量。</p>
+<div><pre><code><span>public</span> <span>class</span> <span>MQConstant</span> <span>{</span>
+
+    <span>public</span> <span>static</span> <span>final</span> <span>String</span> NAMESERVER_ADDR <span>=</span> <span>"192.168.229.129:9876"</span><span>;</span>
+
+<span>}</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br></div></div><h3 id="原生api"> 原生 API</h3>
+<h4 id="消费者-推送"> 消费者（推送）</h4>
+<div><pre><code><span>package</span> <span>example<span>.</span>sync</span><span>;</span>
+
+<span>@Slf4j</span>
+<span>public</span> <span>class</span> <span>Consumer</span> <span>{</span>
+
+    <span>public</span> <span>static</span> <span>final</span> <span>String</span> CONSUMER_GROUP <span>=</span> <span>"sync_message_consumer"</span><span>;</span>
+
+    <span>public</span> <span>static</span> <span>void</span> <span>main</span><span>(</span><span>String</span><span>[</span><span>]</span> args<span>)</span> <span>throws</span> <span>Exception</span> <span>{</span>
+        <span>DefaultMQPushConsumer</span> consumer <span>=</span> <span>new</span> <span>DefaultMQPushConsumer</span><span>(</span>CONSUMER_GROUP<span>)</span><span>;</span>
+        consumer<span>.</span><span>setNamesrvAddr</span><span>(</span><span>MQConstant</span><span>.</span>NAMESERVER_ADDR<span>)</span><span>;</span>
+        consumer<span>.</span><span>setConsumeFromWhere</span><span>(</span><span>ConsumeFromWhere</span><span>.</span>CONSUME_FROM_LAST_OFFSET<span>)</span><span>;</span>
+        consumer<span>.</span><span>subscribe</span><span>(</span><span>MQTopicConstant</span><span>.</span>PRACTISE<span>,</span> <span>MQTagConstant</span><span>.</span>PRACTISE<span>)</span><span>;</span>
+        consumer<span>.</span><span>registerMessageListener</span><span>(</span><span>(</span><span>MessageListenerOrderly</span><span>)</span> <span>(</span>msgs<span>,</span> context<span>)</span> <span>-></span> <span>{</span>
+            msgs<span>.</span><span>forEach</span><span>(</span>messageExt <span>-></span> <span>{</span>
+                log<span>.</span><span>info</span><span>(</span><span>"收到消息: {}"</span><span>,</span> messageExt<span>)</span><span>;</span>
+                log<span>.</span><span>info</span><span>(</span><span>"消息体: {}"</span><span>,</span> <span>new</span> <span>String</span><span>(</span>messageExt<span>.</span><span>getBody</span><span>(</span><span>)</span><span>)</span><span>)</span><span>;</span>
+            <span>}</span><span>)</span><span>;</span>
+            <span>return</span> <span>ConsumeOrderlyStatus</span><span>.</span>SUCCESS<span>;</span>
+        <span>}</span><span>)</span><span>;</span>
+        consumer<span>.</span><span>start</span><span>(</span><span>)</span><span>;</span>
+        log<span>.</span><span>info</span><span>(</span><span>"Consumer已启动"</span><span>)</span><span>;</span>
+        <span>Runtime</span><span>.</span><span>getRuntime</span><span>(</span><span>)</span><span>.</span><span>addShutdownHook</span><span>(</span><span>new</span> <span>Thread</span><span>(</span><span>(</span><span>)</span> <span>-></span> <span>{</span>
+            log<span>.</span><span>info</span><span>(</span><span>"程序正在退出"</span><span>)</span><span>;</span>
+            consumer<span>.</span><span>shutdown</span><span>(</span><span>)</span><span>;</span>
+        <span>}</span><span>)</span><span>)</span><span>;</span>
+    <span>}</span>
+
+<span>}</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br><span>27</span><br><span>28</span><br></div></div><h4 id="生产者-同步发送"> 生产者（同步发送）</h4>
+<div><pre><code><span>package</span> <span>example<span>.</span>sync</span><span>;</span>
+
+<span>@Slf4j</span>
+<span>public</span> <span>class</span> <span>Producer</span> <span>{</span>
+
+    <span>public</span> <span>static</span> <span>final</span> <span>String</span> PRODUCER_GROUP <span>=</span> <span>"sync_message_producer"</span><span>;</span>
+
+    <span>public</span> <span>static</span> <span>void</span> <span>main</span><span>(</span><span>String</span><span>[</span><span>]</span> args<span>)</span> <span>throws</span> <span>Exception</span> <span>{</span>
+        <span>DefaultMQProducer</span> producer <span>=</span> <span>new</span> <span>DefaultMQProducer</span><span>(</span>PRODUCER_GROUP<span>)</span><span>;</span>
+        producer<span>.</span><span>setNamesrvAddr</span><span>(</span><span>MQConstant</span><span>.</span>NAMESERVER_ADDR<span>)</span><span>;</span>
+        producer<span>.</span><span>start</span><span>(</span><span>)</span><span>;</span>
+        <span>Stream</span><span>.</span><span>generate</span><span>(</span><span>RandomUtil</span><span>::</span><span>randomInt</span><span>)</span>
+                <span>.</span><span>limit</span><span>(</span><span>10</span><span>)</span>
+                <span>.</span><span>map</span><span>(</span>i <span>-></span> <span>new</span> <span>Message</span><span>(</span><span>MQTopicConstant</span><span>.</span>PRACTISE<span>,</span> <span>MQTagConstant</span><span>.</span>PRACTISE<span>,</span> <span>StrUtil</span><span>.</span><span>format</span><span>(</span><span>"Hello RocketMQ: {}"</span><span>,</span> i<span>)</span><span>.</span><span>getBytes</span><span>(</span><span>StandardCharsets</span><span>.</span>UTF_8<span>)</span><span>)</span><span>)</span>
+                <span>.</span><span>forEach</span><span>(</span>message <span>-></span> <span>{</span>
+                    <span>try</span> <span>{</span>
+                        <span>SendResult</span> result <span>=</span> producer<span>.</span><span>send</span><span>(</span>message<span>,</span> <span>10000</span><span>)</span><span>;</span>
+                        log<span>.</span><span>info</span><span>(</span><span>"消息已发送: {}"</span><span>,</span> result<span>)</span><span>;</span>
+                    <span>}</span> <span>catch</span> <span>(</span><span>Exception</span> e<span>)</span> <span>{</span>
+                        log<span>.</span><span>error</span><span>(</span><span>"消息发送失败"</span><span>,</span> e<span>)</span><span>;</span>
+                    <span>}</span>
+                <span>}</span><span>)</span><span>;</span>
+        producer<span>.</span><span>shutdown</span><span>(</span><span>)</span><span>;</span>
+    <span>}</span>
+
+<span>}</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br></div></div><h4 id="生产者-异步发送"> 生产者（异步发送）</h4>
+<div><pre><code><span>package</span> <span>example<span>.</span>producer</span><span>;</span>
+
+<span>@Slf4j</span>
+<span>public</span> <span>class</span> <span>AsyncMessageProducer</span> <span>{</span>
+
+    <span>public</span> <span>static</span> <span>final</span> <span>String</span> PRODUCER_GROUP <span>=</span> <span>"async_message_producer"</span><span>;</span>
+
+    <span>public</span> <span>static</span> <span>void</span> <span>main</span><span>(</span><span>String</span><span>[</span><span>]</span> args<span>)</span> <span>throws</span> <span>Exception</span> <span>{</span>
+        <span>final</span> <span>int</span> count <span>=</span> <span>10</span><span>;</span>
+        <span>DefaultMQProducer</span> producer <span>=</span> <span>new</span> <span>DefaultMQProducer</span><span>(</span>PRODUCER_GROUP<span>)</span><span>;</span>
+        producer<span>.</span><span>setNamesrvAddr</span><span>(</span><span>MQConstant</span><span>.</span>NAMESERVER_ADDR<span>)</span><span>;</span>
+        producer<span>.</span><span>start</span><span>(</span><span>)</span><span>;</span>
+        <span>CountDownLatch</span> countDownLatch <span>=</span> <span>new</span> <span>CountDownLatch</span><span>(</span>count<span>)</span><span>;</span>
+        <span>Stream</span><span>.</span><span>generate</span><span>(</span><span>RandomUtil</span><span>::</span><span>randomInt</span><span>)</span>
+                <span>.</span><span>limit</span><span>(</span>count<span>)</span>
+                <span>.</span><span>map</span><span>(</span>i <span>-></span> <span>new</span> <span>Message</span><span>(</span><span>MQTopicConstant</span><span>.</span>PRACTISE<span>,</span> <span>MQTagConstant</span><span>.</span>PRACTISE<span>,</span> <span>StrUtil</span><span>.</span><span>format</span><span>(</span><span>"Hello RocketMQ: {}"</span><span>,</span> i<span>)</span><span>.</span><span>getBytes</span><span>(</span><span>StandardCharsets</span><span>.</span>UTF_8<span>)</span><span>)</span><span>)</span>
+                <span>.</span><span>forEach</span><span>(</span>message <span>-></span> <span>{</span>
+                    <span>try</span> <span>{</span>
+                        producer<span>.</span><span>send</span><span>(</span>message<span>,</span> <span>new</span> <span>SendCallback</span><span>(</span><span>)</span> <span>{</span>
+                            <span>@Override</span>
+                            <span>public</span> <span>void</span> <span>onSuccess</span><span>(</span><span>SendResult</span> sendResult<span>)</span> <span>{</span>
+                                log<span>.</span><span>info</span><span>(</span><span>"消息发送成功: {}"</span><span>,</span> sendResult<span>)</span><span>;</span>
+                                countDownLatch<span>.</span><span>countDown</span><span>(</span><span>)</span><span>;</span>
+                            <span>}</span>
+
+                            <span>@Override</span>
+                            <span>public</span> <span>void</span> <span>onException</span><span>(</span><span>Throwable</span> e<span>)</span> <span>{</span>
+                                log<span>.</span><span>error</span><span>(</span><span>"消息发送失败"</span><span>,</span> e<span>)</span><span>;</span>
+                                countDownLatch<span>.</span><span>countDown</span><span>(</span><span>)</span><span>;</span>
+                            <span>}</span>
+                        <span>}</span><span>)</span><span>;</span>
+                        log<span>.</span><span>info</span><span>(</span><span>"消息已发送: {}"</span><span>,</span> message<span>)</span><span>;</span>
+                    <span>}</span> <span>catch</span> <span>(</span><span>Exception</span> e<span>)</span> <span>{</span>
+                        log<span>.</span><span>error</span><span>(</span><span>"消息发送失败"</span><span>,</span> e<span>)</span><span>;</span>
+                    <span>}</span>
+                <span>}</span><span>)</span><span>;</span>
+        countDownLatch<span>.</span><span>await</span><span>(</span><span>)</span><span>;</span>
+        producer<span>.</span><span>shutdown</span><span>(</span><span>)</span><span>;</span>
+    <span>}</span>
+
+<span>}</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br><span>27</span><br><span>28</span><br><span>29</span><br><span>30</span><br><span>31</span><br><span>32</span><br><span>33</span><br><span>34</span><br><span>35</span><br><span>36</span><br><span>37</span><br><span>38</span><br><span>39</span><br><span>40</span><br><span>41</span><br></div></div><h4 id="生产者-单向发送"> 生产者（单向发送）</h4>
+<div><pre><code><span>// org.apache.rocketmq.client.producer.DefaultMQProducer#sendOneway</span>
+<span>public</span> <span>void</span> <span>sendOneway</span><span>(</span><span>Message</span> msg<span>)</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br></div></div><h4 id="消费者-拉取"> 消费者（拉取）</h4>
+<p>主动拉取可以更灵活地消费消息。</p>
+<p>// TODO 还需要明白主动拉取后的消费确认机制</p>
+<div><pre><code><span>package</span> <span>example<span>.</span>consumer</span><span>;</span>
+
+<span>@Slf4j</span>
+<span>public</span> <span>class</span> <span>PullConsumer</span> <span>{</span>
+
+    <span>public</span> <span>static</span> <span>final</span> <span>String</span> CONSUMER_GROUP <span>=</span> <span>"pull_message_consumer"</span><span>;</span>
+
+    <span>public</span> <span>static</span> <span>void</span> <span>main</span><span>(</span><span>String</span><span>[</span><span>]</span> args<span>)</span> <span>throws</span> <span>Exception</span> <span>{</span>
+        <span>DefaultLitePullConsumer</span> consumer <span>=</span> <span>new</span> <span>DefaultLitePullConsumer</span><span>(</span>CONSUMER_GROUP<span>)</span><span>;</span>
+        consumer<span>.</span><span>setConsumeFromWhere</span><span>(</span><span>ConsumeFromWhere</span><span>.</span>CONSUME_FROM_LAST_OFFSET<span>)</span><span>;</span>
+        consumer<span>.</span><span>setNamesrvAddr</span><span>(</span><span>MQConstant</span><span>.</span>NAMESERVER_ADDR<span>)</span><span>;</span>
+        consumer<span>.</span><span>subscribe</span><span>(</span><span>MQTopicConstant</span><span>.</span>PRACTISE<span>,</span> <span>MQTagConstant</span><span>.</span>ALL<span>)</span><span>;</span>
+        consumer<span>.</span><span>start</span><span>(</span><span>)</span><span>;</span>
+        <span>while</span> <span>(</span><span>true</span><span>)</span> <span>{</span>
+            <span>List</span><span><span>&lt;</span><span>MessageExt</span><span>></span></span> messages <span>=</span> consumer<span>.</span><span>poll</span><span>(</span><span>)</span><span>;</span>
+            <span>if</span> <span>(</span><span>CollUtil</span><span>.</span><span>isEmpty</span><span>(</span>messages<span>)</span><span>)</span> <span>{</span>
+                <span>break</span><span>;</span>
+            <span>}</span>
+            messages<span>.</span><span>forEach</span><span>(</span>messageExt <span>-></span> log<span>.</span><span>info</span><span>(</span><span>"收到消息: {}"</span><span>,</span> messageExt<span>)</span><span>)</span><span>;</span>
+        <span>}</span>
+        <span>Runtime</span><span>.</span><span>getRuntime</span><span>(</span><span>)</span><span>.</span><span>addShutdownHook</span><span>(</span><span>new</span> <span>Thread</span><span>(</span>consumer<span>::</span><span>shutdown</span><span>)</span><span>)</span><span>;</span>
+    <span>}</span>
+
+<span>}</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br></div></div><h4 id="顺序消费"> 顺序消费</h4>
+<p>顺序消费要做到需要顺序消费的一组消息都发送到同一个队列上。消费者在消费的时候使用串行消费而不是并发消费。</p>
+<div><pre><code><span>// org.apache.rocketmq.client.producer.DefaultMQProducer#send</span>
+<span>public</span> <span>SendResult</span> <span>send</span><span>(</span><span>Message</span> msg<span>,</span> <span>MessageQueueSelector</span> selector<span>,</span> <span>Object</span> arg<span>)</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br></div></div><p><code>MessageQueueSelector</code>  可以选择发送消息到哪个队列上。</p>
+<p>在实际使用中，可以动态地选择队列来实现负载均衡，只要保证需要顺序消费的同一组消息发送到同一个队列上即可。</p>
+<div><pre><code><span>SendResult</span> sendResult <span>=</span> producer<span>.</span><span>send</span><span>(</span>message<span>,</span> <span>(</span>mqs<span>,</span> msg<span>,</span> arg<span>)</span> <span>-></span> <span>{</span>
+                    <span>int</span> i <span>=</span> <span>(</span><span>Integer</span><span>)</span> arg <span>%</span> mqs<span>.</span><span>size</span><span>(</span><span>)</span><span>;</span>
+                    <span>return</span> mqs<span>.</span><span>get</span><span>(</span>i<span>)</span><span>;</span>
+                <span>}</span><span>,</span> pair<span>.</span><span>getKey</span><span>(</span><span>)</span><span>)</span><span>;</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br></div></div><h4 id="广播消息"> 广播消息</h4>
+<p>默认情况下，同一个消费者组在消费消息时有竞争关系。在消费消息的时候设置消费者为广播模式就可以让消费者去掉竞争属性。</p>
+<div><pre><code><span>// org.apache.rocketmq.client.consumer.DefaultMQPushConsumer#setMessageModel</span>
+<span>public</span> <span>void</span> <span>setMessageModel</span><span>(</span><span>MessageModel</span> messageModel<span>)</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br></div></div><p><code>MessageModel</code>  默认为 <code>CLUSTERING</code> ，需要设置为 <code>BROADCASTING</code> 。</p>
+<div><pre><code>consumer<span>.</span><span>setMessageModel</span><span>(</span><span>MessageModel</span><span>.</span>BROADCASTING<span>)</span><span>;</span>
+</code></pre>
+<div><span>1</span><br></div></div><h4 id="延迟消息"> 延迟消息</h4>
+<div><pre><code><span>// org.apache.rocketmq.common.message.Message#setDelayTimeLevel</span>
+<span>public</span> <span>void</span> <span>setDelayTimeLevel</span><span>(</span><span>int</span> level<span>)</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br></div></div><p>可以给 <code>Message</code>  设置 <code>delayLevel</code> ，延迟级别分别为 <code>1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h</code> ，从 1 开始数。</p>
+<h4 id="批量消息"> 批量消息</h4>
+<div><pre><code><span>// org.apache.rocketmq.client.producer.DefaultMQProducer#send</span>
+<span>public</span> <span>SendResult</span> <span>send</span><span>(</span><span>Collection</span><span><span>&lt;</span><span>Message</span><span>></span></span> msgs<span>)</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br></div></div><p>可以简单地把消息封装为 <code>Collection&lt;Message&gt;</code> ，一起发出去。</p>
+<h4 id="过滤消息"> 过滤消息</h4>
+<p>大多数情况下，可以通过 Topic 和 Tag 来过滤消息。</p>
+<p>Tag 可以用表达式写。</p>
+<div><pre><code>consumer<span>.</span><span>subscribe</span><span>(</span><span>MQTopicConstant</span><span>.</span>PRACTISE<span>,</span> <span>MessageSelector</span><span>.</span><span>byTag</span><span>(</span><span>"TAG"</span><span>)</span><span>)</span><span>;</span>
+</code></pre>
+<div><span>1</span><br></div></div><p>在复杂情况下，还可以通过 SQL 语句来过滤消息。</p>
+<p><img src="./rocketmq.assets/image-20210808203938656-16284263806451.png" alt="image-20210808203938656" /></p>
+<p>其中变量 <code>a</code>  可以在发送消息的时候通过 <code>putUserProperty()</code>  放入。</p>
+<div><pre><code><span>// org.apache.rocketmq.common.message.Message#putUserProperty</span>
+<span>public</span> <span>void</span> <span>putUserProperty</span><span>(</span><span>final</span> <span>String</span> name<span>,</span> <span>final</span> <span>String</span> value<span>)</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br></div></div><p>只有推送模式的 Consumer 可以使用消息过滤。</p>
+<h4 id="事务消息"> 事务消息</h4>
+<p><img src="./rocketmq.assets/image-20210808210014135.png" alt="image-20210808210014135" /></p>
+<p>事务消息的机制是在发送消息时会发送一个办消息，这个消息存放在系统创建的 Topic 中，对消费者是不可见的。在生产者对消息进行提交之后才会把消息转移到目标 Topic。如果生产者没有对消息进行提交，RocketMQ 会每隔一段时间进行回查，确认本地事务是否已提交成功，如果是则把消息转移到目标 Topic，否则若超过最大回查尝试次数则丢弃消息，默认最大重试次数为 15。</p>
+<h3 id="spring-boot"> Spring Boot</h3>
+<h4 id="配置"> 配置</h4>
+<p>配置解耦，写在配置文件中。</p>
+<div><pre><code><span>rocketmq.name-server</span><span>=</span><span>192.168.229.129:9876</span>
+<span>rocketmq.producer.group</span><span>=</span><span>spring-boot-producer-group</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br></div></div><h4 id="生产者-同步发送-2"> 生产者（同步发送）</h4>
+<p>核心是 <code>RocketMQTemplate</code> ，消息的发送都依赖它完成。 <code>RocketMQTemplate</code>  已经在 Spring 容器中，可以自动注入拿到。其中 <code>destination</code>  的格式为 <code>${topic}:${tag}</code> 。</p>
+<div><pre><code><span>// org.springframework.messaging.core.AbstractMessageSendingTemplate#send</span>
+<span>public</span> <span>void</span> <span>send</span><span>(</span><span>D</span> destination<span>,</span> <span>Message</span><span><span>&lt;</span><span>?</span><span>></span></span> message<span>)</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br></div></div><p>发送消息用 <code>send()</code> ，参数中的 <code>Message</code>  实际上是 <code>org.springframework.messaging.Message</code> ，而不是 <code>org.apache.rocketmq.common.message.Message</code> 。</p>
+<p><code>Message</code>  可以用 <code>MessageBuilder</code>  构建。</p>
+<div><pre><code><span>MessageBuilder</span><span>.</span><span>withPayload</span><span>(</span>payload<span>)</span><span>.</span><span>build</span><span>(</span><span>)</span><span>;</span>
+</code></pre>
+<div><span>1</span><br></div></div><h4 id="生产者-异步发送-2"> 生产者（异步发送）</h4>
+<div><pre><code><span>// org.apache.rocketmq.spring.core.RocketMQTemplate#asyncSend</span>
+<span>public</span> <span>void</span> <span>asyncSend</span><span>(</span><span>String</span> destination<span>,</span> <span>Message</span><span><span>&lt;</span><span>?</span><span>></span></span> message<span>,</span> <span>SendCallback</span> sendCallback<span>)</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br></div></div><h4 id="生产者-单向发送-2"> 生产者（单向发送）</h4>
+<div><pre><code><span>// org.apache.rocketmq.spring.core.RocketMQTemplate#sendOneWay</span>
+<span>public</span> <span>void</span> <span>sendOneWay</span><span>(</span><span>String</span> destination<span>,</span> <span>Message</span><span><span>&lt;</span><span>?</span><span>></span></span> message<span>)</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br></div></div><h4 id="消费者-推送-2"> 消费者（推送）</h4>
+<p>消息的消费有了新的抽象。只需实现 <code>RocketMQListener</code>  接口就可以快速完成消息消费。设计原则是一个接口消费一种消息，如果需要消费其他消息则需要多个接口。</p>
+<div><pre><code><span>package</span> <span>com<span>.</span>example<span>.</span>rocketmqinspringboot<span>.</span>listener</span><span>;</span>
+
+<span>@Slf4j</span>
+<span>@Service</span>
+<span>@RocketMQMessageListener</span><span>(</span>consumerGroup <span>=</span> <span>MQConstant</span><span>.</span>CONSUMER_GROUP<span>,</span> topic <span>=</span> <span>MQTopicConstant</span><span>.</span>PRACTISE<span>,</span> selectorExpression <span>=</span> <span>MQTagConstant</span><span>.</span>PRACTISE<span>)</span>
+<span>public</span> <span>class</span> <span>Consumer</span> <span>implements</span> <span>RocketMQListener</span><span><span>&lt;</span><span>String</span><span>></span></span> <span>{</span>
+
+    <span>@Override</span>
+    <span>public</span> <span>void</span> <span>onMessage</span><span>(</span><span>String</span> message<span>)</span> <span>{</span>
+        log<span>.</span><span>info</span><span>(</span><span>"收到消息: {}"</span><span>,</span> message<span>)</span><span>;</span>
+    <span>}</span>
+
+<span>}</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br></div></div><p>上面的例子会直接拿到消息中的 Payload 并且将之转为泛型对应类型的对象。如果你需要拿到消息的头部信息，把泛型设置为 <code>MessageExt</code> ，其中可以拿到头部信息<sup></sup>。</p>
+<h4 id="顺序消费-2"> 顺序消费</h4>
+<div><pre><code><span>// org.apache.rocketmq.spring.core.RocketMQTemplate#sendAndReceive</span>
+<span>public</span> <span><span>&lt;</span><span>T</span><span>></span></span> <span>T</span> <span>sendAndReceive</span><span>(</span><span>String</span> destination<span>,</span> <span>Message</span><span><span>&lt;</span><span>?</span><span>></span></span> message<span>,</span> <span>Type</span> type<span>,</span> <span>String</span> hashKey<span>)</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br></div></div><p>生产者同一组消息指定相同的 <code>hashKey</code> ，则该组消息会被发送到同一个消息队列上。</p>
+<div><pre><code><span>// org.apache.rocketmq.spring.annotation.RocketMQMessageListener#consumeMode</span>
+<span>ConsumeMode</span> <span>consumeMode</span><span>(</span><span>)</span> <span>default</span> <span>ConsumeMode</span><span>.</span>CONCURRENTLY<span>;</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br></div></div><p>消费者把 <code>consumeMode</code>  设置为 <code>ORDERLY</code> 。</p>
+<h4 id="广播消息-2"> 广播消息</h4>
+<div><pre><code><span>// org.apache.rocketmq.spring.annotation.RocketMQMessageListener#messageModel</span>
+<span>MessageModel</span> <span>messageModel</span><span>(</span><span>)</span> <span>default</span> <span>MessageModel</span><span>.</span>CLUSTERING<span>;</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br></div></div><h4 id="过滤消息-2"> 过滤消息</h4>
+<div><pre><code><span>// org.apache.rocketmq.spring.annotation.RocketMQMessageListener#selectorType</span>
+<span>SelectorType</span> <span>selectorType</span><span>(</span><span>)</span> <span>default</span> <span>SelectorType</span><span>.</span>TAG<span>;</span>
+
+<span>// org.apache.rocketmq.spring.annotation.RocketMQMessageListener#selectorExpression</span>
+<span>String</span> <span>selectorExpression</span><span>(</span><span>)</span> <span>default</span> <span>"*"</span><span>;</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br></div></div><h4 id="事务消息-2"> 事务消息</h4>
+<div><pre><code><span>// org.apache.rocketmq.spring.core.RocketMQTemplate#sendMessageInTransaction</span>
+<span>public</span> <span>TransactionSendResult</span> <span>sendMessageInTransaction</span><span>(</span><span>final</span> <span>String</span> destination<span>,</span> <span>final</span> <span>Message</span><span><span>&lt;</span><span>?</span><span>></span></span> message<span>,</span> <span>final</span> <span>Object</span> arg<span>)</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br></div></div><p>发送事务消息依赖 <code>sendMessageInTransaction</code>  完成。 <code>arg</code>  作为自定义参数会被传递到 <code>RocketMQLocalTransactionListener#executeLocalTransaction</code>  中，本地事务逻辑会在该方法中完成。</p>
+<div><pre><code><span>package</span> <span>com<span>.</span>example<span>.</span>rocketmqinspringboot<span>.</span>controller</span><span>;</span>
+
+<span>@Operation</span><span>(</span>summary <span>=</span> <span>"发事务消息"</span><span>)</span>
+<span>@PostMapping</span><span>(</span><span>"/transaction"</span><span>)</span>
+<span>public</span> <span>void</span> <span>sendTransactionMessage</span><span>(</span><span>@RequestBody</span> <span>String</span> message<span>)</span> <span>{</span>
+    <span>TransactionSendResult</span> transactionSendResult <span>=</span> rocketMQTemplate<span>.</span><span>sendMessageInTransaction</span><span>(</span><span>getDestination</span><span>(</span><span>)</span><span>,</span> <span>getMessage</span><span>(</span>message<span>)</span><span>,</span> message<span>)</span><span>;</span>
+    log<span>.</span><span>info</span><span>(</span><span>"transactionSendResult: {}"</span><span>,</span> transactionSendResult<span>)</span><span>;</span>
+<span>}</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br></div></div><div><pre><code><span>package</span> <span>com<span>.</span>example<span>.</span>rocketmqinspringboot<span>.</span>listener</span><span>;</span>
+
+<span>@Slf4j</span>
+<span>@RocketMQTransactionListener</span>
+<span>public</span> <span>class</span> <span>TransactionListener</span> <span>implements</span> <span>RocketMQLocalTransactionListener</span> <span>{</span>
+    <span>@Override</span>
+    <span>public</span> <span>RocketMQLocalTransactionState</span> <span>executeLocalTransaction</span><span>(</span><span>Message</span> msg<span>,</span> <span>Object</span> arg<span>)</span> <span>{</span>
+        <span>String</span> orderNumber <span>=</span> <span>new</span> <span>String</span><span>(</span><span>(</span><span>byte</span><span>[</span><span>]</span><span>)</span> msg<span>.</span><span>getPayload</span><span>(</span><span>)</span><span>)</span><span>;</span>
+        log<span>.</span><span>info</span><span>(</span><span>"执行事务, {}"</span><span>,</span> orderNumber<span>)</span><span>;</span>
+        <span>return</span> <span>RocketMQLocalTransactionState</span><span>.</span>UNKNOWN<span>;</span>
+    <span>}</span>
+
+    <span>@Override</span>
+    <span>public</span> <span>RocketMQLocalTransactionState</span> <span>checkLocalTransaction</span><span>(</span><span>Message</span> msg<span>)</span> <span>{</span>
+        <span>String</span> orderNumber <span>=</span> <span>new</span> <span>String</span><span>(</span><span>(</span><span>byte</span><span>[</span><span>]</span><span>)</span> msg<span>.</span><span>getPayload</span><span>(</span><span>)</span><span>)</span><span>;</span>
+        log<span>.</span><span>info</span><span>(</span><span>"回查, {}"</span><span>,</span> orderNumber<span>)</span><span>;</span>
+        <span>return</span> <span>RocketMQLocalTransactionState</span><span>.</span>COMMIT<span>;</span>
+    <span>}</span>
+<span>}</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br></div></div><p>发送事务消息时，一个 <code>RocketMQTemplate</code>  对应一个 <code>RocketMQLocalTransactionListener</code> ，该 <code>RocketMQTemplate</code>  所发出的事务消息都会在对应的 <code>RocketMQLocalTransactionListener</code>  中执行。</p>
+<p>如果需要定义多个事务消息监听器，就需要多个 <code>RocketMQListener</code> ，对应多个 <code>RocketMQLocalTransactionListener</code> 。</p>
+<div><pre><code><span>package</span> <span>com<span>.</span>example<span>.</span>rocketmqinspringboot<span>.</span>config</span><span>;</span>
+
+<span>@ExtRocketMQTemplateConfiguration</span>
+<span>public</span> <span>class</span> <span>ExtRocketMQTemplate</span> <span>extends</span> <span>RocketMQTemplate</span> <span>{</span>
+<span>}</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br></div></div><div><pre><code><span>package</span> <span>com<span>.</span>example<span>.</span>rocketmqinspringboot<span>.</span>listener</span><span>;</span>
+
+<span>@RocketMQTransactionListener</span><span>(</span>rocketMQTemplateBeanName <span>=</span> <span>"extRocketMQTemplate"</span><span>)</span>
+<span>public</span> <span>class</span> <span>ExtTransactionListener</span> <span>implements</span> <span>RocketMQLocalTransactionListener</span> <span>{</span>
+    <span>@Override</span>
+    <span>public</span> <span>RocketMQLocalTransactionState</span> <span>executeLocalTransaction</span><span>(</span><span>Message</span> msg<span>,</span> <span>Object</span> arg<span>)</span> <span>{</span>
+        <span>return</span> <span>RocketMQLocalTransactionState</span><span>.</span>UNKNOWN<span>;</span>
+    <span>}</span>
+
+    <span>@Override</span>
+    <span>public</span> <span>RocketMQLocalTransactionState</span> <span>checkLocalTransaction</span><span>(</span><span>Message</span> msg<span>)</span> <span>{</span>
+        <span>return</span> <span>RocketMQLocalTransactionState</span><span>.</span>COMMIT<span>;</span>
+    <span>}</span>
+<span>}</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br></div></div><h3 id="spring-cloud-stream"> Spring Cloud Stream</h3>
+<p>Spring Cloud Stream 是 Spring 官方提供的一个针对所有开源的消息系统进行统一封装。</p>
+<h4 id="配置-2"> 配置</h4>
+<div><pre><code><span>package</span> <span>com<span>.</span>example<span>.</span>rocketmqspringcloudstream</span><span>;</span>
+
+<span>@EnableBinding</span><span>(</span><span>{</span><span>Source</span><span>.</span><span>class</span><span>,</span> <span>Sink</span><span>.</span><span>class</span><span>}</span><span>)</span>
+<span>@SpringBootApplication</span>
+<span>public</span> <span>class</span> <span>RocketmqSpringCloudStreamApplication</span> <span>{</span>
+
+    <span>public</span> <span>static</span> <span>void</span> <span>main</span><span>(</span><span>String</span><span>[</span><span>]</span> args<span>)</span> <span>{</span>
+        <span>SpringApplication</span><span>.</span><span>run</span><span>(</span><span>RocketmqSpringCloudStreamApplication</span><span>.</span><span>class</span><span>,</span> args<span>)</span><span>;</span>
+    <span>}</span>
+
+<span>}</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br></div></div><p><code>Source</code>  和 <code>Sink</code>  是 Spring Cloud Stream 提供的简单的消息输入和输出通道。</p>
+<div><pre><code><span>spring.cloud.stream.bindings.input.destination</span><span>=</span><span>STREAM_TOPIC</span>
+<span>spring.cloud.stream.bindings.input.group</span><span>=</span><span>STREAM_GROUP</span>
+<span>spring.cloud.stream.bindings.output.destination</span><span>=</span><span>STREAM_TOPIC</span>
+<span>spring.cloud.stream.rocketmq.binder.name-server</span><span>=</span><span>192.168.229.129:9876</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br></div></div><p>Spring Cloud Stream 关于消息生产和消费的配置都放在配置文件中。</p>
+<p><code>spring.cloud.stream.bindings</code>  是一个 <code>Map</code> ，可以配置多个通道， <code>input</code>  就是 <code>Sink</code>  的通道名， <code>output</code>  就是 <code>Source</code>  的通道名。</p>
+<p>如果需要定义其他通道就新增配置文件，然后新增类似于 <code>Sink</code>  和 <code>Sourec</code>  的接口。</p>
+<h4 id="生产者"> 生产者</h4>
+<div><pre><code><span>package</span> <span>com<span>.</span>example<span>.</span>rocketmqspringcloudstream<span>.</span>controller</span><span>;</span>
+
+<span>@Tag</span><span>(</span>name <span>=</span> <span>"消息"</span><span>)</span>
+<span>@Slf4j</span>
+<span>@RestController</span>
+<span>@RequestMapping</span><span>(</span><span>"/messages"</span><span>)</span>
+<span>public</span> <span>class</span> <span>MessageController</span> <span>{</span>
+
+    <span>@Autowired</span>
+    <span>private</span> <span>Source</span> source<span>;</span>
+
+    <span>@Operation</span><span>(</span>summary <span>=</span> <span>"发同步消息"</span><span>)</span>
+    <span>@PostMapping</span><span>(</span><span>"/sync"</span><span>)</span>
+    <span>public</span> <span>void</span> <span>sendSync</span><span>(</span><span>@RequestBody</span> <span>String</span> message<span>)</span> <span>{</span>
+        <span>Map</span><span><span>&lt;</span><span>String</span><span>,</span> <span>Object</span><span>></span></span> headers <span>=</span> <span>new</span> <span>HashMap</span><span><span>&lt;</span><span>></span></span><span>(</span><span>)</span><span>;</span>
+        headers<span>.</span><span>put</span><span>(</span><span>MessageConst</span><span>.</span>PROPERTY_TAGS<span>,</span> <span>MQTagConstant</span><span>.</span>PRACTISE<span>)</span><span>;</span>
+        <span>Message</span><span><span>&lt;</span><span>String</span><span>></span></span> msg <span>=</span> <span>MessageBuilder</span><span>.</span><span>createMessage</span><span>(</span>message<span>,</span> <span>new</span> <span>MessageHeaders</span><span>(</span>headers<span>)</span><span>)</span><span>;</span>
+        <span>boolean</span> success <span>=</span> source<span>.</span><span>output</span><span>(</span><span>)</span><span>.</span><span>send</span><span>(</span>msg<span>)</span><span>;</span>
+        log<span>.</span><span>info</span><span>(</span><span>"success: {}"</span><span>,</span> success<span>)</span><span>;</span>
+    <span>}</span>
+
+<span>}</span>
+
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br></div></div><h4 id="消费者"> 消费者</h4>
+<div><pre><code><span>package</span> <span>com<span>.</span>example<span>.</span>rocketmqspringcloudstream<span>.</span>consumer</span><span>;</span>
+
+<span>@Slf4j</span>
+<span>@Service</span>
+<span>public</span> <span>class</span> <span>Consumer</span> <span>{</span>
+
+    <span>@StreamListener</span><span>(</span><span>Sink</span><span>.</span>INPUT<span>)</span>
+    <span>public</span> <span>void</span> <span>consume</span><span>(</span><span>String</span> message<span>)</span> <span>{</span>
+        log<span>.</span><span>info</span><span>(</span><span>"收到消息: {}"</span><span>,</span> message<span>)</span><span>;</span>
+    <span>}</span>
+
+<span>}</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br></div></div><h2 id="参考资料"> 参考资料</h2>
+<ol>
+<li><a href="https://www.bilibili.com/video/BV1h54y1H7YF" target="_blank" rel="noopener noreferrer">2021 年 B 站讲的最牛掰的 RocketMQ 分布式消息中间件：核心原理与最佳实践_哔哩哔哩_bilibili</a></li>
+<li><a href="http://rocketmq.apache.org/" target="_blank" rel="noopener noreferrer">Apache RocketMQ</a></li>
+<li><a href="https://github.com/apache/rocketmq/tree/master/docs/cn" target="_blank" rel="noopener noreferrer">rocketmq/docs/cn at master · apache/rocketmq</a></li>
+<li><a href="https://github.com/apache/rocketmq-externals/tree/master/rocketmq-console" target="_blank" rel="noopener noreferrer">rocketmq-externals/rocketmq-console at master · apache/rocketmq-externals</a></li>
+<li><a href="https://www.jianshu.com/p/706588323276" target="_blank" rel="noopener noreferrer">基于 Docker 安装 RocketMQ - 简书</a></li>
+<li><a href="https://github.com/apache/rocketmq-docker/blob/master/templates/docker-compose/docker-compose.yml" target="_blank" rel="noopener noreferrer">rocketmq-docker/docker-compose.yml at master · apache/rocketmq-docker</a></li>
+<li><a href="https://github.com/apache/rocketmq-spring/wiki/%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C" target="_blank" rel="noopener noreferrer">用户手册・apache/rocketmq-spring Wiki</a></li>
+</ol>
+<hr>
+<section>
+<ol>
+<li id="footnote1"><p><a href="https://hub.docker.com/r/apacherocketmq/rocketmq-nameserver" target="_blank" rel="noopener noreferrer">apacherocketmq/rocketmq-nameserver - Docker Image | Docker Hub</a> </p>
+</li>
+<li id="footnote2"><p><a href="https://hub.docker.com/r/apacherocketmq/rocketmq-broker" target="_blank" rel="noopener noreferrer">apacherocketmq/rocketmq-broker - Docker Image | Docker Hub</a> </p>
+</li>
+<li id="footnote3"><p><a href="https://hub.docker.com/r/apacherocketmq/rocketmq-console" target="_blank" rel="noopener noreferrer">apacherocketmq/rocketmq-console - Docker Image | Docker Hub</a> </p>
+</li>
+<li id="footnote4"><p><a href="https://github.com/apache/rocketmq-externals/tree/master/rocketmq-console" target="_blank" rel="noopener noreferrer">rocketmq-externals/rocketmq-console at master · apache/rocketmq-externals</a> </p>
+</li>
+<li id="footnote5"><p><a href="https://github.com/apache/rocketmq-spring/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98" target="_blank" rel="noopener noreferrer">常见问题・apache/rocketmq-spring Wiki</a> </p>
+</li>
+</ol>
+</section>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>EditorConfig</title>
+      <link>https://bobo2334.github.io/notes/utilities/editorconfig/</link>
+      <guid>https://bobo2334.github.io/notes/utilities/editorconfig/</guid>
+      <source url="https://bobo2334.github.io/rss.xml">EditorConfig</source>
+      <category>学习笔记</category>
+      <pubDate>Sat, 28 Aug 2021 16:54:59 GMT</pubDate>
+      <content:encoded><![CDATA[<h1 id="editorconfig"> EditorConfig</h1>
+<h2 id="简介"> 简介</h2>
+<p>EditorConfig<sup></sup> 配置文件被许多优秀的代码编辑器默认支持，只要 <code>.editorconfig</code>  文件存在于项目的根目录下，它就会被编辑器读取并应用。</p>
+<p>将项目文件格式写入名为 <code>.editorconfig</code>  的配置文件，如文件编码、换行风格、缩进风格等，以便多个开发人员在项目里保持一致的编码风格。</p>
+<h2 id="示例"> 示例</h2>
+<div><pre><code><span># EditorConfig is awesome: https://EditorConfig.org</span>
+
+<span>root</span> <span>=</span> <span>true</span>
+
+<span><span>[</span><span>*</span><span>]</span></span>
+<span>end_of_line</span> <span>=</span> <span>lf</span>
+<span>charset</span> <span>=</span> <span>utf-8</span>
+<span>insert_final_newline</span> <span>=</span> <span>true</span>
+<span>trim_trailing_whitespace</span> <span>=</span> <span>true</span>
+<span>indent_style</span> <span>=</span> <span>space</span>
+<span>indent_size</span> <span>=</span> <span>4</span>
+
+<span><span>[</span><span>{*.ts, *.js}</span><span>]</span></span>
+<span>indent_size</span> <span>=</span> <span>2</span>
+</code></pre>
+<div><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br></div></div><p>用 <code>#</code> 标注注释；</p>
+<p>配置可以分段，在 <code>[]</code>  之中声明要匹配的文件，可以用 <code>{}</code>  来声明多种匹配规则，用英文逗号 <code>,</code>  分隔这些规则；</p>
+<ol>
+<li><code>*</code> ，匹配任意字符串，除了 <code>/</code> ；</li>
+<li><code>**</code> ，匹配任意字符串；</li>
+<li><code>?</code> ，匹配单个字符；</li>
+<li><code>[name]</code> ，匹配 <code>name</code>  中的任意单个字符，即 <code>n</code> 、 <code>a</code> 、 <code>m</code>  和 <code>e</code> ；</li>
+<li><code>[!name]</code> ，匹配不出现在 <code>name</code>  中的单个字符；</li>
+<li><code>{s1, s2, s3}</code> ，联合多个匹配；</li>
+<li><code>{1..9}</code> ，匹配任意 <code>1</code>  至 <code>9</code>  之间的数字。</li>
+</ol>
+<p>用 <code>key=value</code>  的形式定义属性，常用的一些属性如下。</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>可选值</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>indent_style</code></td>
+<td><code>tab</code> / <code>space</code></td>
+<td>缩进风格</td>
+</tr>
+<tr>
+<td><code>indent_size</code></td>
+<td>数字</td>
+<td>空格缩进数量</td>
+</tr>
+<tr>
+<td><code>end_of_line</code></td>
+<td><code>lf</code> / <code>cr</code> / <code>crlf</code></td>
+<td>换行符风格</td>
+</tr>
+<tr>
+<td><code>charset</code></td>
+<td><code>utf-8</code> / <code>...</code></td>
+<td>文件编码</td>
+</tr>
+<tr>
+<td><code>trim_trailing_whitespace</code></td>
+<td><code>true</code> / <code>false</code></td>
+<td>移除行尾空白字符</td>
+</tr>
+<tr>
+<td><code>insert_final_newline</code></td>
+<td><code>true</code> / <code>false</code></td>
+<td>文件永远以空行结尾</td>
+</tr>
+<tr>
+<td><code>root</code></td>
+<td><code>true</code> / <code>false</code></td>
+<td>该属性表名此配置文件是最顶层的配置文件，不会再往上层寻找配置文件了</td>
+</tr>
+</tbody>
+</table>
+<p>可以在每个文件夹层级都定义配置文件，在进行格式化文件的时候，EditorConfig 会从当前目录至上级目录一直寻找 <code>.editorconfig</code>  文件，直到文件系统的根目录或者到某个包含 <code>root=true</code>  的配置文件为止。最终生效的配置文件是将所有寻找到的配置文件合并后的结果，路径短的配置内容会覆盖路径长的配置内容。</p>
+<hr>
+<section>
+<ol>
+<li id="footnote1"><p><a href="https://editorconfig.org/" target="_blank" rel="noopener noreferrer">EditorConfig</a> </p>
+</li>
+</ol>
+</section>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>VuePress</title>
+      <link>https://bobo2334.github.io/notes/utilities/vuepress/</link>
+      <guid>https://bobo2334.github.io/notes/utilities/vuepress/</guid>
+      <source url="https://bobo2334.github.io/rss.xml">VuePress</source>
+      <category>学习笔记</category>
+      <pubDate>Sat, 28 Aug 2021 16:54:59 GMT</pubDate>
+      <content:encoded><![CDATA[<h1 id="vuepress"> VuePress</h1>
+<p>VuePress<sup></sup> 是一个由 Vue 驱动的静态网站生成器。</p>
+<h2 id="主题"> 主题</h2>
+<ul>
+<li><a href="https://github.com/ulivz/vuepress-theme-egoist" target="_blank" rel="noopener noreferrer">ulivz/vuepress-theme-egoist: [WIP] A blog theme for @EGOIST and a mirror of egoist/blog, but powered by VuePress.</a></li>
+<li><a href="https://github.com/Danktuary/vuepress-theme-yuu" target="_blank" rel="noopener noreferrer">Danktuary/vuepress-theme-yuu: A VuePress 1.x theme that supports a dark theme, multiple color themes, and other useful features.</a></li>
+<li><a href="https://github.com/Microflash/vuepress-theme-succinct" target="_blank" rel="noopener noreferrer">Microflash/vuepress-theme-succinct: A slightly opinionated theme for Vuepress</a></li>
+<li><a href="https://github.com/z3by/vuepress-theme-vuetify" target="_blank" rel="noopener noreferrer">z3by/vuepress-theme-vuetify: Material design vuepress theme</a></li>
+<li><a href="https://github.com/vuepress-theme-hope/vuepress-theme-hope/tree/v1/" target="_blank" rel="noopener noreferrer">vuepress-theme-hope/vuepress-theme-hope at v1</a></li>
+<li><a href="https://github.com/qcyblm/vuepress-theme-vpx" target="_blank" rel="noopener noreferrer">qcyblm/vuepress-theme-vpx: A theme developed based on VuePress</a></li>
+</ul>
+<h2 id="插件"> 插件</h2>
+<hr>
+<section>
+<ol>
+<li id="footnote1"><p><a href="https://vuepress.vuejs.org/zh/" target="_blank" rel="noopener noreferrer">VuePress</a> </p>
+</li>
+</ol>
+</section>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>Mermaind 测试</title>
+      <link>https://bobo2334.github.io/tests/mermaind/</link>
+      <guid>https://bobo2334.github.io/tests/mermaind/</guid>
+      <source url="https://bobo2334.github.io/rss.xml">Mermaind 测试</source>
+      <category>测试</category>
+      <pubDate>Sat, 28 Aug 2021 16:54:59 GMT</pubDate>
+      <content:encoded><![CDATA[<h1 id="mermaind-测试"> Mermaind 测试</h1>
+<ul>
+<li><a href="https://mermaid-js.github.io/mermaid/#/" target="_blank" rel="noopener noreferrer">mermaid - Markdownish syntax for generating flowcharts, sequence diagrams, class diagrams, gantt charts and git graphs.</a></li>
+</ul>
+<Mermaid id="mermaid-382ee145" data-code="sequenceDiagram%0A%20%20%20%20participant%20Alice%0A%20%20%20%20participant%20Bob%0A%20%20%20%20Alice-%3E%3EJohn%3A%20Hello%20John%2C%20how%20are%20you%3F%0A%20%20%20%20loop%20Healthcheck%0A%20%20%20%20%20%20%20%20John-%3E%3EJohn%3A%20Fight%20against%20hypochondria%0A%20%20%20%20end%0A%20%20%20%20Note%20right%20of%20John%3A%20Rational%20thoughts%20%3Cbr%2F%3Eprevail!%0A%20%20%20%20John--%3E%3EAlice%3A%20Great!%0A%20%20%20%20John-%3E%3EBob%3A%20How%20about%20you%3F%0A%20%20%20%20Bob--%3E%3EJohn%3A%20Jolly%20good!%0A"></Mermaid>]]></content:encoded>
+    </item>
+    <item>
+      <title>PlantUML 测试</title>
+      <link>https://bobo2334.github.io/tests/plantuml/</link>
+      <guid>https://bobo2334.github.io/tests/plantuml/</guid>
+      <source url="https://bobo2334.github.io/rss.xml">PlantUML 测试</source>
+      <category>测试</category>
+      <pubDate>Sat, 28 Aug 2021 16:54:59 GMT</pubDate>
+      <content:encoded><![CDATA[<h1 id="plantuml-测试"> PlantUML 测试</h1>
+<ul>
+<li><a href="https://plantuml.com/zh/" target="_blank" rel="noopener noreferrer">开源工具，使用简单的文字描述画 UML 图。</a></li>
+</ul>
+<p>@startuml
+scale 600 width</p>
+<p>[<em>] -&gt; State1
+State1 --&gt; State2 : Succeeded
+State1 --&gt; [</em>] : Aborted
+State2 --&gt; State3 : Succeeded
+State2 --&gt; [<em>] : Aborted
+state State3 {
+state &quot;Accumulate Enough Data\nLong State Name&quot; as long1
+long1 : Just a test
+[</em>] --&gt; long1
+long1 --&gt; long1 : New Data
+long1 --&gt; ProcessData : Enough Data
+}
+State3 --&gt; State3 : Failed
+State3 --&gt; [<em>] : Succeeded / Save Result
+State3 --&gt; [</em>] : Aborted</p>
+<p>@enduml</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>TODO 测试</title>
+      <link>https://bobo2334.github.io/tests/todo/</link>
+      <guid>https://bobo2334.github.io/tests/todo/</guid>
+      <source url="https://bobo2334.github.io/rss.xml">TODO 测试</source>
+      <category>测试</category>
+      <pubDate>Sat, 28 Aug 2021 16:54:59 GMT</pubDate>
+      <content:encoded><![CDATA[<h1 id="todo-测试"> TODO 测试</h1>
+<ul>
+<li><input type="checkbox" checked="checked" disabled="disabled" id="task-item-0"> 集成 <code>pangu.js</code> <label for="task-item-0"> 集成`pangu.js`，就不用自己手动加空格了；</label></li>
+<li><input type="checkbox"  disabled="disabled" id="task-item-1"><label for="task-item-1"> 自动生成索引页，将子文件夹的名称作为分类名称，其中的内容作为文章名称；</label></li>
+<li><input type="checkbox" checked="checked" disabled="disabled" id="task-item-2"><label for="task-item-2"> 解决TODO没有正确解析的问题；</label></li>
+<li><input type="checkbox"  disabled="disabled" id="task-item-3">  <code>Mermaid</code> <label for="task-item-3"> `Mermaid`扩展；</label></li>
+<li><input type="checkbox" checked="checked" disabled="disabled" id="task-item-4">  <code>Markdown-it</code> <label for="task-item-4"> `Markdown-it`脚注；</label></li>
+<li><input type="checkbox"  disabled="disabled" id="task-item-5"><label for="task-item-5"> favicon</label></li>
+<li><input type="checkbox" checked="checked" disabled="disabled" id="task-item-6"><label for="task-item-6"> plantuml</label></li>
+<li><input type="checkbox" checked="checked" disabled="disabled" id="task-item-7"><label for="task-item-7"> pwa</label></li>
+</ul>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>
