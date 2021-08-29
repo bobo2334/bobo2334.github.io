@@ -1,6 +1,6 @@
 import { defineUserConfig } from 'vuepress-vite'
 import type { DefaultThemeOptions } from 'vuepress-vite'
-import path from 'path'
+const path = require('path')
 
 export default defineUserConfig<DefaultThemeOptions>({
   lang: 'zh-CN',

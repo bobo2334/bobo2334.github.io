@@ -1,8 +1,5 @@
 <template>
   <Layout>
-    <template #page-bottom>
-      <div class="my-footer">This is my custom page footer</div>
-    </template>
   </Layout>
 </template>
 
@@ -17,7 +14,5 @@ export default {
 </script>
 
 <style lang="css">
-.my-footer {
-  text-align: center;
-}
+
 </style>
