@@ -1,5 +1,6 @@
 import { defineUserConfig } from 'vuepress-vite'
 import type { DefaultThemeOptions } from 'vuepress-vite'
+import path from 'path'
 
 export default defineUserConfig<DefaultThemeOptions>({
   lang: 'zh-CN',
@@ -15,14 +16,19 @@ export default defineUserConfig<DefaultThemeOptions>({
     ['meta', { name: 'theme-color', content: '#ffffff' }],
   ],
   plugins: [
-    "@vuepress/plugin-search",
-    ["@vuepress/pwa", { skipWaiting: true }]
-    // "@vuepress/plugin-shiki",
+    ['@vuepress/plugin-search', { maxSuggestions: 10 }],
+    ['@vuepress/plugin-pwa', { skipWaiting: true }],
+    ['md-enhance', {
+      footnote: true,
+      tasklist: true,
+      mermaid: false,
+      tex: true
+    }],
   ],
   extendsMarkdown: (md) => {
-    md.use(require('markdown-it-footnote'))
-      .use(require('markdown-it-task-lists'))
+    md
       .use(require('markdown-it-pangu'))
-      .use(require('markdown-it-plantuml'))
-  }
+      .use(require('markdown-it-textual-uml'))
+  },
+  theme: path.resolve(__dirname, './theme')
 })

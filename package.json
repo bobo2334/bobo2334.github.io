@@ -13,15 +13,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {},
-  "dependencies": {
+  "devDependencies": {
     "@vuepress/plugin-pwa": "^2.0.0-beta.24",
     "@vuepress/plugin-search": "^2.0.0-beta.24",
-    "@vuepress/plugin-shiki": "^2.0.0-beta.24",
-    "markdown-it-footnote": "^3.0.3",
     "markdown-it-pangu": "^1.0.2",
-    "markdown-it-plantuml": "^1.4.1",
-    "markdown-it-task-lists": "^2.1.1",
+    "markdown-it-textual-uml": "^0.1.8",
+    "vuepress-plugin-md-enhance": "^2.0.0-alpha.5",
     "vuepress-vite": "^2.0.0-beta.24"
   }
 }
