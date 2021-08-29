@@ -1,1 +1,0 @@
-const t={key:"v-b11d2d44",path:"/notes/utilities/editorconfig.html",title:"EditorConfig",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:2,title:"简介",slug:"简介",children:[]},{level:2,title:"示例",slug:"示例",children:[]}],filePathRelative:"notes/utilities/editorconfig.md",git:{updatedTime:1630216589e3,contributors:[]}};export{t as data};

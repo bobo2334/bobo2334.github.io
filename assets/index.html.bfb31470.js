@@ -1,1 +1,0 @@
-import{o as a,c as e,a as r,e as s}from"./app.4569360d.js";const d={},n={id:"读书笔记",tabindex:"-1"},t=[r("a",{class:"header-anchor",href:"#读书笔记","aria-hidden":"true"},"#",-1),s(" 读书笔记")];d.render=function(r,s){return a(),e("h1",n,t)};export{d as default};
