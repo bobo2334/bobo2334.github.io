@@ -15,6 +15,7 @@
   "license": "ISC",
   "devDependencies": {
     "@vuepress/plugin-pwa": "^2.0.0-beta.24",
+    "@vuepress/plugin-pwa-popup": "^2.0.0-beta.25",
     "@vuepress/plugin-search": "^2.0.0-beta.24",
     "markdown-it-pangu": "^1.0.2",
     "markdown-it-textual-uml": "^0.1.8",

@@ -12,7 +12,6 @@ indent_size = 4
 
 [{*.ts, *.js}]
 indent_size = 2
-quote_type = single
 
 [*.yml]
 indent_size = 2

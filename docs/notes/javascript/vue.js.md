@@ -3,7 +3,7 @@
 ## 参考资料
 
 - [Vue.js](https://cn.vuejs.org/)
-- [【尚硅谷】Web前端迅速上手Vue教程丨vue3.0入门到精通_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1Zy4y1K7SH?p=2)
+- [【尚硅谷】Web前端迅速上手Vue教程丨vue3.0入门到精通_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1Zy4y1K7SH)
 
 ## Vue简介
 

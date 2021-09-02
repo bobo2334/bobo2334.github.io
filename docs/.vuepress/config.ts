@@ -17,7 +17,8 @@ export default defineUserConfig<DefaultThemeOptions>({
   ],
   plugins: [
     ['@vuepress/plugin-search', { maxSuggestions: 10 }],
-    ['@vuepress/plugin-pwa', { skipWaiting: true }],
+    ['@vuepress/plugin-pwa'],
+    ['@vuepress/plugin-pwa-popup'],
     ['md-enhance', {
       footnote: true,
       tasklist: true,
