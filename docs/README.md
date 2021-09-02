@@ -6,8 +6,8 @@
 
 ## 索引
 
-1. [学习笔记](./notes/)
-2. [读书笔记](./readings)
-3. [文章](./articles)
-4. [测试页面](./tests)
+1. [学习笔记](./notes/README.md)
+2. [读书笔记](./readings/README.md)
+3. [文章](./articles/README.md)
+4. [测试页面](./tests/README.md)
 
