@@ -1,1 +1,0 @@
-const e={key:"v-1fcdcab9",path:"/articles/",title:"文章",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:2,title:"2021",slug:"_2021",children:[]}],filePathRelative:"articles/README.md",git:{updatedTime:1630561349e3,contributors:[]}};export{e as data};
