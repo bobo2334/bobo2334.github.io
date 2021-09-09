@@ -1,3 +1,7 @@
+---
+date: 2021-08-24
+---
+
 # 利用 Github Actions 部署 Vuepress 项目到 Github Pages
 
 ## 前言
