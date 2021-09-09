@@ -1,0 +1,1 @@
+const e={key:"v-56f5aaa1",path:"/notes/javascript/weapp.html",title:"微信小程序",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:2,title:"组件库",slug:"组件库",children:[]},{level:2,title:"功能库",slug:"功能库",children:[]}],filePathRelative:"notes/javascript/weapp.md",git:{updatedTime:1631180548e3,contributors:[]}};export{e as data};
