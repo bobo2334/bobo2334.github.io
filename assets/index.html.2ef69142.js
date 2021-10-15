@@ -1,0 +1,1 @@
+const e={key:"v-f76ce4ea",path:"/bookmarks/",title:"书签",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[],filePathRelative:"bookmarks/README.md",git:{updatedTime:1634310002e3,contributors:[]}};export{e as data};
