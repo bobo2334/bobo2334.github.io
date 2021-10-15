@@ -2,6 +2,8 @@
 
 ## Java
 
+- [Java](./java/java.md) 
+
 ## JavaScript
 
 - [Vue.js](./javascript/vue.js.md)
