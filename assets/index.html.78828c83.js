@@ -1,0 +1,1 @@
+const t={key:"v-d556eb32",path:"/tests/",title:"测试页面",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[],filePathRelative:"tests/README.md",git:{updatedTime:163532771e4,contributors:[]}};export{t as data};
