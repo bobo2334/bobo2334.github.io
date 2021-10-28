@@ -4,21 +4,21 @@ date: 2020-02-24
 
 # 用 Windows Terminal 和 oh-my-posh 打造一个好用的终端
 
-> 2021-11-14备注
+> 2021-11-14 备注
 >
-> oh-my-posh项目已被重构，现在由Go语言实现，仓库地址为[Github](https://github.com/JanDeDobbeleer/oh-my-posh)。
+> oh-my-posh 项目已被重构，现在由 Go 语言实现，仓库地址为 [Github](https://github.com/JanDeDobbeleer/oh-my-posh)。
 >
-> 文章中所使用的版本现已被重命名为oh-my-posh2，由PowerShell实现，仓库地址为[Github](https://github.com/JanDeDobbeleer/oh-my-posh2)。
+> 文章中所使用的版本现已被重命名为 oh-my-posh2，由 PowerShell 实现，仓库地址为 [Github](https://github.com/JanDeDobbeleer/oh-my-posh2)。
 
 ## 前言
 
-Windows 中自带的终端使用体验确实说不上好，尝试了许多组合也感觉都不顺手。这次试试微软亲自出的 Windows Terminal[^1]，再加上 oh-my-posh[^2]插件。
+Windows 中自带的终端使用体验确实说不上好，尝试了许多组合也感觉都不顺手。这次试试微软亲自出的 Windows Terminal[^1]，再加上 oh-my-posh[^2] 插件。
 
 ## 正文
 
 ### 安装 Windows Terminal
 
-Windows Terminal 提供多种安装方式，你可以在 Microsoft Store 中安装；可以自行在该项目的 Github 仓库[^1]中上下载安装程序；虽然官方文档未提及，但是你也可以用 Scoop[^3]安装：
+Windows Terminal 提供多种安装方式，你可以在 Microsoft Store 中安装；可以自行在该项目的 Github 仓库 [^1] 中上下载安装程序；虽然官方文档未提及，但是你也可以用 Scoop[^3] 安装：
 
 ```powershell
 scoop install windows-terminal
@@ -26,7 +26,7 @@ scoop install windows-terminal
 
 ### 安装 oh-my-posh
 
-oh-my-posh是针对 Windows PowerShell 设计的主题引擎，类似于 zsh 和 Oh My Zsh 的关系。它可以让你的命令行更强大。
+oh-my-posh 是针对 Windows PowerShell 设计的主题引擎，类似于 zsh 和 Oh My Zsh 的关系。它可以让你的命令行更强大。
 
 打开 PowerShell，输入以下命令安装：
 
@@ -104,7 +104,7 @@ sudo scoop install Cascadia-PL
 
 ### 集成 Git Bash
 
-首先将 Git 安装目录下的 `bin` 目录加入 `Path` 环境变量，如果你是用Scoop安装的Git，则可以忽略此步骤，因为Scoop已经帮你完成了这个工作；然后修改 Windows Terminal 的配置文件，在 `profiles`->`list` 中新增一条配置：
+首先将 Git 安装目录下的 `bin` 目录加入 `Path` 环境变量，如果你是用 Scoop 安装的 Git，则可以忽略此步骤，因为 Scoop 已经帮你完成了这个工作；然后修改 Windows Terminal 的配置文件，在 `profiles`->`list` 中新增一条配置：
 
 ```json
 // ...
@@ -137,4 +137,3 @@ sudo scoop install Cascadia-PL
 
 [^4]: [microsoft/cascadia-code: This is a fun, new monospaced font that includes programming ligatures and is designed to enhance the modern look and feel of the Windows Terminal.](https://github.com/microsoft/cascadia-code)
 [^5]: [ryanoasis/nerd-fonts: Iconic font aggregator, collection, & patcher. 3,600+ icons, 50+ patched fonts: Hack, Source Code Pro, more. Glyph collections: Font Awesome, Material Design Icons, Octicons, & more](https://github.com/ryanoasis/nerd-fonts)
-

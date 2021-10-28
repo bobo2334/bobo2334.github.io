@@ -2,20 +2,20 @@
 date: 2017-8-25
 ---
 
-# 《求生之路2》制作动态喷漆
+# 《求生之路 2》制作动态喷漆
 
 ## 前言
 
 ![img](./making-dynamic-spray-paint-for-left-4-dead-2.assets/kana.gif)
 
-动态的喷漆也是这个游戏的乐趣之一，尝试自己制作一下动态喷漆，将GIF图片转换为可以在游戏中使用的动态喷涂文件。
+动态的喷漆也是这个游戏的乐趣之一，尝试自己制作一下动态喷漆，将 GIF 图片转换为可以在游戏中使用的动态喷涂文件。
 
-文中使用的工具和成品可以从[这里](https://zfile.iuok.me/directlink/1/articles/making-dynamic-spray-paint-for-left-4-dead-2/tools.zip)下载。
+文中使用的工具和成品可以从 [这里](https://zfile.iuok.me/directlink/1/articles/making-dynamic-spray-paint-for-left-4-dead-2/tools.zip) 下载。
 
 ## 准备工作
 
 1. 一张 GIF 图片；
-2. GIF 图片分解工具，用于把动态图的每一帧分解出来，文中使用的是GifSplitter[^1]；
+2. GIF 图片分解工具，用于把动态图的每一帧分解出来，文中使用的是 GifSplitter[^1]；
 3. VTFEdit[^2]，核心工具，用于制作 VTF 格式的动态图。
 
 ## 分解 GIF
@@ -54,4 +54,3 @@ date: 2017-8-25
 
 [^1]: [GifSplitter - Break GIF animation down into individual image frames](https://www.xoyosoft.com/gs/)
 [^2]: [VTFEdit - Valve Developer Community](https://developer.valvesoftware.com/wiki/VTFEdit)
-

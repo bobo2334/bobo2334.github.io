@@ -2,7 +2,7 @@
 
 ## MQ
 
-MQ（Message Queue，消息队列），是一种FIFO的队列。
+MQ（Message Queue，消息队列），是一种 FIFO 的队列。
 
 它的作用有：
 
@@ -10,9 +10,9 @@ MQ（Message Queue，消息队列），是一种FIFO的队列。
 2. 解耦
 3. 削峰
 
-## RocketMQ介绍
+## RocketMQ 介绍
 
-RcoketMQ是一款低延迟、高可靠、可伸缩、易于使用的消息中间件。
+RcoketMQ 是一款低延迟、高可靠、可伸缩、易于使用的消息中间件。
 
 ### NameServer
 
@@ -24,15 +24,15 @@ RcoketMQ是一款低延迟、高可靠、可伸缩、易于使用的消息中间
 
 ## 单机部署
 
-可以使用Docker Compose来快速部署RocketMQ。
+可以使用 Docker Compose 来快速部署 RocketMQ。
 
-RockerMQ分为NameServer[^1]和Broker[^2]，前者类似于注册中心，后者才是进行存储消息的服务。还有一个第三方服务`rocket-mq-console-ng`[^3][^4]，是RocketMQ的网页控制台。
+RockerMQ 分为 NameServer[^1] 和 Broker[^2]，前者类似于注册中心，后者才是进行存储消息的服务。还有一个第三方服务`rocket-mq-console-ng`[^3][^4]，是 RocketMQ 的网页控制台。
 
-RocketMQ的NameServer和Broker是同一套代码，只是启动的时候参数不一样。`apacherocketmq/rocketmq-nameserver`和
+RocketMQ 的 NameServer 和 Broker 是同一套代码，只是启动的时候参数不一样。`apacherocketmq/rocketmq-nameserver`和
 
 `apacherocketmq/rocketmq-broker`在启动参数上有不同。
 
-RocketMQ的数据存储在`user.home`目录下，你可以设置`user.home`环境变量来自定义存储路径。在这两个Docker镜像中，该环境变量的值为`/opt`。
+RocketMQ 的数据存储在`user.home`目录下，你可以设置`user.home`环境变量来自定义存储路径。在这两个 Docker 镜像中，该环境变量的值为`/opt`。
 
 ```yaml
 version: "3"
@@ -78,9 +78,9 @@ volumes:
   broker_logs:
 ```
 
-根据上面的文件中的配置内容，你还需要为Broker提供配置文件，位于`/root/docker-compose/rocketmq/broker.conf`。
+根据上面的文件中的配置内容，你还需要为 Broker 提供配置文件，位于`/root/docker-compose/rocketmq/broker.conf`。
 
-需要配置Broker的外部IP，不然客户端连接不上。
+需要配置 Broker 的外部 IP，不然客户端连接不上。
 
 ```properties
 brokerClusterName = DefaultCluster
@@ -118,7 +118,7 @@ public class MQConstant {
 }
 ```
 
-### 原生API
+### 原生 API
 
 #### 消费者（推送）
 
@@ -137,13 +137,13 @@ public class Consumer {
         consumer.subscribe(MQTopicConstant.PRACTISE, MQTagConstant.PRACTISE);
         consumer.registerMessageListener((MessageListenerOrderly) (msgs, context) -> {
             msgs.forEach(messageExt -> {
-                log.info("收到消息: {}", messageExt);
-                log.info("消息体: {}", new String(messageExt.getBody()));
+                log.info("收到消息：{}", messageExt);
+                log.info("消息体：{}", new String(messageExt.getBody()));
             });
             return ConsumeOrderlyStatus.SUCCESS;
         });
         consumer.start();
-        log.info("Consumer已启动");
+        log.info("Consumer 已启动");
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             log.info("程序正在退出");
             consumer.shutdown();
@@ -173,7 +173,7 @@ public class Producer {
                 .forEach(message -> {
                     try {
                         SendResult result = producer.send(message, 10000);
-                        log.info("消息已发送: {}", result);
+                        log.info("消息已发送：{}", result);
                     } catch (Exception e) {
                         log.error("消息发送失败", e);
                     }
@@ -208,7 +208,7 @@ public class AsyncMessageProducer {
                         producer.send(message, new SendCallback() {
                             @Override
                             public void onSuccess(SendResult sendResult) {
-                                log.info("消息发送成功: {}", sendResult);
+                                log.info("消息发送成功：{}", sendResult);
                                 countDownLatch.countDown();
                             }
 
@@ -218,7 +218,7 @@ public class AsyncMessageProducer {
                                 countDownLatch.countDown();
                             }
                         });
-                        log.info("消息已发送: {}", message);
+                        log.info("消息已发送：{}", message);
                     } catch (Exception e) {
                         log.error("消息发送失败", e);
                     }
@@ -236,7 +236,6 @@ public class AsyncMessageProducer {
 // org.apache.rocketmq.client.producer.DefaultMQProducer#sendOneway
 public void sendOneway(Message msg)
 ```
-
 
 #### 消费者（拉取）
 
@@ -263,7 +262,7 @@ public class PullConsumer {
             if (CollUtil.isEmpty(messages)) {
                 break;
             }
-            messages.forEach(messageExt -> log.info("收到消息: {}", messageExt));
+            messages.forEach(messageExt -> log.info("收到消息：{}", messageExt));
         }
         Runtime.getRuntime().addShutdownHook(new Thread(consumer::shutdown));
     }
@@ -313,7 +312,7 @@ consumer.setMessageModel(MessageModel.BROADCASTING);
 public void setDelayTimeLevel(int level)
 ```
 
-可以给`Message`设置`delayLevel`，延迟级别分别为`1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h`，从1开始数。
+可以给`Message`设置`delayLevel`，延迟级别分别为`1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h`，从 1 开始数。
 
 #### 批量消息
 
@@ -326,15 +325,15 @@ public SendResult send(Collection<Message> msgs)
 
 #### 过滤消息
 
-大多数情况下，可以通过Topic和Tag来过滤消息。
+大多数情况下，可以通过 Topic 和 Tag 来过滤消息。
 
-Tag可以用表达式写。
+Tag 可以用表达式写。
 
 ```java
 consumer.subscribe(MQTopicConstant.PRACTISE, MessageSelector.byTag("TAG"));
 ```
 
-在复杂情况下，还可以通过SQL语句来过滤消息。
+在复杂情况下，还可以通过 SQL 语句来过滤消息。
 
 ![image-20210808203938656](./rocketmq.assets/image-20210808203938656-16284263806451.png)
 
@@ -345,13 +344,13 @@ consumer.subscribe(MQTopicConstant.PRACTISE, MessageSelector.byTag("TAG"));
 public void putUserProperty(final String name, final String value)
 ```
 
-只有推送模式的Consumer可以使用消息过滤。
+只有推送模式的 Consumer 可以使用消息过滤。
 
 #### 事务消息
 
 ![image-20210808210014135](./rocketmq.assets/image-20210808210014135.png)
 
-事务消息的机制是在发送消息时会发送一个办消息，这个消息存放在系统创建的Topic中，对消费者是不可见的。在生产者对消息进行提交之后才会把消息转移到目标Topic。如果生产者没有对消息进行提交，RocketMQ会每隔一段时间进行回查，确认本地事务是否已提交成功，如果是则把消息转移到目标Topic，否则若超过最大回查尝试次数则丢弃消息，默认最大重试次数为15。
+事务消息的机制是在发送消息时会发送一个办消息，这个消息存放在系统创建的 Topic 中，对消费者是不可见的。在生产者对消息进行提交之后才会把消息转移到目标 Topic。如果生产者没有对消息进行提交，RocketMQ 会每隔一段时间进行回查，确认本地事务是否已提交成功，如果是则把消息转移到目标 Topic，否则若超过最大回查尝试次数则丢弃消息，默认最大重试次数为 15。
 
 ### Spring Boot
 
@@ -366,7 +365,7 @@ rocketmq.producer.group=spring-boot-producer-group
 
 #### 生产者（同步发送）
 
-核心是`RocketMQTemplate`，消息的发送都依赖它完成。`RocketMQTemplate`已经在Spring容器中，可以自动注入拿到。其中`destination`的格式为`${topic}:${tag}`。
+核心是`RocketMQTemplate`，消息的发送都依赖它完成。`RocketMQTemplate`已经在 Spring 容器中，可以自动注入拿到。其中`destination`的格式为`${topic}:${tag}`。
 
 ```java
 // org.springframework.messaging.core.AbstractMessageSendingTemplate#send
@@ -409,13 +408,13 @@ public class Consumer implements RocketMQListener<String> {
 
     @Override
     public void onMessage(String message) {
-        log.info("收到消息: {}", message);
+        log.info("收到消息：{}", message);
     }
 
 }
 ```
 
-上面的例子会直接拿到消息中的Payload并且将之转为泛型对应类型的对象。如果你需要拿到消息的头部信息，把泛型设置为`MessageExt`，其中可以拿到头部信息[^5]。
+上面的例子会直接拿到消息中的 Payload 并且将之转为泛型对应类型的对象。如果你需要拿到消息的头部信息，把泛型设置为`MessageExt`，其中可以拿到头部信息 [^5]。
 
 #### 顺序消费
 
@@ -479,14 +478,14 @@ public class TransactionListener implements RocketMQLocalTransactionListener {
     @Override
     public RocketMQLocalTransactionState executeLocalTransaction(Message msg, Object arg) {
         String orderNumber = new String((byte[]) msg.getPayload());
-        log.info("执行事务, {}", orderNumber);
+        log.info("执行事务，{}", orderNumber);
         return RocketMQLocalTransactionState.UNKNOWN;
     }
 
     @Override
     public RocketMQLocalTransactionState checkLocalTransaction(Message msg) {
         String orderNumber = new String((byte[]) msg.getPayload());
-        log.info("回查, {}", orderNumber);
+        log.info("回查，{}", orderNumber);
         return RocketMQLocalTransactionState.COMMIT;
     }
 }
@@ -523,7 +522,7 @@ public class ExtTransactionListener implements RocketMQLocalTransactionListener 
 
 ### Spring Cloud Stream
 
-Spring Cloud Stream是Spring官方提供的一个针对所有开源的消息系统进行统一封装。
+Spring Cloud Stream 是 Spring 官方提供的一个针对所有开源的消息系统进行统一封装。
 
 #### 配置
 
@@ -541,7 +540,7 @@ public class RocketmqSpringCloudStreamApplication {
 }
 ```
 
-`Source`和`Sink`是Spring Cloud Stream提供的简单的消息输入和输出通道。
+`Source`和`Sink`是 Spring Cloud Stream 提供的简单的消息输入和输出通道。
 
 ```properties
 spring.cloud.stream.bindings.input.destination=STREAM_TOPIC
@@ -550,7 +549,7 @@ spring.cloud.stream.bindings.output.destination=STREAM_TOPIC
 spring.cloud.stream.rocketmq.binder.name-server=192.168.229.129:9876
 ```
 
-Spring Cloud Stream关于消息生产和消费的配置都放在配置文件中。
+Spring Cloud Stream 关于消息生产和消费的配置都放在配置文件中。
 
 `spring.cloud.stream.bindings`是一个`Map`，可以配置多个通道，`input`就是`Sink`的通道名，`output`就是`Source`的通道名。
 
@@ -595,7 +594,7 @@ public class Consumer {
 
     @StreamListener(Sink.INPUT)
     public void consume(String message) {
-        log.info("收到消息: {}", message);
+        log.info("收到消息：{}", message);
     }
 
 }
@@ -603,7 +602,7 @@ public class Consumer {
 
 ## 参考资料
 
-1. [2021年B站讲的最牛掰的RocketMQ 分布式消息中间件：核心原理与最佳实践_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1h54y1H7YF)
+1. [2021 年 B 站讲的最牛掰的 RocketMQ 分布式消息中间件：核心原理与最佳实践_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1h54y1H7YF)
 2. [Apache RocketMQ](http://rocketmq.apache.org/)
 3. [rocketmq/docs/cn at master · apache/rocketmq](https://github.com/apache/rocketmq/tree/master/docs/cn)
 4. [rocketmq-externals/rocketmq-console at master · apache/rocketmq-externals](https://github.com/apache/rocketmq-externals/tree/master/rocketmq-console)
@@ -616,6 +615,3 @@ public class Consumer {
 [^3]: [apacherocketmq/rocketmq-console - Docker Image | Docker Hub](https://hub.docker.com/r/apacherocketmq/rocketmq-console)
 [^4]: [rocketmq-externals/rocketmq-console at master · apache/rocketmq-externals](https://github.com/apache/rocketmq-externals/tree/master/rocketmq-console)
 [^5]:[常见问题 · apache/rocketmq-spring Wiki](https://github.com/apache/rocketmq-spring/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
-
-
-

@@ -2,7 +2,7 @@
 
 ## Java
 
-- [Java](./java/java.md) 
+- [Java](./java/java.md)
 
 ## JavaScript
 
@@ -22,4 +22,3 @@
 ## 消息队列
 
 - [RocketMQ](./message-queuing/rocketmq.md)
-

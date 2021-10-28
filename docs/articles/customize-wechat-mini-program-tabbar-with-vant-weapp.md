@@ -8,7 +8,7 @@ date: 2020-12-08
 
 微信小程序原生的 TabBar 虽然设置简单，但是样式不好看，也不能使用字体图标，但是微信小程序有自定义 TabBar 的机制。
 
-Vant WeApp[^1]是有赞出品的针对微信小程序的一套开源组件库，结合 van-tabbar[^2]和微信的自定义 TabBar 机制[^3]可以实现一套比较好看的 TabBar。
+Vant WeApp[^1] 是有赞出品的针对微信小程序的一套开源组件库，结合 van-tabbar[^2] 和微信的自定义 TabBar 机制 [^3] 可以实现一套比较好看的 TabBar。
 
 ## 新建 custom-tab-bar 组件
 
@@ -120,4 +120,3 @@ onShow: function () {
 [^1]: [Vant - 轻量、可靠的移动端组件库 (gitee.io)](https://vant-contrib.gitee.io/vant/#/zh-CN/)
 [^2]: [Tabbar 标签栏 - Vant Weapp](https://vant-contrib.gitee.io/vant-weapp/#/tabbar)
 [^3]: [自定义 tabBar | 微信开放文档](https://developers.weixin.qq.com/miniprogram/dev/framework/ability/custom-tabbar.html)
-

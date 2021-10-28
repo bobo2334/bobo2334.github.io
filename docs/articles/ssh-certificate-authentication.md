@@ -10,7 +10,7 @@ date: 2021-09-08
 
 ## 生成秘钥
 
-可以用OpenSSH中的`ssh-keygen`命令行工具来生成秘钥。`-t`参数指定了加密方式，通常为`ras`或`dsa`。
+可以用 OpenSSH 中的`ssh-keygen`命令行工具来生成秘钥。`-t`参数指定了加密方式，通常为`ras`或`dsa`。
 
 ```bash
 ssh-keygen -t rsa
@@ -18,7 +18,7 @@ ssh-keygen -t rsa
 
 生成的密钥文件默认就会是`~/.ssh/id_rsa`（私钥）和`~/.ssh/id_rsa.pub`（公钥）。
 
-也可以用PuTTY中提供的PuTTY Key Generator（puttygen.exe）[^2]来用可视化用户界面来生成秘钥文件。
+也可以用 PuTTY 中提供的 PuTTY Key Generator（puttygen.exe）[^2] 来用可视化用户界面来生成秘钥文件。
 
 ![image-20210816230720070](./ssh-certificate-authentication.assets/image-20210816230720070.png)
 
@@ -39,7 +39,7 @@ PasswordAuthentication no
 PermitEmptyPasswords
 # 不允许交互式密码登录
 ChallengeResponseAuthentication no
-# 不允许root用户使用密码登录
+# 不允许 root 用户使用密码登录
 PermitRootLogin prohibit-password
 # 使用秘钥登录
 PubkeyAuthentication yes
@@ -64,7 +64,5 @@ ssh -i .\centos7\.vagrant\machines\default\virtualbox\private_key vagrant@192.16
 - [How To Configure SSH Key-Based Authentication on a Linux Server | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server)
 - [14.3. Using OpenSSH Certificate Authentication Red Hat Enterprise Linux 6 | Red Hat Customer Portal](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/sec-using_openssh_certificate_authentication)
 
-
 [^1]: [SSH 密钥登录 - SSH 教程 - 网道](https://wangdoc.com/ssh/key.html)
 [^2]: [Download PuTTY: latest release (0.76)](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
-

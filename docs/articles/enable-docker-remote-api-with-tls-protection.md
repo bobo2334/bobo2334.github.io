@@ -6,18 +6,18 @@ date: 2021-09-09
 
 ## 前言
 
-Portainer[^1]是一款Docker可视化管理面板，它不仅可以管理本地的Docker实例，还可以通过Docker Remote API访问管理远程Docker资源。Docker Remote API就是通过HTTP协议暴露Docker资源，启用TLS可以实现远程访问鉴权。
+Portainer[^1] 是一款 Docker 可视化管理面板，它不仅可以管理本地的 Docker 实例，还可以通过 Docker Remote API 访问管理远程 Docker 资源。Docker Remote API 就是通过 HTTP 协议暴露 Docker 资源，启用 TLS 可以实现远程访问鉴权。
 
-Docker的官方文档提供了详细的开启Docker Remote API和开启TLS的教程[^2]。但是在签发证书的过程中涉及到的命令比较多，且繁琐，我就从网络上寻找到了别人写好的签发证书的脚本[^3]，可以很方便地替代纯手工操作。
+Docker 的官方文档提供了详细的开启 Docker Remote API 和开启 TLS 的教程 [^2]。但是在签发证书的过程中涉及到的命令比较多，且繁琐，我就从网络上寻找到了别人写好的签发证书的脚本 [^3]，可以很方便地替代纯手工操作。
 
-本文中的操作都在CentOS 7中完成。
+本文中的操作都在 CentOS 7 中完成。
 
 ## 签发证书
 
 将脚本命名为`auto-tls-certs.sh`。其中需要配置的内容有：
 
 1. `CODE`，作为文件名的后缀，用于区分文件；
-2. `IP`，机器的公网IP地址；
+2. `IP`，机器的公网 IP 地址；
 3. `PASSWORD`，证书密码。
 
 脚本内容如下：
@@ -60,7 +60,6 @@ echo "subjectAltName = IP:$IP,IP:127.0.0.1" >> extfile.cnf
 echo "extendedKeyUsage = serverAuth" >> extfile.cnf
 
 openssl x509 -req -days 365 -sha256 -in server.csr -passin "pass:$PASSWORD" -CA "ca-$CODE.pem" -CAkey "ca-key-$CODE.pem" -CAcreateserial -out "server-cert-$CODE.pem" -extfile extfile.cnf
-
 
 # Generate Client Certs.
 rm -f extfile.cnf
@@ -116,7 +115,7 @@ ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
 
 ![image-20210816222434122-16291238760702](./enable-docker-remote-api-with-tls-protection.assets/image-20210816222434122-16291238760702.png)
 
-重启Docker。
+重启 Docker。
 
 ```bash
 systemctl daemon-reloadservice docker restart
@@ -124,7 +123,7 @@ systemctl daemon-reloadservice docker restart
 
 ## 开放端口
 
-在防火墙、安全组中放行2376端口。
+在防火墙、安全组中放行 2376 端口。
 
 ## 测试
 
@@ -132,25 +131,24 @@ systemctl daemon-reloadservice docker restart
 
 ![image-20210816222527037](./enable-docker-remote-api-with-tls-protection.assets/image-20210816222527037.png)
 
-用`curl`命令测试，如果有JSON格式的信息输出则配置成功。
+用`curl`命令测试，如果有 JSON 格式的信息输出则配置成功。
 
 ```bash
-curl https://你的IP/info --cert cert-tx.pem --key key-tx.pem --cacert ca-tx.pem
+curl https://你的 IP/info --cert cert-tx.pem --key key-tx.pem --cacert ca-tx.pem
 ```
 
 ![image-20210816222600935-16291239626163](./enable-docker-remote-api-with-tls-protection.assets/image-20210816222600935-16291239626163.png)
 
 ## 用 Portainer 连接
 
-Portainer是一款非常好用的Docker可视化管理工具，通过暴露Docker Remote API可以远程连接并管理Docker资源。
+Portainer 是一款非常好用的 Docker 可视化管理工具，通过暴露 Docker Remote API 可以远程连接并管理 Docker 资源。
 
 在`Endpoints`页面中点击`Add endpoint`，`Environment type`选择`Docker`。
 
-在对应的输入框中填写IP地址和端口号，开启TLS，选择三个对应的证书文件。
+在对应的输入框中填写 IP 地址和端口号，开启 TLS，选择三个对应的证书文件。
 
 ![image-20210816222733033-16291240547284](./enable-docker-remote-api-with-tls-protection.assets/image-20210816222733033-16291240547284.png)
 
 [^1]: [Documentation](https://documentation.portainer.io/)
 [^2]: [Protect the Docker daemon socket | Docker Documentation](https://docs.docker.com/engine/security/protect-access/)
-[^3]: [Docker 开启TLS访问,更加安全 - 实用教程 - 高亚轩的BLOG](https://www.gaoyaxuan.net/blog/324.html)
-
+[^3]: [Docker 开启 TLS 访问，更加安全 - 实用教程 - 高亚轩的 BLOG](https://www.gaoyaxuan.net/blog/324.html)

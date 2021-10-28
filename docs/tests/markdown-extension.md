@@ -28,7 +28,7 @@ entity      entity      as Foo4
 database    database    as Foo5
 collections collections as Foo6
 queue       queue       as Foo7
-Foo -> Foo1 : To actor 
+Foo -> Foo1 : To actor
 Foo -> Foo2 : To boundary
 Foo -> Foo3 : To control
 Foo -> Foo4 : To entity
@@ -58,7 +58,7 @@ entity      entity      as Foo4
 database    database    as Foo5
 collections collections as Foo6
 queue       queue       as Foo7
-Foo -> Foo1 : To actor 
+Foo -> Foo1 : To actor
 Foo -> Foo2 : To boundary
 Foo -> Foo3 : To control
 Foo -> Foo4 : To entity
@@ -75,8 +75,6 @@ $$
 c = \sqrt{a^{2}+b_{xy}^{2} +e^{x}}
 $$
 
-
 [^1]: [mermaid - Markdownish syntax for generating flowcharts, sequence diagrams, class diagrams, gantt charts and git graphs.](https://mermaid-js.github.io/mermaid/#/)
-[^2]: [开源工具，使用简单的文字描述画UML图。](https://plantuml.com/zh/)
+[^2]: [开源工具，使用简单的文字描述画 UML 图。](https://plantuml.com/zh/)
 [^3]: [Supported Functions · KaTeX](https://katex.org/docs/supported.html)
-
