@@ -15,4 +15,4 @@
 
 ## 2017
 
-- [《求生之路 2》制作动态喷漆](making-dynamic-spray-paint-for-left-4-dead-2.md)
+- [《求生之路 2》制作动态喷漆](./making-dynamic-spray-paint-for-left-4-dead-2.md)

@@ -67,9 +67,9 @@ Java 语言是 SUN（**S**tanford **U**niversity **N**etwork）1995 年推出的
 - JRE（Java Runtime Environment，Java 运行环境）
 - JDK（Java Development Kit，Java 开发工具包）
 
-![image-20211028110720639](java.assets/image-20211028110720639.png)
+![image-20211028110720639](./java.assets/image-20211028110720639.png)
 
-![image-20211028110750021](java.assets/image-20211028110750021.png)
+![image-20211028110750021](./java.assets/image-20211028110750021.png)
 
 ### 开发体验——Hello World
 
@@ -83,7 +83,7 @@ Java 语言是 SUN（**S**tanford **U**niversity **N**etwork）1995 年推出的
 2. 编译，`javac A.java`
 3. 运行，`java 类名`
 
-![image-20211028152547834](java.assets/image-20211028152547834.png)
+![image-20211028152547834](./java.assets/image-20211028152547834.png)
 
 ### 注释
 
@@ -106,18 +106,35 @@ Java 语言是 SUN（**S**tanford **U**niversity **N**etwork）1995 年推出的
 
 保留字（reserverd word）：现有 Java 版本尚未使用，但以后版本可能会作为关键字使用。有两个`goto`、`const`。
 
-![image-20211028154406433](java.assets/image-20211028154406433.png)
+![image-20211028154406433](./java.assets/image-20211028154406433.png)
 
 ### 标识符
 
+#### 命名规则
+
 Java 对各种变量、方法和类等要素命名时使用的字符序列称为标识符。
 
-- 由 26 个英文字母大小写，`0`-`9` ，_或 `$` 组成
+- 由 26 个英文字母大小写，`0-9` 、`_`或 `$` 组成
 - 数字不可以开头。
 - 不可以使用关键字和保留字，但能包含关键字和保留字。
 - Java 中严格区分大小写，长度无限制。
 - 标识符不能包含空格。
 
+#### 命名规范
+
+命名规范，不强制但是强烈建议。
+
+- 包名：`xxxyyyzzz`
+- 类名、接口名：`XxxYyyZzz`
+- 变量名、方法名：`xxxYyyZzz`
+- 常量名：`XXX_YYY_ZZZ`
+
 ### 变量
 
+#### 概念
+
+- 内存中的一个存储区域
+- 
+
 ### 运算符
+
