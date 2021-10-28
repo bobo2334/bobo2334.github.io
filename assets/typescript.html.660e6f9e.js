@@ -1,0 +1,1 @@
+const t={key:"v-76823dd9",path:"/notes/javascript/typescript.html",title:"TypeScript",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:2,title:"基本类型",slug:"基本类型",children:[]}],filePathRelative:"notes/javascript/typescript.md",git:{updatedTime:1635425806e3,contributors:[]}};export{t as data};
