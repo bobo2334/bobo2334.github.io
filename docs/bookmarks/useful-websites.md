@@ -1,13 +1,20 @@
 # 实用网站
 
-## 书籍
+## 书籍文档
 
 - [Jiumo Search 鸠摩搜索 - 文档搜索引擎](https://www.jiumodiary.com/)
+- [松鼠文库](http://wk.superlgr.com/)
 
 ## Windows 软件
 
 - [腾龙工作室 - TenlonStudio.Com](https://www.tenlonstudio.com/)
 - [果核剥壳 - 还原软件的本质](https://www.ghxi.com/)
+
+## Windows 系统镜像
+
+- [MSDN, 我告诉你 - 做一个安静的工具站](https://msdn.itellyou.cn/)
+- [不忘初心博客 - 精简版系统官网](https://www.pc521.net/)
+- [UUP dump](https://uupdump.net/)
 
 ## Mac 软件
 
@@ -19,3 +26,28 @@
 
 - [龙喵网 - 有态度的网址导航](https://ailongmiao.com/)
 - [白鹭学园 | ACG 社区](https://srsg.moe/)
+
+## Xbox
+
+- [档案](https://account.xbox.com/Profile?xr=mebarnav)
+- [XboxFan](https://xboxfan.com/)
+- [Best Xbox Series X/S Games of All Time - OpenCritic](https://opencritic.com/browse/xbxs?exclusive=0)
+- [Plati.Market. Digital goods marketplace.](https://plati.ru/)
+
+## 游戏攻略
+
+- [游戏时光 - vgtime.com](https://www.vgtime.com/)
+- [游民星空 - 大型单机游戏媒体 提供特色单机游戏资讯、下载](https://www.gamersky.com/)
+- [PowerPyx.com - Guides for Trophies, Achievements & Collectibles](https://www.powerpyx.com/)
+- [TrueAchievements - Xbox Achievement Tracking](https://www.trueachievements.com/)
+
+## 梯子
+
+- [Foo&Friends.](https://fnf.one/)
+- [freefq/free](https://github.com/freefq/free)
+- [BuLink 永久免费网络加速](https://bulink.xyz/)
+- [众筹加速器](https://zcjd.top/#/login)
+
+## 技术文档
+
+- [正则表达式手册](https://tool.oschina.net/uploads/apidocs/jquery/regexp.html)
