@@ -27,13 +27,13 @@ const config = {
             ({
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
-                    editUrl: 'https://github.com/bobo2334/bobo2334.github.io/edit/master/',
                     remarkPlugins: [math, mermaid],
                     rehypePlugins: [katex],
+                    routeBasePath: '/'
                 },
                 blog: {
                     showReadingTime: false,
-                    editUrl: 'https://github.com/bobo2334/bobo2334.github.io/edit/master/blog/',
+                    editUrl: 'https://github.com/bobo2334/bobo2334.github.io/edit/master/',
                     remarkPlugins: [math, mermaid],
                     rehypePlugins: [katex],
                     blogSidebarTitle: '最近的文章',
@@ -107,12 +107,6 @@ const config = {
                     src: 'android-chrome-512x512.png',
                 },
                 items: [
-                    {
-                        type: 'doc',
-                        docId: 'index',
-                        position: 'left',
-                        label: '笔记',
-                    },
                     { to: '/blog/archive', label: '文章', position: 'left' },
                     {
                         href: 'https://github.com/bobo2334/bobo2334.github.io',
