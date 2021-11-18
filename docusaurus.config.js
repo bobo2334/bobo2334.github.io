@@ -90,10 +90,6 @@ const config = {
                     },
                 ],
             },
-            footer: {
-                style: 'dark',
-                copyright: `Built with Docusaurus.`,
-            },
             prism: {
                 theme: lightCodeTheme,
                 darkTheme: darkCodeTheme,
