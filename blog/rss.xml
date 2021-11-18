@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>我的学习笔记 Blog</title>
+        <link>https://bobo2334.github.io/blog</link>
+        <description>我的学习笔记 Blog</description>
+        <lastBuildDate>Fri, 10 Sep 2021 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <item>
+            <title><![CDATA[以容器的方式暴露 Docker Remote API 并启用 TLS]]></title>
+            <link>https://bobo2334.github.io/blog/enable-docker-remote-api-with-tls-protection-via-container</link>
+            <guid>以容器的方式暴露 Docker Remote API 并启用 TLS</guid>
+            <pubDate>Fri, 10 Sep 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[前言]]></description>
+            <content:encoded><![CDATA[<h2>前言</h2><p>之前在“开启 Docker Remote API 并启用 TLS”<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup> 中记录过 Docker 暴露 Remote API 并配置 TLS 支持，虽然其中引用了别人的脚本来简化证书的签发步骤，但是在证书签发完成之后还是需要对 Docker 的启动命令进行修改，还是一个比较繁琐的步骤。</p><p>后来我发现了 docker-remote-api-tls<sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup> 项目，它提供了一个镜像，在运行镜像之后它会自动完成证书签发和 API 转发步骤。</p><h2>部署</h2><p>可以通过 Docker Compose 方便地启动这个容器，下面是<code>docker-compose.yml</code>文件的内容。</p><pre><code class="language-yaml">version: &quot;3&quot;
+services:
+  api:
+    image: kekru/docker-remote-api-tls:v0.3.0
+    ports:
+      - 2376:443
+    environment:
+      - CREATE_CERTS_WITH_PW=dockercompose
+      - CERT_EXPIRATION_DAYS=3650
+      - CA_EXPIRATION_DAYS=36500
+      - CERT_HOSTNAME=192.168.229.129.nip.io
+    volumes:
+      - /root/compose/docker-remote-api-with-tls/certs:/data/certs
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+</code></pre><p>有以下几点需要注意：</p><ol><li>第 6 行，容器内的端口是 443，需要映射到容器外 2376 端口；</li><li>第 8 行，<code>CREATE_CERTS_WITH_PW</code>设置证书密码；</li><li>第 9 行，<code>CERT_EXPIRATION_DAYS</code>设置证书过期时间，默认 365 天；</li><li>第 10 行，<code>CA_EXPIRATION_DAYS</code>设置 CA 证书过期时间，默认 900 天；</li><li>第 11 行，<code>CERT_HOSTNAME</code>设置域名，如果没有域名可以用 nip.io<sup id="fnref-3"><a href="#fn-3" class="footnote-ref">3</a></sup> 来得到一个可以解析到任意 IP 的域名。形如<code>192.168.229.129.nip.io</code>的域名会被解析至<code>192.168.229.129</code>；还有其他形式的域名可以在 nip.io 网站中查看；</li><li>第 13 行，挂载证书目录，首次启动时证书会被自动创建并存放在此目录中；</li><li>第 14 行，挂载<code>docker.sock</code>。</li></ol><p>通过<code>docker compose up -d</code>启动容器。根据配置，证书会被自动创建在<code>/root/compose/docker-remote-api-with-tls/certs</code>目录中。</p><p>该目录的结构如下：</p><pre><code>certs/
+├── ca-cert.pem
+├── ca-key.pem
+├── client
+│   ├── ca.pem
+│   ├── cert.pem
+│   └── key.pem
+├── server-cert.pem
+└── server-key.pem
+</code></pre><p>其中，客户端需要的证书文件存放在<code>client</code>目录中。此时 Docker Remote API 已经暴露在 2376 端口，客户端可以使用证书文件来通过认证。</p><p>如果需要重新签发证书文件，只需要清空<code>certs</code>文件夹即可。</p><div class="footnotes"><hr/><ol><li id="fn-1"><a href="./enable-docker-remote-api-with-tls-protection.md">开启 Docker Remote API 并启用 TLS</a><a href="#fnref-1" class="footnote-backref">↩</a></li><li id="fn-2"><a href="https://github.com/kekru/docker-remote-api-tls">kekru/docker-remote-api-tls: Docker Image that forwards to the Docker API Socket and requires TLS Client authentication</a><a href="#fnref-2" class="footnote-backref">↩</a></li><li id="fn-3"><a href="https://nip.io/">nip.io - wildcard DNS for any IP Address</a><a href="#fnref-3" class="footnote-backref">↩</a></li></ol></div>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[开启 Docker Remote API 并启用 TLS]]></title>
+            <link>https://bobo2334.github.io/blog/enable-docker-remote-api-with-tls-protection</link>
+            <guid>开启 Docker Remote API 并启用 TLS</guid>
+            <pubDate>Thu, 09 Sep 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[前言]]></description>
+            <content:encoded><![CDATA[<h2>前言</h2><p>Portainer<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup> 是一款 Docker 可视化管理面板，它不仅可以管理本地的 Docker 实例，还可以通过 Docker Remote API 访问管理远程 Docker 资源。Docker Remote API 就是通过 HTTP 协议暴露 Docker 资源，启用 TLS 可以实现远程访问鉴权。</p><p>Docker 的官方文档提供了详细的开启 Docker Remote API 和开启 TLS 的教程 <sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup>。但是在签发证书的过程中涉及到的命令比较多，且繁琐，我就从网络上寻找到了别人写好的签发证书的脚本 <sup id="fnref-3"><a href="#fn-3" class="footnote-ref">3</a></sup>，可以很方便地替代纯手工操作。</p><p>本文中的操作都在 CentOS 7 中完成。</p><h2>签发证书</h2><p>将脚本命名为<code>auto-tls-certs.sh</code>。其中需要配置的内容有：</p><ol><li><code>CODE</code>，作为文件名的后缀，用于区分文件；</li><li><code>IP</code>，机器的公网 IP 地址；</li><li><code>PASSWORD</code>，证书密码。</li></ol><p>脚本内容如下：</p><pre><code class="language-bash">#!/bin/bash
+#
+# -------------------------------------------------------------
+# 自动创建 Docker TLS 证书
+# -------------------------------------------------------------
+
+# 以下是配置信息
+# --[BEGIN]------------------------------
+
+CODE=&quot;tx&quot;
+IP=&quot;1.1.1.1&quot;
+PASSWORD=&quot;pass&quot;
+
+COUNTRY=&quot;CN&quot;
+STATE=&quot;BEIJING&quot;
+CITY=&quot;BEIJING&quot;
+ORGANIZATION=&quot;Org&quot;
+ORGANIZATIONAL_UNIT=&quot;Dev&quot;
+COMMON_NAME=&quot;$IP&quot;
+EMAIL=&quot;.&quot;
+
+# --[END]--
+
+# Generate CA key
+openssl genrsa -aes256 -passout &quot;pass:$PASSWORD&quot; -out &quot;ca-key-$CODE.pem&quot; 4096
+# Generate CA
+openssl req -new -x509 -days 365 -key &quot;ca-key-$CODE.pem&quot; -sha256 -out &quot;ca-$CODE.pem&quot; -passin &quot;pass:$PASSWORD&quot; -subj &quot;/C=$COUNTRY/ST=$STATE/L=$CITY/O=$ORGANIZATION/OU=$ORGANIZATIONAL_UNIT/CN=$COMMON_NAME/emailAddress=$EMAIL&quot;
+# Generate Server key
+openssl genrsa -out &quot;server-key-$CODE.pem&quot; 4096
+
+# Generate Server Certs.
+openssl req -subj &quot;/CN=$COMMON_NAME&quot; -sha256 -new -key &quot;server-key-$CODE.pem&quot; -out server.csr
+
+echo &quot;subjectAltName = IP:$IP,IP:127.0.0.1&quot; &gt;&gt; extfile.cnf
+echo &quot;extendedKeyUsage = serverAuth&quot; &gt;&gt; extfile.cnf
+
+openssl x509 -req -days 365 -sha256 -in server.csr -passin &quot;pass:$PASSWORD&quot; -CA &quot;ca-$CODE.pem&quot; -CAkey &quot;ca-key-$CODE.pem&quot; -CAcreateserial -out &quot;server-cert-$CODE.pem&quot; -extfile extfile.cnf
+
+# Generate Client Certs.
+rm -f extfile.cnf
+
+openssl genrsa -out &quot;key-$CODE.pem&quot; 4096
+openssl req -subj &#x27;/CN=client&#x27; -new -key &quot;key-$CODE.pem&quot; -out client.csr
+echo extendedKeyUsage = clientAuth &gt;&gt; extfile.cnf
+openssl x509 -req -days 365 -sha256 -in client.csr -passin &quot;pass:$PASSWORD&quot; -CA &quot;ca-$CODE.pem&quot; -CAkey &quot;ca-key-$CODE.pem&quot; -CAcreateserial -out &quot;cert-$CODE.pem&quot; -extfile extfile.cnf
+
+rm -vf client.csr server.csr
+
+chmod -v 0400 &quot;ca-key-$CODE.pem&quot; &quot;key-$CODE.pem&quot; &quot;server-key-$CODE.pem&quot;
+chmod -v 0444 &quot;ca-$CODE.pem&quot; &quot;server-cert-$CODE.pem&quot; &quot;cert-$CODE.pem&quot;
+
+# 打包客户端证书
+mkdir -p &quot;tls-client-certs-$CODE&quot;
+cp -f &quot;ca-$CODE.pem&quot; &quot;cert-$CODE.pem&quot; &quot;key-$CODE.pem&quot; &quot;tls-client-certs-$CODE/&quot;
+cd &quot;tls-client-certs-$CODE&quot;
+tar zcf &quot;tls-client-certs-$CODE.tar.gz&quot; *
+mv &quot;tls-client-certs-$CODE.tar.gz&quot; ../
+cd ..
+rm -rf &quot;tls-client-certs-$CODE&quot;
+
+# 拷贝服务端证书
+mkdir -p /etc/docker/certs.d
+cp &quot;ca-$CODE.pem&quot; &quot;server-cert-$CODE.pem&quot; &quot;server-key-$CODE.pem&quot; /etc/docker/certs.d/
+</code></pre><p>使用<code>sh auto-tls-certs.sh</code>命令来生成证书，并且生成好的证书会被自动打包为<code>.tar.gz</code>归档，非常方便。下面的图片展示了执行脚本后生成的文件列表。</p><p><img src="./enable-docker-remote-api-with-tls-protection.assets/image-20210816222131111-16291236956091.png" alt="image-20210816222131111-16291236956091"/></p><h2>配置 Docker</h2><p>只需关注<code>.pem</code>文件，把证书找个专门的位置存放。</p><pre><code class="language-bash">mkdir /etc/.docker
+cp ~/docker-cert/*.pem /etc/.docker/
+</code></pre><p>修改 Docker 启动文件。</p><pre><code class="language-bash">nano /lib/systemd/system/docker.service
+</code></pre><p>修改<code>Service</code>下的<code>ExecStart</code>配置。</p><pre><code class="language-conf">ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -D -H tcp://0.0.0.0:2376 --tlsverify --tlscacert=/etc/.docker/ca-tx.pem --tlscert=/etc/.docker/server-cert-tx.pem --tlskey=/etc/.docker/server-key-tx.pem
+</code></pre><p><img src="./enable-docker-remote-api-with-tls-protection.assets/image-20210816222434122-16291238760702.png" alt="image-20210816222434122-16291238760702"/></p><p>重启 Docker。</p><pre><code class="language-bash">systemctl daemon-reloadservice docker restart
+</code></pre><h2>开放端口</h2><p>在防火墙、安全组中放行 2376 端口。</p><h2>测试</h2><p>把证书的压缩包<code>tls-client-certs-tx.tar.gz</code>下载到本机，解压得到证书文件。</p><p><img src="./enable-docker-remote-api-with-tls-protection.assets/image-20210816222527037.png" alt="image-20210816222527037"/></p><p>用<code>curl</code>命令测试，如果有 JSON 格式的信息输出则配置成功。</p><pre><code class="language-bash">curl https://你的 IP/info --cert cert-tx.pem --key key-tx.pem --cacert ca-tx.pem
+</code></pre><p><img src="./enable-docker-remote-api-with-tls-protection.assets/image-20210816222600935-16291239626163.png" alt="image-20210816222600935-16291239626163"/></p><h2>用 Portainer 连接</h2><p>Portainer 是一款非常好用的 Docker 可视化管理工具，通过暴露 Docker Remote API 可以远程连接并管理 Docker 资源。</p><p>在<code>Endpoints</code>页面中点击<code>Add endpoint</code>，<code>Environment type</code>选择<code>Docker</code>。</p><p>在对应的输入框中填写 IP 地址和端口号，开启 TLS，选择三个对应的证书文件。</p><p><img src="./enable-docker-remote-api-with-tls-protection.assets/image-20210816222733033-16291240547284.png" alt="image-20210816222733033-16291240547284"/></p><div class="footnotes"><hr/><ol><li id="fn-1"><a href="https://documentation.portainer.io/">Documentation</a><a href="#fnref-1" class="footnote-backref">↩</a></li><li id="fn-2"><a href="https://docs.docker.com/engine/security/protect-access/">Protect the Docker daemon socket | Docker Documentation</a><a href="#fnref-2" class="footnote-backref">↩</a></li><li id="fn-3"><a href="https://www.gaoyaxuan.net/blog/324.html">Docker 开启 TLS 访问，更加安全 - 实用教程 - 高亚轩的 BLOG</a><a href="#fnref-3" class="footnote-backref">↩</a></li></ol></div>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[SSH 密钥登录]]></title>
+            <link>https://bobo2334.github.io/blog/ssh-certificate-authentication</link>
+            <guid>SSH 密钥登录</guid>
+            <pubDate>Wed, 08 Sep 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[前言]]></description>
+            <content:encoded><![CDATA[<h2>前言</h2><blockquote><p>SSH 默认采用密码登录，这种方法有很多缺点，简单的密码不安全，复杂的密码不容易记忆，每次手动输入也很麻烦。密钥登录是比密码登录更好的解决方案。<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup></p></blockquote><h2>生成秘钥</h2><p>可以用 OpenSSH 中的<code>ssh-keygen</code>命令行工具来生成秘钥。<code>-t</code>参数指定了加密方式，通常为<code>ras</code>或<code>dsa</code>。</p><pre><code class="language-bash">ssh-keygen -t rsa
+</code></pre><p>生成的密钥文件默认就会是<code>~/.ssh/id_rsa</code>（私钥）和<code>~/.ssh/id_rsa.pub</code>（公钥）。</p><p>也可以用 PuTTY 中提供的 PuTTY Key Generator（puttygen.exe）<sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup> 来用可视化用户界面来生成秘钥文件。</p><p><img src="./ssh-certificate-authentication.assets/image-20210816230720070.png" alt="image-20210816230720070"/></p><h2>把公钥放在服务器上</h2><p>用户公钥保存在<code>~/.ssh/authorized_keys</code>文件中，如果该文件不存在，你可以手动创建一个。</p><p>然后将公钥的文本内容放入其中，每行一个。</p><h2>关闭密码登录</h2><p>编辑<code>/etc/ssh/sshd_config</code>文件，找到对应的配置项并修改。</p><pre><code class="language-conf"># 不允许密码直接登录
+PasswordAuthentication no
+# 不允许空密码登录
+PermitEmptyPasswords
+# 不允许交互式密码登录
+ChallengeResponseAuthentication no
+# 不允许 root 用户使用密码登录
+PermitRootLogin prohibit-password
+# 使用秘钥登录
+PubkeyAuthentication yes
+</code></pre><p>重启<code>sshd</code>，让配置生效。</p><pre><code class="language-bash">sudo systemctl restart sshd
+</code></pre><h2>测试配置是否生效</h2><p>使用<code>ssh</code>命令连接远程服务器，使用<code>-i</code>参数传递私钥文件。</p><pre><code class="language-bash">ssh -i .\centos7\.vagrant\machines\default\virtualbox\private_key vagrant@192.168.33.12
+</code></pre><h2>参考资料</h2><ul><li><a href="https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server">How To Configure SSH Key-Based Authentication on a Linux Server | DigitalOcean</a></li><li><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/sec-using_openssh_certificate_authentication">14.3. Using OpenSSH Certificate Authentication Red Hat Enterprise Linux 6 | Red Hat Customer Portal</a></li></ul><div class="footnotes"><hr/><ol><li id="fn-1"><a href="https://wangdoc.com/ssh/key.html">SSH 密钥登录 - SSH 教程 - 网道</a><a href="#fnref-1" class="footnote-backref">↩</a></li><li id="fn-2"><a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">Download PuTTY: latest release (0.76)</a><a href="#fnref-2" class="footnote-backref">↩</a></li></ol></div>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[利用 Github Actions 部署 Vuepress 项目到 Github Pages]]></title>
+            <link>https://bobo2334.github.io/blog/deploy-vuepress-project-to-github-pages-with-github-actions</link>
+            <guid>利用 Github Actions 部署 Vuepress 项目到 Github Pages</guid>
+            <pubDate>Tue, 24 Aug 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[前言]]></description>
+            <content:encoded><![CDATA[<h2>前言</h2><p>Vuepress<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup> 是一个基于 Vue 的静态网站生成器；Github Pages<sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup> 是 Github 提供的免费的静态网站托管服务；Github Actions<sup id="fnref-3"><a href="#fn-3" class="footnote-ref">3</a></sup> 是 Github 仓库中集成的 CI/CD<sup id="fnref-4"><a href="#fn-4" class="footnote-ref">4</a></sup> 服务。</p><p>Vuepress 是一个 Node.js 项目，它可以根据配置将 Markdown 文件转为 HTML 文件。你可以将输出的静态文件托管在 Github Pages 中，这样你就得到了一个可以访问的域名来展示这些静态的 HTML 文件。</p><p>传统的做法是在本地安装好 Noed.js 环境，自己手动构建项目之后将构建产物上传到 Github 仓库，从而触发 Github Pages 的构建。现在可以利用 Github Actions 来代替手工劳动，Github Actions 可以自动被触发，它运行在 Github 提供的虚拟环境中，可以执行一系列任务从而代替重复枯燥的手动构建和部署的步骤。</p><h2>创建 Github 仓库</h2><p>在创建的 Github 仓库时要注意仓库名称，假如你的用户名是 foo。</p><p>如果你创建了一个名为<code>foo.github.io</code>的仓库，你将可以通过<code>https://foo.github.io</code>来访问此仓库的 Github Pages 内容；</p><p>如果你创建其他名称的仓库如<code>bar</code>，你可以通过<code>https://foo.github.io/bar/</code>来访问此仓库的 Github Pages 内容。</p><p>你可以根据你期望的访问方式来选择仓库名称。</p><h2>配置 Github Actions</h2><p>Github Actions 的配置文件应该放在项目根目录下的<code>.github/workflows/</code>文件夹中，你可以在一个项目中配置多个 Actions。配置文件是 YAML 格式，文件名形如<code>*.yml</code>。</p><p>每一个 Action 中可以包括多个 job，每个 job 可以包括多个 step。在 step 中你可以直接运行命令，或者引用其他人编写好的 Action 脚本。在本文的配置文件中，我们引用了 github-pages-deploy-action<sup id="fnref-5"><a href="#fn-5" class="footnote-ref">5</a></sup> 来完成 Github Pages 部署，而不用关系其实现细节。</p><p>完成本文目标的 Github Actions 配置文件内容如下。</p><pre><code class="language-yaml">name: &quot;github actions build and deploy gh-pages&quot;
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
+        with:
+          persist-credentials: false
+      - name: install and build
+        run: |
+          npm install
+          npm run build
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          BRANCH: gh-pages
+          FOLDER: docs/.vuepress/dist
+</code></pre><p>其中的一些关键配置解释如下。</p><ul><li><code>on.push.branches</code>，在推送到<code>master</code>分支时触发此 Action；</li><li><code>jobs.build-and-deploy</code>，在一个 Action 中可以有多个 job，这是其中的一个，名称是自己取的；每个任务可以有多个 step；</li><li><code>jobs.build-and-deploy.steps[0]</code>，用<code>actions/checkout</code>检出仓库内容；</li><li><code>jobs.build-and-deploy.steps[1]</code>，执行<code>npm</code>命令安装开发环境；</li><li><code>jobs.build-and-deploy.steps[2]</code>，用<code>JamesIves/github-pages-deploy-action</code>部署<code>docs/.vuepress/dist</code>文件夹中的内容到<code>gh-pages</code>分支中。</li></ul><p>在编写好配置文件后可以提交并推送文件至 master 分支，这会自动触发 Action 的执行，并且你可以在 Actions 栏目中查看执行日志。</p><p><img src="./deploy-vuepress-project-to-github-pages-with-github-actions.assets/image-20210824225724791.png" alt="image-20210824225724791"/></p><h2>配置 Github Pages</h2><p>我们的构建产物放在 gh-pages 分支，我们需要告诉 Github Pages 源文件位置。</p><p>在 Github 仓库的 Settings 栏目中，从左侧的设置导航栏找到 Pages 设置。在这里你可以设置 gh-pages 为数据源。</p><p><img src="./deploy-vuepress-project-to-github-pages-with-github-actions.assets/image-20210824230246146.png" alt="image-20210824230246146"/></p><p>如果没出错的话，在配置完成之后你就可以通过 Github Pages 给你提供的域名来访问你的静态网站了。</p><div class="footnotes"><hr/><ol><li id="fn-1"><a href="https://v2.vuepress.vuejs.org/zh/">首页 | VuePress</a><a href="#fnref-1" class="footnote-backref">↩</a></li><li id="fn-2"><a href="https://pages.github.com/">GitHub Pages | Websites for you and your projects, hosted directly from your GitHub repository. Just edit, push, and your changes are live.</a><a href="#fnref-2" class="footnote-backref">↩</a></li><li id="fn-3"><a href="https://docs.github.com/en/actions/learn-github-actions">Learn GitHub Actions - GitHub Docs</a><a href="#fnref-3" class="footnote-backref">↩</a></li><li id="fn-4"><a href="https://www.redhat.com/zh/topics/devops/what-is-ci-cd">什么是 CI/CD？一文带你理解 CI 持续集成和 CD 持续交付/部署 - 红帽</a><a href="#fnref-4" class="footnote-backref">↩</a></li><li id="fn-5"><a href="https://github.com/JamesIves/github-pages-deploy-action">JamesIves/github-pages-deploy-action: Automatically deploy your project to GitHub Pages using GitHub Actions. This action can be configured to push your production-ready code into any branch you&#x27;d like.</a><a href="#fnref-5" class="footnote-backref">↩</a></li></ol></div>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[使用 Vant Weapp 自定义微信小程序 TabBar]]></title>
+            <link>https://bobo2334.github.io/blog/customize-wechat-mini-program-tabbar-with-vant-weapp</link>
+            <guid>使用 Vant Weapp 自定义微信小程序 TabBar</guid>
+            <pubDate>Tue, 08 Dec 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[前言]]></description>
+            <content:encoded><![CDATA[<h2>前言</h2><p>微信小程序原生的 TabBar 虽然设置简单，但是样式不好看，也不能使用字体图标，但是微信小程序有自定义 TabBar 的机制。</p><p>Vant WeApp<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup> 是有赞出品的针对微信小程序的一套开源组件库，结合 van-tabbar<sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup> 和微信的自定义 TabBar 机制 <sup id="fnref-3"><a href="#fn-3" class="footnote-ref">3</a></sup> 可以实现一套比较好看的 TabBar。</p><h2>新建 custom-tab-bar 组件</h2><p>如图所示，在微信小程序工程文件夹根目录下新建一个名为 <code>custom-tab-bar</code> 的组件。</p><p><img src="./customize-wechat-mini-program-tabbar-with-vant-weapp.assets/image-5.png" alt="img"/></p><p>其中各个文件中的代码如下：</p><pre><code class="language-json">{
+  &quot;component&quot;: true,
+  &quot;usingComponents&quot;: {
+    &quot;van-tabbar&quot;: &quot;@vant/weapp/tabbar/index&quot;,
+    &quot;van-tabbar-item&quot;: &quot;@vant/weapp/tabbar-item/index&quot;
+  }
+}
+</code></pre><pre><code class="language-javascript">// custom-tab-bar/index.js
+Component({
+  /**
+   * 组件的属性列表
+   */
+  properties: {},
+
+  /**
+   * 组件的初始数据
+   */
+  data: {
+    active: -1,
+    list: [{
+        icon: &quot;search&quot;,
+        text: &quot;搜索&quot;,
+        url: &quot;/pages/index/index&quot;,
+      },
+      {
+        icon: &quot;question-o&quot;,
+        text: &quot;答题&quot;,
+        url: &quot;/pages/question/index&quot;,
+      },
+      {
+        icon: &quot;ellipsis&quot;,
+        text: &quot;关于&quot;,
+        url: &quot;/pages/user/index&quot;,
+      },
+    ],
+  },
+
+  /**
+   * 组件的方法列表
+   */
+  methods: {
+    onChange(event) {
+      wx.switchTab({
+        url: this.data.list[event.detail].url,
+      });
+    },
+
+    init() {
+      const {
+        route
+      } = getCurrentPages().pop();
+      const active = this.data.list.findIndex(
+        (item) =&gt; item.url === `/${route}`
+      );
+      console.log(&quot;active:&quot;, active);
+      this.setData({
+        active,
+      });
+    },
+  },
+});
+</code></pre><pre><code class="language-xml">&lt;!-- custom-tab-bar/index.wxml --&gt;
+&lt;van-tabbar active=&quot;{{ active }}&quot; bind:change=&quot;onChange&quot;&gt;
+    &lt;van-tabbar-item wx:for=&quot;{{list}}&quot; wx:key=&quot;index&quot; icon=&quot;{{item.icon}}&quot;&gt;
+        {{item.text}}
+    &lt;/van-tabbar-item&gt;
+&lt;/van-tabbar&gt;
+</code></pre><h2>启用自定义 TabBar 设置</h2><p>修改 <code>app.js</code> 中 <code>tabBar</code> 设置，设置 <code>custom</code> 为 <code>true</code>。其中 <code>list</code> 中的对象只需保留 <code>path</code> 属性。</p><p><img src="./customize-wechat-mini-program-tabbar-with-vant-weapp.assets/image-6-668x1024.png" alt="img"/></p><h2>在每个 Tab 页中配置</h2><p>在开启了自定义 TabBar 设置后，可以在每个页面中通过 <code>getTabBar()</code> 获取 TabBar 组件实例。</p><p>现在需要在每个 Tab 页中设置当前 Tab 页图标高亮。</p><p>可以在每个 Tab 页的 <code>onShow()</code> 生命周期方法中调用 TabBar 的 <code>init()</code> 方法，修改当前激活页，来高亮当前 Tab 页的图标。</p><pre><code class="language-javascript">/**
+* 生命周期函数--监听页面显示
+*/
+onShow: function () {
+  this.getTabBar().init();
+},
+</code></pre><div class="footnotes"><hr/><ol><li id="fn-1"><a href="https://vant-contrib.gitee.io/vant/#/zh-CN/">Vant - 轻量、可靠的移动端组件库 (gitee.io)</a><a href="#fnref-1" class="footnote-backref">↩</a></li><li id="fn-2"><a href="https://vant-contrib.gitee.io/vant-weapp/#/tabbar">Tabbar 标签栏 - Vant Weapp</a><a href="#fnref-2" class="footnote-backref">↩</a></li><li id="fn-3"><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/ability/custom-tabbar.html">自定义 tabBar | 微信开放文档</a><a href="#fnref-3" class="footnote-backref">↩</a></li></ol></div>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[解决 IntelliJ IDEA 中 Tomcat 日志输出乱码的问题]]></title>
+            <link>https://bobo2334.github.io/blog/solve-the-problem-of-tomcat-log-output-messy-code-in-intellij-idea</link>
+            <guid>解决 IntelliJ IDEA 中 Tomcat 日志输出乱码的问题</guid>
+            <pubDate>Tue, 08 Dec 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[前言]]></description>
+            <content:encoded><![CDATA[<h2>前言</h2><p>在用 IntelliJ IDEA 运行 Java Web 项目时，在 Tomcat 的日志输出区域会出现乱码，效果如下图所示。</p><p>在网络上查了一些资料 <sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup>，记录下解决办法。</p><p><img src="./solve-the-problem-of-tomcat-log-output-messy-code-in-intellij-idea.assets/image-1024x475.png" alt="Tomcat 日志出现乱码"/></p><h2>原因分析</h2><p>可能是因为 IDEA 控制台中所采用的字符编码与 Tomcat 输出所采用的字符编码不一致，导致了出现乱码。</p><p>IDEA 控制台输出采用的是 GBK 编码，Tomcat 输出采用的是 UTF-8 编码。</p><h2>解决办法</h2><h3>法一：修改 IDEA 控制台输出编码为 UTF-8</h3><p>在 IDEA 的上方工具栏中，依次选择<code>Help</code>-&gt;<code>Edit Custome VM Options...</code>。</p><p><img src="./solve-the-problem-of-tomcat-log-output-messy-code-in-intellij-idea.assets/image-1.png" alt="img"/></p><p>在<code>vmoptions</code>中添加如下一行参数，之后重启 IDEA。</p><pre><code class="language-bash">-Dfile.encoding=UTF-8
+</code></pre><p>该文件实际位于<code>C:\Users\&lt;用户名&gt;\AppData\Roaming\JetBrains\IntelliJIdea2020.3\idea64.exe.vmoptions</code>，所以直接修改此文件应该也可行。</p><p><img src="./solve-the-problem-of-tomcat-log-output-messy-code-in-intellij-idea.assets/image-2.png" alt="img"/></p><h3>法二：修改 Tomcat 输出编码为 GBK</h3><p>在 Tomcat 安装位置下的 conf 文件中存在<code>logging.properties</code>配置文件。</p><p>修改其中的配置，将<code>java.util.logging.ConsoleHandler.encoding</code>的属性由<code>UTF-8</code>改为<code>GBK</code>。</p><p>保存之后重启 Tomcat 即可。</p><p><img src="./solve-the-problem-of-tomcat-log-output-messy-code-in-intellij-idea.assets/image-4-1024x907.png" alt="img"/></p><h2>结果</h2><p>两种方法均可以解决问题。</p><p><img src="./solve-the-problem-of-tomcat-log-output-messy-code-in-intellij-idea.assets/image-3-1024x491.png" alt="img"/></p><div class="footnotes"><hr/><ol><li id="fn-1"><a href="https://www.cnblogs.com/shej123/p/10312806.html">idea tomcat 乱码问题的解决及相关设置 - 行而思 - 博客园</a><a href="#fnref-1" class="footnote-backref">↩</a></li></ol></div>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[用 Windows Terminal 和 oh-my-posh 打造一个好用的终端]]></title>
+            <link>https://bobo2334.github.io/blog/build-a-decent-terminal-with-windows-terminal-and-oh-my-posh</link>
+            <guid>用 Windows Terminal 和 oh-my-posh 打造一个好用的终端</guid>
+            <pubDate>Mon, 24 Feb 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[2021-11-14 备注]]></description>
+            <content:encoded><![CDATA[<blockquote><p>2021-11-14 备注</p><p>oh-my-posh 项目已被重构，现在由 Go 语言实现，仓库地址为 <a href="https://github.com/JanDeDobbeleer/oh-my-posh">Github</a>。</p><p>文章中所使用的版本现已被重命名为 oh-my-posh2，由 PowerShell 实现，仓库地址为 <a href="https://github.com/JanDeDobbeleer/oh-my-posh2">Github</a>。</p></blockquote><h2>前言</h2><p>Windows 中自带的终端使用体验确实说不上好，尝试了许多组合也感觉都不顺手。这次试试微软亲自出的 Windows Terminal<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup>，再加上 oh-my-posh<sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup> 插件。</p><h2>正文</h2><h3>安装 Windows Terminal</h3><p>Windows Terminal 提供多种安装方式，你可以在 Microsoft Store 中安装；可以自行在该项目的 Github 仓库 <sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup> 中上下载安装程序；虽然官方文档未提及，但是你也可以用 Scoop<sup id="fnref-3"><a href="#fn-3" class="footnote-ref">3</a></sup> 安装：</p><pre><code class="language-powershell">scoop install windows-terminal
+</code></pre><h3>安装 oh-my-posh</h3><p>oh-my-posh 是针对 Windows PowerShell 设计的主题引擎，类似于 zsh 和 Oh My Zsh 的关系。它可以让你的命令行更强大。</p><p>打开 PowerShell，输入以下命令安装：</p><pre><code class="language-powershell">Install-Module posh-git -Scope CurrentUser
+Install-Module oh-my-posh -Scope CurrentUser
+</code></pre><p>安装完成之后还更改 PowerShell 的用户配置，让它每次启动的时候自动加载 oh-my-posh 插件；执行以下命令：</p><pre><code class="language-powershell">if (!(Test-Path -Path $PROFILE )) { New-Item -Type File -Path $PROFILE -Force }
+notepad $PROFILE
+</code></pre><p>不出意外的话接下来会出现记事本，你需要在里面写上以下内容：</p><pre><code class="language-powershell">Import-Module posh-git
+Import-Module oh-my-posh
+Set-Theme Paradox
+</code></pre><p>保存该文件，重新打开 PowerShell 你就能看到一个发生改变了的 PowerShell 。</p><p><img src="./build-a-decent-terminal-with-windows-terminal-and-oh-my-posh.assets/vMcBOyiREC-1024x523.png" alt="img"/></p><p>oh-my-posh 提供了几组预设的主题供你选择，你可以通过 <code>Set-Theme</code> 命令来更改当前主题，可选的值有 <code>Agnoster</code>/<code>Paradox</code>/<code>Sorin</code>/<code>Darkblood</code>/<code>Avit</code>/<code>Honukai</code>/<code>Fish</code>/<code>Robbyrussell</code>。</p><p><img src="./build-a-decent-terminal-with-windows-terminal-and-oh-my-posh.assets/sA8iXJPC2j.png" alt="img"/></p><p>这个主题设置只在当前会话生效，为了每次启动 PowerShell 的时候都能加载你想要的主题，你还需要修改以下用户配置文件，就像上一个步骤中做的一样，只需要修改 <code>Set-Theme</code> 命令的部分即可。</p><h3>用上微软的 Cascadia Code 字体</h3><p>或许你已经发现了有些字符显示不正常，那是因为默认的字体没有内嵌这些字符的形状，你还需要换一个字体。</p><p>微软的另一个开源项目，Cascadia Code<sup id="fnref-4"><a href="#fn-4" class="footnote-ref">4</a></sup> 就是一款适用于终端和代码展示的字体，你可以使用 Scoop 来安装它；安装字体的时候需要使用到管理员权限，你可以使用 <code>sudo</code> 命令，或者用管理员权限重新打开 PowerShell，再执行安装。</p><p>在安装之前，你可能需要添加一下 <code>nerd-fonts</code> 仓库，因为字体软件的元信息都存放于这个仓库中。</p><pre><code class="language-powershell">scoop bucket add nerd-fonts
+</code></pre><p>在 Scoop 的仓库中存在着好几个版本的 Cascadia Code，其中：</p><ul><li><code>Cascadia-Code</code>是原版不带 Powerline 字符的；</li><li><code>Cascadia-PL</code>是微软出品的，自带 Powerline 字符的；</li><li><code>CascadiaCode-NF</code>是 Nerd Fonts<sup id="fnref-5"><a href="#fn-5" class="footnote-ref">5</a></sup> 项目出品的，后期补丁了大量 Powerline 字符。</li></ul><p>没有特殊需求的话可以选择官方出的轻量级的 <code>Cascadia-PL</code>，执行以下命令：</p><pre><code class="language-powershell">sudo scoop install Cascadia-PL
+</code></pre><p>安装完成之后还需设置以下，指定 Windows Terminal 使用该字体。</p><p>目前 Windows Terminal 没有专门的设置界面，所有的配置项都在 <code>profiles.json</code> 配置文件里；在配置文件的对应地方设置 <code>fontFace</code> 的值为 <code>Cascadia Code PL</code>：</p><pre><code class="language-json">// ...
+&quot;defaults&quot;:
+{
+    // Put settings here that you want to apply to all profiles
+    &quot;fontFace&quot;: &quot;Cascadia Code PL&quot;
+},
+// ...
+</code></pre><p>保存配置文件后就能使配置文件生效；此时所有字符应该能正常显示了。</p><p><img src="./build-a-decent-terminal-with-windows-terminal-and-oh-my-posh.assets/vjPXgPO7AB-1024x523.png" alt="img"/></p><h3>集成 Git Bash</h3><p>首先将 Git 安装目录下的 <code>bin</code> 目录加入 <code>Path</code> 环境变量，如果你是用 Scoop 安装的 Git，则可以忽略此步骤，因为 Scoop 已经帮你完成了这个工作；然后修改 Windows Terminal 的配置文件，在 <code>profiles</code>-&gt;<code>list</code> 中新增一条配置：</p><pre><code class="language-json">// ...
+&quot;list&quot;:
+[
+
+    {
+        &quot;guid&quot;: &quot;{61c54bbd-c2c6-5271-96e7-009a87ff4411}&quot;,
+        &quot;name&quot;: &quot;Git Bash&quot;,
+        &quot;commandline&quot;: &quot;bash.exe&quot;,
+        &quot;hidden&quot;: false,
+        &quot;startingDirectory&quot; : &quot;%USERPROFILE%&quot;
+    }
+]
+// ...
+</code></pre><p>注意 JSON 的语法格式，在列表中不要少加或者多加逗号。保存配置文件之后就能在 Windows Terminal 中快捷启动 Git Bash 了。</p><p><img src="./build-a-decent-terminal-with-windows-terminal-and-oh-my-posh.assets/SI7S9fkaKG-1024x523.png" alt="img"/></p><h2>后记</h2><p>新的 Windows Terminal 使用体验还是挺不错的，颜值也 OK，折腾一下也挺好用的。</p><div class="footnotes"><hr/><ol><li id="fn-1"><a href="https://github.com/microsoft/terminal">microsoft/terminal: The new Windows Terminal and the original Windows console host, all in the same place!</a><a href="#fnref-1" class="footnote-backref">↩</a></li><li id="fn-2"><a href="https://github.com/JanDeDobbeleer/oh-my-posh2">JanDeDobbeleer/oh-my-posh2: A prompt theming engine for Powershell</a><a href="#fnref-2" class="footnote-backref">↩</a></li><li id="fn-3"><a href="https://github.com/lukesampson/scoop">lukesampson/scoop: A command-line installer for Windows.</a><a href="#fnref-3" class="footnote-backref">↩</a></li><li id="fn-4"><a href="https://github.com/microsoft/cascadia-code">microsoft/cascadia-code: This is a fun, new monospaced font that includes programming ligatures and is designed to enhance the modern look and feel of the Windows Terminal.</a><a href="#fnref-4" class="footnote-backref">↩</a></li><li id="fn-5"><a href="https://github.com/ryanoasis/nerd-fonts">ryanoasis/nerd-fonts: Iconic font aggregator, collection, &amp; patcher. 3,600+ icons, 50+ patched fonts: Hack, Source Code Pro, more. Glyph collections: Font Awesome, Material Design Icons, Octicons, &amp; more</a><a href="#fnref-5" class="footnote-backref">↩</a></li></ol></div>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[《求生之路 2》制作动态喷漆]]></title>
+            <link>https://bobo2334.github.io/blog/making-dynamic-spray-paint-for-left-4-dead-2</link>
+            <guid>《求生之路 2》制作动态喷漆</guid>
+            <pubDate>Fri, 25 Aug 2017 00:00:00 GMT</pubDate>
+            <description><![CDATA[前言]]></description>
+            <content:encoded><![CDATA[<h2>前言</h2><p><img src="./making-dynamic-spray-paint-for-left-4-dead-2.assets/kana.gif" alt="img"/></p><p>动态的喷漆也是这个游戏的乐趣之一，尝试自己制作一下动态喷漆，将 GIF 图片转换为可以在游戏中使用的动态喷涂文件。</p><p>文中使用的工具和成品可以从 <a href="https://zfile.iuok.me/directlink/1/articles/making-dynamic-spray-paint-for-left-4-dead-2/tools.zip">这里</a> 下载。</p><h2>准备工作</h2><ol><li>一张 GIF 图片；</li><li>GIF 图片分解工具，用于把动态图的每一帧分解出来，文中使用的是 GifSplitter<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup>；</li><li>VTFEdit<sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup>，核心工具，用于制作 VTF 格式的动态图。</li></ol><h2>分解 GIF</h2><p>这里使用的是 GifSplitter，目的是将 GIF 图片的每一帧都分解出来；其他功能类似的软件和在线工具都可以。</p><p><img src="./making-dynamic-spray-paint-for-left-4-dead-2.assets/gifsplitter.png" alt="img"/></p><h2>制作 VTF</h2><p>打开 VTFEdit，点击左上角的 “导入” 按钮，选择并导入上一步中分离出来的所有图片。</p><p><img src="./making-dynamic-spray-paint-for-left-4-dead-2.assets/import.png" alt="img"/></p><p>接下来设置贴图尺寸，选中 “限定贴图尺寸”，高度和宽度都设置为 128，其他设置保持默认。</p><p><img src="./making-dynamic-spray-paint-for-left-4-dead-2.assets/options.png" alt="img"/></p><p>再切换到 “信息” 页中，查看文件大小；<strong>要确保其小于 512KB，否则无法喷出</strong>。如果文件太大的话，就把要导入的图片删除一些，再重复这些步骤，直至满足条件。</p><p>再满足条件之后就可以保存了，保存的时候注意<strong>不要使用中文文件名</strong>，不然在游戏里浏览文件的时候中文名会乱码。</p><p><img src="./making-dynamic-spray-paint-for-left-4-dead-2.assets/save.png" alt="img"/></p><h2>在游戏中导入</h2><p>打开游戏，在游戏设置中依次找到 “导入喷漆图案”，选择上一步中制作好的 VTF 文件。</p><p><img src="./making-dynamic-spray-paint-for-left-4-dead-2.assets/import-to-game.png" alt="img"/></p><h2>后记</h2><p>整个制作过程也不复杂，核心工具是 VTFEdit；至于分解 GIF 的工具就很多了，可以很灵活地选择其他软件来完成这个任务。</p><p>最重要的是控制文件大小，不能超过限制，不然在游戏中无法使用。如果文件大小太大的话可以考虑在分解出的图片中删除一些图片，来达到减小文件大小的目的。比如可以隔帧删除，每隔一张图片就删除一张图片，应该会很有效。</p><div class="footnotes"><hr/><ol><li id="fn-1"><a href="https://www.xoyosoft.com/gs/">GifSplitter - Break GIF animation down into individual image frames</a><a href="#fnref-1" class="footnote-backref">↩</a></li><li id="fn-2"><a href="https://developer.valvesoftware.com/wiki/VTFEdit">VTFEdit - Valve Developer Community</a><a href="#fnref-2" class="footnote-backref">↩</a></li></ol></div>]]></content:encoded>
+        </item>
+    </channel>
+</rss>
