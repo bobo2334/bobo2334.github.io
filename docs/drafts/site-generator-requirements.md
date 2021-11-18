@@ -53,14 +53,14 @@
 1. Python 语言实现
 2. 主题的部分功能要高级版才能用
 
-## wiki
+### wiki
 
 - [Requarks/wiki: Wiki.js | A modern and powerful wiki app built on Node.js](https://github.com/Requarks/wiki)
 
 1. 需要服务端
 2. 图片资源管理有点不太方便
 
-## docusaurus
+### docusaurus
 
 - [facebook/docusaurus: Easy to maintain open source documentation websites.](https://github.com/facebook/docusaurus)
 
