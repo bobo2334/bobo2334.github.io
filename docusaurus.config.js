@@ -16,7 +16,7 @@ const config = {
     baseUrl: '/',
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
-    favicon: 'img/favicon.ico',
+    favicon: 'favicon.ico',
     organizationName: 'bobo2334', // Usually your GitHub org/user name.
     projectName: 'bobo2334.github.io', // Usually your repo name.
 
@@ -53,6 +53,32 @@ const config = {
             integrity: "sha384-Um5gpz1odJg5Z4HAmzPtgZKdTBHZdw8S29IecapCSB31ligYPhHQZMIlWLYQGVoc",
             crossorigin: "anonymous",
         },
+        {
+            href: "/apple-touch-icon.png",
+            rel: "apple-touch-icon",
+            sizes: "180x180"
+        },
+        {
+            href: "/favicon-32x32.png",
+            rel: "icon",
+            sizes: "32x32",
+            type: "image/png"
+        },
+        {
+            href: "/favicon-16x16.png",
+            rel: "icon",
+            sizes: "16x16",
+            type: "image/png"
+        },
+        {
+            href: "/manifest.json",
+            rel: "manifest",
+        },
+        {
+            href: "/safari-pinned-tab.svg",
+            rel: "mask-icon",
+            color: "#5bbad5",
+        },
     ],
 
     i18n: {
@@ -69,6 +95,11 @@ const config = {
     themeConfig:
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
+            metadatas: [
+                { name: 'msapplication-TileColor', contnet: '#da532c' },
+                { name: 'theme-color', contnet: '#25c2a0' },
+            ],
+
             navbar: {
                 title: '我的学习笔记',
                 logo: {
