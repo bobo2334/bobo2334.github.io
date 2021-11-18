@@ -7,8 +7,8 @@
 
 ## Windows 软件
 
-- [腾龙工作室 - TenlonStudio.Com](https://www.tenlonstudio.com/)
 - [果核剥壳 - 还原软件的本质](https://www.ghxi.com/)
+- [腾龙工作室 - TenlonStudio.Com](https://www.tenlonstudio.com/)
 
 ## Windows 系统镜像
 
@@ -51,3 +51,8 @@
 ## 技术文档
 
 - [正则表达式手册](https://tool.oschina.net/uploads/apidocs/jquery/regexp.html)
+
+## 影视
+
+- [豆瓣电影](https://movie.douban.com/)
+- [RARBG Torrents , films , download](https://www.rarbgmirror.com/torrents.php)
