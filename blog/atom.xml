@@ -6,7 +6,7 @@
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bobo2334.github.io/blog"/>
     <subtitle>我的学习笔记 Blog</subtitle>
-    <icon>https://bobo2334.github.io/img/favicon.ico</icon>
+    <icon>https://bobo2334.github.io/favicon.ico</icon>
     <entry>
         <title type="html"><![CDATA[以容器的方式暴露 Docker Remote API 并启用 TLS]]></title>
         <id>以容器的方式暴露 Docker Remote API 并启用 TLS</id>
