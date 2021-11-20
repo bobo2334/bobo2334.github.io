@@ -555,7 +555,7 @@ Java 中所有的类都直接或间接继承自`Object`类。
 ##### 成员内部类
 
 - 静态内部类
-  - 只能调用外部类的静态成员；
+  - 可以调用外部类的静态成员，包括私有的；
   - 在外部可以直接实例化。
 
 ```java
@@ -563,7 +563,7 @@ InnerClassTest.StaticA staticA = new InnerClassTest.StaticA();
 ```
 
 - 非静态内部类
-  - 可以调用外部的非静态成员，相当于`外部类类名。this. 成员`；
+  - 可以调用外部的非静态成员，相当于`外部类类名。this. 成员`，包括私有的；
   - 在内部类中`this`指向自身，`外部类类名。this`可以访问外部类的`this`；
   - 在外部实例化非静态内部类时需要先实例化外部类，通过外部类实例化内部类。
 
@@ -706,6 +706,10 @@ Java 8 中对接口的增强：
 
 `import static`用于引入外部的静态成员（静态变量/静态方法），可以直接在本源文件中通过名称调用，不用再加上其所在的类名。
 
+#### `native`
+
+用来修饰方法，表明该方法不是用 Java 语言实现的，而是用底层的 C 语言或者 C++ 实现的。
+
 ### 类的初始化顺序
 
 在编译后的字节码文件中不存在构造器，转而出现了`<init>()`方法，该方法包括：
@@ -792,6 +796,210 @@ Java 8 中对接口的增强：
 
 ## 多线程
 
+### 多线程基本概念
+
+- 程序（Program）是一段有序执行的静态代码的集合；
+- 进程（Process）是程序的一次执行过程，有生命周期；
+- 线程（Thread）是进程的进一步细分，比进程更轻量化，在线程之间切换的开销更小，效率更高，多个线程可以共享相同的内存区域。
+
+一个 Java 程序至少有三个线程：主线程、垃圾回收线程和异常处理线程。
+
+- 并行：多个 CPU 同时执行多个任务；
+- 并发：一个 CPU 采用时间片同时执行多个任务。
+
+### 线程的创建和使用
+
+#### 继承`Thread`类
+
+1. 从 Thread 类中派生出一个新类，重写`run`方法；
+2. 创建线程类的对象，调用`start`方法，Java 会新开一个线程，执行`run`方法。
+
+#### 实现`Runnable`接口
+
+1. 新类，实现 Runnable 接口，重写`run`方法；
+2. 还是通过`Thread`类来执行，它有一个构造方法接收`Runnable`类型的参数；
+3. 调用`Thread`对象的`start`方法来启动线程。
+
+#### `Callable`和`FutureTask`
+
+Java 5 新增，可以获得线程运行完毕之后的结果，返回值具有泛型支持。
+
+新类，实现`Callable`接口，重写`call()`方法。
+
+用`FutureTask`套`Callable`，再用`Thread`套`FutureTask`。
+
+可以用`FutureTask`的`get()`方法获取返回值，这个方法会一直阻塞直到得到结果。
+
+```java
+CallableDemo cd = new CallableDemo();
+FutureTask<String> task = new FutureTask<>(cd);
+new Thread(task).start();
+log.info("Task started.");
+String result = task.get();
+log.info("Result got： {}", result);
+```
+
+#### 线程池
+
+Java 5 中提供的线程池 API，`ExecutorService`和`Executors`。
+
+可以手动创建线程池。
+
+`ExecutorService`是接口，常见子类有`ThreadPoolExecutor`。
+
+也可以使用`Executors`工具类来创建预先定义好设置的线程池。
+
+- `Executors.newCachedThreadPool()`
+- `newFixedThreadPool()`
+- `newSingleThreadPool()`
+- `newScheduledThreadPool()`
+
+创建线程池之后会拿到一个`ExecutorService`接口的对象，其实现类为`ThreadPoolExecutor`，其中有两个方法可以提交新任务。
+
+- `submit(Runnable task)`执行成功返回`null`
+- `submit(Callable<T> task)`有返回值
+- `execute(Runnable command)`无返回值
+
+### `Thread`类中的常用方法
+
+- `run`要求子类重写，它的方法体也成为线程体
+- `start`线程启动
+- `sleep(long millis)`阻塞线程
+- `getName`获取线程名称，默认是自动生成的，也可以在实例化对象的时候传递给构造器
+- `setName`设置线程名称
+- `static currentThread`获取当前线程的实例
+- `getPriority`获取线程优先级，默认线程的优先级和它被创建的线程的优先级相同，主线程的默认优先级是 5
+- `setPriority`设置线程优先级，范围为$[1,10]$，越大约高，但是执行时间还得看系统的调度策略
+- `checkAccess`判断当前线程有没有权限修改目标线程
+- `stop()`废弃的中断线程方法
+- `interrupt`中断线程，如果在线程外部中断要确保有权限修改该线程。如果线程被其它方法阻塞的时候中断还会抛出异常
+- `join`在线程外执行，阻塞当前线程，一直等到该线程执行完毕
+- `yeld`放弃本次 CPU 时间
+
+### 线程的生命周期
+
+以下是操作系统概念中的线程的生命周期。
+
+| 状态名 | 解释         | 触发条件                                        |
+| ------ | ------------ | ----------------------------------------------- |
+| 创建   | 新建但未开始 | 在生成线程对象，并没有调用该对象的`start()`方法 |
+| 就绪   | 处于就绪队列 | `start()`之后，但未获得 CPU 时间片                |
+| 运行   | 正在执行     | 获得 CPU 时间片                                   |
+| 阻塞   | 处于阻塞队列 | 等待资源、`wait()`、`sleep()`、`suspend()`      |
+| 死亡   | 执行完毕     | `run()`方法运行完毕或者调用`stop()`方法         |
+
+![image-20210528143719017](java.assets/image-20210528143719017.png)
+
+JDK 中用枚举类`Thread.State`定义了线程的几种状态。
+
+| 状态名         | 解释                 | 触发条件                                      |
+| -------------- | -------------------- | --------------------------------------------- |
+| NEW            | 新建但未开始         | `new`之后，`start()`之前                      |
+| RUNNABLE       | 可运行               | 正在运行或者处于就绪队列                      |
+| BLOCKED        | 阻塞                 | 等待监视器锁或者调用`wait()`                  |
+| WAITTING       | 等待                 | `wait()`                                      |
+| TIMED_WAITTING | 可自行返回的等待状态 | `sleep()`、带时间的`wait()`、带时间的`join()` |
+| TERMINATED     | 执行完毕             | `run()`方法运行完毕或者调用`stop()`方法       |
+
+### 线程的同步
+
+#### 同步代码块
+
+```java
+synchronized（锁对象）{}
+```
+
+规定一段代码，在任何时刻只能有一个对象运行。在运行之前会检查锁对象是否已加锁，如果没有，在运行的时候就给锁对象加锁，运行结束之前解锁。
+
+关于锁对象，要确保它在每个实例中是同一个对象。以继承`Thread`方式创建的线程中就不能使用`this`作为锁对象，因为每个实例中的`Thread`对象不同；以实现`Runnable`接口方式创建的线程可以使用`this`作为锁对象，因为在创建线程的时候可以只有一个该类的实例，然后通过这唯一的实例去创建线程。并且在后一种方式中，所有线程共享数据，不需要用`static`修饰。
+
+#### 同步方法
+
+用`synchronized`修饰方法，同一时刻只能有一个线程执行此方法。
+
+同步方法无法自己选择锁对象。对于非静态方法，锁对象是`this`；对于静态方法，锁对象是当前类的`Class`对象。 使用的时候就要判断锁对象合不合适。
+
+#### `Lock`
+
+在 Java 5 之后提供了一种新的方式来确保线程安全，可以通过显式定义同步锁对象来实现同步。
+
+`java.util.concurrent.locks.Lock`接口是控制多个线程对共享资源进行访问的工具。`ReentrantLock`是该接口的实现类。
+
+![image-20210528144150033](java.assets/image-20210528144150033.png)
+
+### 线程的通信
+
+在 Object 类中定义了一些方法。
+
+- `wait`在被手动唤醒之前一直暂停此线程，必须由锁对象（线程监视器对象）来调用
+- `notify`唤醒一个正在等待的线程，从上次暂停的地方继续执行
+- `notifyAll`唤醒所有正在等待的线程，在多个生产者和多个消费者的时候注意用
+
+> `wait()`和`sleep()`
+>
+> `Object.wait()`会释放锁，`Thread.sleep()`不会释放锁。
+
+生产者和消费者问题。
+
+```java
+
+```
+
+### 懒汉单例模式的线程安全问题
+
+常规方法，使创建对象的操作互斥，只允许创建一个对象。
+
+```java
+class Lazy {
+    private static Lazy INSTANCE;
+
+    private Lazy() {
+    }
+
+    public static Lazy getInstance() {
+        if (INSTANCE == null) {
+            // 外层判断为了提高效率
+            // 当内层已经创建好对象之后，其它线程和创建对象的线程就不是竞争关系了
+            // 可以直接去取已经创建好的实例
+            synchronized (Lazy.class) {
+                if (INSTANCE == null) {
+                    // 内层判断为了安全
+                    INSTANCE = new Lazy();
+                }
+            }
+        }
+
+        return INSTANCE;
+    }
+}
+```
+
+还有一种更简单的方法，利用内部类不会随着外部类的初始化而初始化的特点，完成懒汉单例。
+
+```java
+class SimpleLazy {
+
+    private SimpleLazy() {
+    }
+
+    public static SimpleLazy getInstance() {
+        return Inner.INSTANCE;
+    }
+
+    // 内部类不会随着外部类的初始化而初始化
+    // 静态代码不会随着外部类的初始化而执行
+    // 而是在使用的时候才会初始化
+    private static class Inner {
+        public static final SimpleLazy INSTANCE = new SimpleLazy();
+    }
+
+}
+```
+
+### ThreadLocal
+
+数据容器，和线程绑定。每个线程得到的值不一样。
+
 ## 枚举类
 
 ## 注解
@@ -864,6 +1072,8 @@ int b = a;
 - 使用连接运算符`+`，`1 + "" = "1"`
 
 ## 常用接口
+
+## 日期时间
 
 ## 集合
 
