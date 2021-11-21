@@ -1,4 +1,4 @@
-# Java
+##### Java
 
 ## 参考资料
 
@@ -809,18 +809,18 @@ Java 8 中对接口的增强：
 
 ### 线程的创建和使用
 
-#### 继承`Thread`类
+#### 继承 Thread 类
 
 1. 从 Thread 类中派生出一个新类，重写`run`方法；
 2. 创建线程类的对象，调用`start`方法，Java 会新开一个线程，执行`run`方法。
 
-#### 实现`Runnable`接口
+#### 实现 Runnable 接口
 
 1. 新类，实现 Runnable 接口，重写`run`方法；
 2. 还是通过`Thread`类来执行，它有一个构造方法接收`Runnable`类型的参数；
 3. 调用`Thread`对象的`start`方法来启动线程。
 
-#### `Callable`和`FutureTask`
+#### Callable 和 FutureTask
 
 Java 5 新增，可以获得线程运行完毕之后的结果，返回值具有泛型支持。
 
@@ -860,7 +860,7 @@ Java 5 中提供的线程池 API，`ExecutorService`和`Executors`。
 - `submit(Callable<T> task)`有返回值
 - `execute(Runnable command)`无返回值
 
-### `Thread`类中的常用方法
+### Thread 类中的常用方法
 
 - `run`要求子类重写，它的方法体也成为线程体
 - `start`线程启动
@@ -919,7 +919,7 @@ synchronized（锁对象）{}
 
 同步方法无法自己选择锁对象。对于非静态方法，锁对象是`this`；对于静态方法，锁对象是当前类的`Class`对象。 使用的时候就要判断锁对象合不合适。
 
-#### `Lock`
+#### Lock
 
 在 Java 5 之后提供了一种新的方式来确保线程安全，可以通过显式定义同步锁对象来实现同步。
 
@@ -942,7 +942,108 @@ synchronized（锁对象）{}
 生产者和消费者问题。
 
 ```java
+package org.example.thread_test;
 
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class ProducerConsumerTest {
+
+    public static void main(String[] args) {
+        ExecutorService pool = Executors.newFixedThreadPool(7);
+
+        Clerk clerk = new Clerk();
+        Producer producer = new Producer(clerk);
+        Consumer consumer = new Consumer(clerk);
+
+        pool.execute(producer);
+        pool.execute(consumer);
+
+        pool.shutdown();
+    }
+
+}
+
+@Slf4j
+class Producer implements Runnable {
+
+    private Clerk clerk;
+
+    public Producer(Clerk clerk) {
+        this.clerk = clerk;
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            clerk.add();
+        }
+    }
+}
+
+@Slf4j
+class Consumer implements Runnable {
+
+    private Clerk clerk;
+
+    public Consumer(Clerk clerk) {
+        this.clerk = clerk;
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            clerk.minus();
+        }
+    }
+}
+
+@Slf4j
+class Clerk {
+
+    private int count = 0;
+
+    public static final int MAX = 20;
+
+    public synchronized void add() {
+        try {
+            Thread.sleep(100L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (count < MAX) {
+            log.info("生产 1，剩余 {}", ++count);
+            notify();
+        } else {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public synchronized void minus() {
+        try {
+            Thread.sleep(100L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (count > 0) {
+            log.info("消费 1，剩余 {}", --count);
+            notify();
+        } else {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+}
 ```
 
 ### 懒汉单例模式的线程安全问题
@@ -1010,12 +1111,12 @@ class SimpleLazy {
 
 `Object`是所有类的根父类。
 
-- `java.lang.Object#equals`，比较两个对象，默认行为和比较运算符`==`相同，都是比较内存地址，子类可以根据需要对该方法进行重写，对内容进行比对；
-- `java.lang.Object#hashCode`，默认根据内存地址计算对象的哈希值，如果重写了`equals`方法则原则上需要重写此方法；
-- `java.lang.Object#clone`，返回对象的复制，是一个`protected`方法，子类需要重写此方法并调用`super.clone()`，也可以自己实现克隆细节，并实现`Cloneable`接口；
-- `java.lang.Object#finalize`，在对象被回收之前垃圾回收器会调用此方法，子类可以重写此方法来在被回收之前做一些事情；可以通过`System.gc()`或`Runtime.getRuntime().gc()`来通知垃圾回收器进行回收，但是否会进行回收是不确定的；
-- `java.lang.Object#toString`，默认返回类名和内存地址，子类可以重写此方法来自定义返回内容；
-- `java.lang.Object#getClass`，获取当前对象的**运行时**类名。
+- `equals`，比较两个对象，默认行为和比较运算符`==`相同，都是比较内存地址，子类可以根据需要对该方法进行重写，对内容进行比对；
+- `hashCode`，默认根据内存地址计算对象的哈希值，如果重写了`equals`方法则原则上需要重写此方法；
+- `clone`，返回对象的复制，是一个`protected`方法，子类需要重写此方法并调用`super.clone()`，也可以自己实现克隆细节，并实现`Cloneable`接口；
+- `finalize`，在对象被回收之前垃圾回收器会调用此方法，子类可以重写此方法来在被回收之前做一些事情；可以通过`System.gc()`或`Runtime.getRuntime().gc()`来通知垃圾回收器进行回收，但是否会进行回收是不确定的；
+- `toString`，返回对象的字符串表示，建议所有子类重写。默认返回”类名@十六进制 hash“。
+- `getClass`，获取当前对象的**运行时**类名。
 
 ### 包装类
 
@@ -1034,30 +1135,73 @@ Java 提供了 8 种基本数据类型的包装类，使得基本数据类型的
 
 其中，`Byte`、`Short`、`Integer`、`Long`、`Float`和`Double`都是`Number`的子类。
 
-JDK 1.5 提供的自动拆箱和自动封箱的机制可以让基本数据类型和包装类自动转换。
+#### 自动装箱与自动拆箱
+
+JDK 1.5 提供的自动拆箱和自动封箱的机制可以让基本数据类型和包装类自动转换。在需要的时候，自动在基本数据类型和包装类之间转换。
 
 ```java
 Integer a = 5;
-int b = a;
+int b = a;`
 ```
 
-基本数据类型->包装类
+#### 缓存
 
-1. 自动拆箱/封箱
-2. 使用包装类的构造器，将基本数据类型传入
+为了提高性能，比较常用的基本数据类型的包装类会被缓存。
 
-包装类->基本数据类型
+通过`new`关键字获取的对象在堆中，直接得到的包装类在方法区中，这个才是被缓存的。
 
-1. 自动拆箱/封箱
-2. 使用包装类的方法`xxxValue()`，如`Integer#intValue()`
+| 基本数据类型 | 包装类    | 缓存            |
+| ------------ | --------- | --------------- |
+| byte         | Byte      | $[-128,127]$    |
+| short        | Short     | $[-128,127]$    |
+| int          | Integer   | $[-128,127]$    |
+| long         | Long      | $[-128,127]$    |
+| float        | Float     | 不缓存          |
+| double       | Double    | 不缓存          |
+| char         | Character | $[0,127]$       |
+| boolean      | Boolean   | `true`和`false` |
 
-#### Integer
+#### 常用 API
 
-缓存了$[-128,127]$的包装类对象。在使用自动装箱的创建`Integer` 对象的时候会使用到缓存。使用`new` 创建的对象则不会。
+##### 字符串解析
 
-### Arrays
+各个包装类都有一个`parseXxx`的方法，用于从字符串中解析出对应类型的值，返回包装类。
+
+```java
+public static int parseInt(String s) throws NumberFormatException
+```
+
+##### Integer
+
+- `MAX_VALUE`int 类型可表示的最大值，2^{31}-1231−1
+- `MIN_VALUE`最小值，-2^{31}−231
+- `toBinaryString`转为二进制字符串
+- `toOctalString`八进制
+- `toHexString`十六进制
+
+##### Character
+
+- `toUpperCase`
+- `toLowerCase`
+
+### System
+
+包含三个流：
+
+- `PrintStream out`
+- `InputStream in`
+- `PrintStream err`
+
+常用方法：
+
+- `currentTimeMillis()`
+- `arraycopy(Object src, int srcPos, Object dest, int destPos, int length)`
+- `exit(int status)`
+- `getProperty(String key)`
 
 ### String
+
+#### 与基本数据类型的转换
 
 `String`->基本数据类型
 
@@ -1071,7 +1215,225 @@ int b = a;
 - `String.valueOf()`
 - 使用连接运算符`+`，`1 + "" = "1"`
 
+#### 特殊性
+
+通过字面量声明的 String 对象存在常量池中，是不可变的，只要修改了字符串就会产生新对象。通过`new`关键字取得的字符串对象不在常量池中。
+
+常量池里的对象可以共享，提高性能。
+
+#### 常量池位置
+
+Java 6，在方法区；
+
+Java 7，在堆中专门划分了一块区域来存储字符串常量；
+
+Java 8，在元空间（Meta space）中，类似于方法区，甚至可以独立于 JVM 存在。
+
+#### 底层存储结构
+
+Java 8，使用`char[]`存储；
+
+Java 9，使用`byte[]`存储。
+
+#### 不可变性
+
+`char[]`使用`final`修饰，意味着数组不能扩容。同时它也是私有的，外部也不能修改某一个元素的值；String 提供的所有对字符串修改的方法都会返回一个新对象。
+
+#### 字面量和直接创建对象的不同
+
+```java
+String str = new String("str");
+```
+
+在这个过程中产生了两个对象；`"str"`是一个对象，在常量池；又通过`new`关键字得到一个对象，在堆。两者的`char values[]`指向相同的地址。具体代码在 String 的构造器中。
+
+#### 拼接
+
+```java
+String s1 = "hello";
+String s2 = "world";
+
+String s3 = "helloworld";
+
+String s4 = s1 + "world";
+String s5 = s1 + s2;
+String s6 = "hello" + "world";
+
+System.out.println(s3 == s4); // false
+System.out.println(s3 == s5); // false
+System.out.println(s3 == s6); // true
+```
+
+只要有变量参与的拼接，结果都在堆中。`s6`在编译期间就可以确定结果，所以存在常量池中。
+
+如果给 s1 和 s2 加上`final`修饰，那么结果都为`true`。
+
+#### 常用方法
+
+- `equals(Object anObject)`
+- `equalsIgnoreCase(String anotherString)`
+- `compareTo(String anotherString)`
+- `compareToIgnoreCase(String str)`
+- `intern()`把字符串放入常量池，并返回引用
+- `length()`
+- `isEmpty()`
+- `concat(String str)`与另一个字符串相连接，相当于`+`
+- `trim()`移除开头和结尾的空白字符
+- `substring(begin, end)`返回子字符串，索引从 0 开始，包含包含左边不包含右边。左闭右开
+- `toCharArray()`转为字符数组
+- `getBytes()`转为字节数组
+
+#### 字典排序
+
+String 实现了`Comparable`接口，但是默认是按照 Unicode 编码值排序。
+
+`java.lang.Collator`类实现了`Comparator`接口，可以选择各地的语言习惯来排序。
+
+在有拼音排序的需求的时候可以采用这个方法来实现。
+
+```java
+Collator collator = Collator.getInstance(Locale.CHINESE);
+int compare = collator.compare("差", "啊");
+System.out.println(compare);
+```
+
+### StringBuffer
+
+可变字符序列。线程安全。效率更低。而`StringBuilder`相反。默认容量是 16。
+
+没有重写`equals`方法，比较的是内存地址。
+
+### StringBuilder
+
+可变字符序列，Java 5 新增，非线程安全。默认长度是 16，在需要的时候会自动扩容到原来长度的 2 倍再加上 2。
+
+没有重写`equals`方法，比较的是内存地址。
+
+- `append`
+- `insert`
+- `delete`
+
+## 日期时间
+
+### 旧日期时间
+
+#### Date
+
+除了下面两个构造器，其它的都过时了。
+
+- `Date()`当前日期获得对象
+- `Date(long date)`毫秒时间戳转为日期
+
+其中大部分方法也已经过时，可以被`Calendar`或者`DateFormat`中的方法替换。
+
+`java.sql.Date`是 `java.util.Date`的子类，无特殊需要的情况下均用`java.util.Date`。
+
+#### Calendar
+
+这是一个抽象类，可以使用它的实现类`GregorianCalendar`。可以通过`Calendar.getInstance()`来获取它的实例。
+
+- `getInstance()`获取实现类的实例
+- `getInstance(Locale aLocale)`
+- `getInstance(TimeZone zone)`
+- `get(int field)`通过常量值来获取当前日历对象的某个字段值，比如年份
+
+#### TimeZone
+
+抽象类，可以用静态方法`getTimeZone`来获取实现类的实例。
+
+- `getTimeZone(String ID)`
+- `getAvailableIDs()`获取所有时区 id
+
+#### DateFormat
+
+这也是一个抽象类，用的是`SimpleDateFormat`。
+
+- `SimpleDateFormat(String pattern)`构造器，出入格式化字符串
+- `format(Date date)`将日期对象格式化，返回字符串
+- `parse(String source)`按照格式将字符串解析为日期对象
+
+### 新日期时间
+
+Java 8 引入了新的日期时间 API。新的对象是不可变的，修改会产生新对象。
+
+新引入了另一套处理日期时间的体系，Date 可以通过`toInstant()`方法转为新 API。
+
+#### LocalDate
+
+`yyyy-MM-dd`格式的日期。
+
+#### LocalTime
+
+只有时间。
+
+#### LocalDateTime
+
+日期时间。
+
+- `static now()`基于现在的时间创建对象
+- `static of()`给定日期时间创建对象
+- `getMonth`
+- `getXxx`
+- `withMonth`修改月份并返回一个新对象
+- `withXxx`
+- `plusXxx`加时间
+- `minusXxx`减时间
+- `isLeapYear`是否是闰年
+- `format`格式化，返回字符串
+- `static parse`给定字符串和格式解析为时间对象
+
+#### Duration
+
+时间之间的间隔。更精确。
+
+#### Period
+
+日期之间的间隔。
+
+#### Instant
+
+瞬时时间。可以精确到纳秒。从 1970 年的开始算的。没有其它任何上下文信息。
+
+#### ZonedDateTime
+
+带时区的时间。
+
+#### TemporalAdjuster
+
+时间调整期，这是一个接口。在`TemporalAdjusters`中有许多方法可以得到它的实例。
+
+#### DateTimeFormatter
+
+格式化器。可以用来格式化日期或从字符串解析出日期时间。
+
+- `ofPattern`
+
+## 工具类
+
+### Arrays
+
+- `copyOf`
+  - `System.arraycopy()`
+
+### Collections
+
+### Comparators
+
+### Objects
+
+### Spliterators
+
+### Files
+
+### Paths
+
 ## 常用接口
+
+### Comparable
+
+### Compartor
+
+### Serializable
 
 ## 日期时间
 
