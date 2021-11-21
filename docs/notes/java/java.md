@@ -657,38 +657,37 @@ A.B.C c = new InnerClassTest().new A().new B().new C();
 Java 8 中对接口的增强：
 
 1. 静态方法
-
 2. 默认方法
 
-   1. 如果实现了接口并继承了一个类，并且接口中有默认方法和类中的方法同名同参数列表，则接口中的默认方法会被忽略，遵循类优先原则，子类在通过`super`调用父类方法的时候会调用类中的方法而不是接口中的默认方法，如果需要调用接口中的默认方法可以通过`接口名。super. 方法名 ()`来调用。
+如果实现了接口并继承了一个类，并且接口中有默认方法和类中的方法同名同参数列表，则接口中的默认方法会被忽略，遵循类优先原则，子类在通过`super`调用父类方法的时候会调用类中的方法而不是接口中的默认方法，如果需要调用接口中的默认方法可以通过`接口名。super. 方法名 ()`来调用。
 
-      ```java
-      public class InterfaceTest {
-          public static void main(String[] args) {
-              new C().a();
-          }
-      }
+```java
+public class InterfaceTest {
+  public static void main(String[] args) {
+    new C().a();
+  }
+}
 
-      interface A {
-          default void a() {
-              System.out.println("a");
-          }
-      }
+interface A {
+  default void a() {
+    System.out.println("a");
+  }
+}
 
-      abstract class B {
-          public void a() {
-              System.out.println("b");
-          }
-      }
+abstract class B {
+  public void a() {
+    System.out.println("b");
+  }
+}
 
-      class C extends B implements A {
-          @Override
-          public void a() {
-              super.a();
-              A.super.a();
-          }
-      }
-      ```
+class C extends B implements A {
+  @Override
+  public void a() {
+    super.a();
+    A.super.a();
+  }
+}
+```
 
 > 接口可以完全取代抽象类吗？
 >
@@ -1103,7 +1102,175 @@ class SimpleLazy {
 
 ## 枚举类
 
+Java 5 之后，有了`enum`关键字，可以更方便地实现枚举类。
+
+枚举类型不能继承其它类型，因为枚举类型的每个实例实际上继承了`java.lang.Enum`抽象类。
+
+```java
+protected Enum(String name,
+               int ordinal);
+public final String name();
+public final int ordinal();
+```
+
+在编译的时候编译器会将`enum`真正转化为`Enum`的子类，所以可以使用该类的方法。
+
+并且`Enum`类重写了`toString()`方法，默认返回`name`属性值。
+
+`Enum`类中还有一个静态方法`valueOf`，可以获取对应值的枚举类实例。
+
+```java
+public static <T extends Enum<T>> T valueOf(Class<T> enumType,
+                                            String name)
+```
+
+还有一个`values`方法不是继承的，而是编译器添加的。它存在于每个枚举类中，能获取到该类的对应值的枚举类实例。
+
+```java
+public static T[] values()
+```
+
+枚举类可以实现接口，并且每个常量可以分别对接口有不同的实现。也可以统一实现接口，跟正常用法一样。
+
+```java
+public class Test6 {
+    public static void main(String[] args) {
+        MyEnum.A.test(); // a
+        MyEnum.B.test(); // b
+        MyEnum.C.test(); // 统一实现
+    }
+}
+
+interface MyInterface {
+    void test();
+}
+
+enum MyEnum implements MyInterface {
+    A {
+        @Override
+        public void test() {
+            System.out.println("a");
+        }
+    },
+    B {
+        @Override
+        public void test() {
+            System.out.println("b");
+        }
+    },
+    C;
+
+    @Override
+    public void test() {
+        System.out.println("统一实现");
+    }
+}
+```
+
 ## 注解
+
+其实也是一种注释，是代码级别的注释，会被编译器处理。普通注释会被编译器直接忽略。不直接修改程序逻辑，可以通过反射读取出注解信息，根据需要作出不同行为。
+
+### 预定义注解
+
+- `@Override`，标注在方法上，在编译时会检查这个方法是否符合重写的要求，一定确保这个方法成功重写了父类的方法。给程序员看的时候也能快速看出这是一个重写的方法。
+- `@Deprecated`，标注方法，表明该方法已弃用，有更好的实现供选择。
+- `@SuppressWarnings`，抑制编译时的警告信息，可以作用在类、类成员、方法参数。.. 上。会抑制在该类型作用域内的所有警告信息。`value`参数可以传入具体抑制哪种警告，或者传入”all“抑制所有警告信息。
+
+### 文档注释相关注解
+
+- `@author`
+- `@param`
+- `@return`
+- `@see`
+- `@since`
+- `@version`
+- `@exception`
+- `@throws`
+- ...
+
+### 自定义注解
+
+#### 定义注解
+
+属性的数据类型有限制：
+
+- 基本数据类型
+- `String`
+- 枚举
+- `Class`
+- `Annotaion`
+- 以上这些类型的数组
+
+属性可以有默认值，可以通过`default`关键字来实现。
+
+```java
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@interface Test7 {
+
+    String value() default "111";
+
+    String[] name();
+
+}
+```
+
+#### 元注解
+
+标注在注解声明处的注解。
+
+- `@Target`指明注解可以标注的位置。
+- `@Retention`指明注解的生命周期。
+  - `SOURCE`只在源码阶段有效，就跟普通的注释一样，编译的时候丢弃
+  - `CLASS`在编译的时候会保存到字节码文件中，但是虚拟机不会在运行时保留，默认是这个级别
+  - `RUNTIME`会在运行时保留，可以通过反射读取
+- `@Documented`被 javadoc 读取。
+- `@Inherited`继承的时候也会继承到注解。
+
+#### 使用
+
+在合适位置标注，以`@`开头。
+
+如果注解没有属性，不需要加括号。
+
+如果注解只需传入一个`value`属性，则直接传入属性即可。
+
+如果需要传入的属性有多个，或者传入的单个属性不是`value`，则需要使用键值对的形式传入对应的值。
+
+如果传入的属性要求是数组，在数组只有一个元素的情况下可以省略花括号`{}`。
+
+```java
+@Test7(value = "", name = "")
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@interface Test7 {
+
+    String value();
+
+    String[] name();
+
+}
+```
+
+#### 读取
+
+参考反射相关知识。
+
+### Java 8 注解新特性
+
+#### `@Repeatable`可重复注解
+
+在 JDK8 之前如果需要重复注解的话，需要新建一个注解，其中包含目标注解的数组，通过数组来重复使用注解。
+
+在 JDK8 中新增了一个元注解`@Repeatable`，还是需要一个新的注解包含目标注解的数组，但是不需要用数组的方式传递了，直接标注多个同类型的注解即可。
+
+#### 类型注解
+
+`@Target`的参数`ElementType`的枚举值多了两个：
+
+- `TYPE_PARAMETER`：表明注解可以使用在类型变量的声明语句中，如泛型声明；
+- `TYPE_USE`：表示注解能使用在任何类型的语句中。
 
 ## 常用类
 
@@ -1191,6 +1358,8 @@ public static int parseInt(String s) throws NumberFormatException
 - `PrintStream out`
 - `InputStream in`
 - `PrintStream err`
+
+这是系统默认的输出流，可以通过`setIn`、`SetOut`、`SetErr`来替换掉系统默认的输出流。
 
 常用方法：
 
@@ -1313,6 +1482,41 @@ System.out.println(compare);
 - `insert`
 - `delete`
 
+### Math
+
+- `abs`绝对值
+- 三角函数
+- `sqrt`平方根
+- `pow`幂运算
+- `round`四舍五入
+- `ceil`返回比参数大的最近一个整数
+- `floor`返回比参数小的最近一个整数
+
+### Random
+
+- `nextInt(int)`，随机返回一个在$[0,i-1]$之间的数。
+
+```java
+// 返回一个 [left, right] 之间的数
+public static int randomInt(int left, int right) {
+    Random random = new Random();
+    return random.nextInt(right - left + 1) + left;
+}
+```
+
+### BigInteger
+
+支持更大的范围，多了一些运算方法。
+
+### BigDecimal
+
+精度更高。注意 buyo
+
+- `add`
+- `subtract`
+- `multiply`
+- `divide`
+
 ## 日期时间
 
 ### 旧日期时间
@@ -1414,10 +1618,9 @@ Java 8 引入了新的日期时间 API。新的对象是不可变的，修改会
 
 - `copyOf`
   - `System.arraycopy()`
+- `sort`
 
 ### Collections
-
-### Comparators
 
 ### Objects
 
@@ -1431,7 +1634,19 @@ Java 8 引入了新的日期时间 API。新的对象是不可变的，修改会
 
 ### Comparable
 
+自然排序。需要比较的对象自身实现此接口。`String`及包装类都实现了此接口。
+
+```java
+public int compareTo(T o);
+```
+
 ### Compartor
+
+定制排序。作为一个比较器，参数需要放入两个对比的对象。
+
+```java
+int compare(T o1, T o2);
+```
 
 ### Serializable
 
@@ -1439,7 +1654,7 @@ Java 8 引入了新的日期时间 API。新的对象是不可变的，修改会
 
 ## 集合
 
-## 范型
+## 泛型
 
 ## IO 流
 
