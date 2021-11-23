@@ -21,6 +21,8 @@
 - [MacWk - 精品 mac 软件下载](https://macwk.com/)
 - [精品 MAC 应用分享](https://xclient.info/)
 - [Mac 萌新网|最全的 Mac/Win/Linux 软件，科学软件，化学软件下载，软件首发站](https://www.macxin.com/)
+- [麦氪搜 (iMacSO.com)-我们致力于让您的 Mac 更有价值 ！](https://www.imacso.com/)
+- [mac 软件下载-分享优质 mac 软件游戏 - 苹果软件盒子](https://www.macappbox.com/)
 
 ## 网址导航
 
