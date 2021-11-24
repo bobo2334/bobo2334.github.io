@@ -4,9 +4,83 @@
         <title>我的学习笔记 Blog</title>
         <link>https://bobo2334.github.io/blog</link>
         <description>我的学习笔记 Blog</description>
-        <lastBuildDate>Fri, 10 Sep 2021 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 24 Nov 2021 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
+        <item>
+            <title><![CDATA[Windows Terminal + PWSH + oh my posh3 + PSReadLine 打造一个好用的终端]]></title>
+            <link>https://bobo2334.github.io/blog/use-pwsh-and-oh-my-posh3-on-windows</link>
+            <guid>Windows Terminal + PWSH + oh my posh3 + PSReadLine 打造一个好用的终端</guid>
+            <pubDate>Wed, 24 Nov 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[前言]]></description>
+            <content:encoded><![CDATA[<h2>前言</h2><p>在 macOS 中用 zsh 配合 oh-my-zsh 可以打造出一个用的很舒服的终端，其实在 Windows 中也可以。</p><p>在 Windows 中可以用 pwsh<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup> 和 oh-my-posh<sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup> 打造出一个好用的终端。</p><p>Windows 自带的 PowerShell 版本低，所以需要额外安装一个新版本的 pwsh，而不是用系统提供的。</p><p>oh-my-posh3 现在已基于 Go 语言重构，是一个跨平台的命令行工具，安装和配置方式和 oh-my-posh2 相比有些变化。</p><p>终端软件用的是 Windows Terminal<sup id="fnref-3"><a href="#fn-3" class="footnote-ref">3</a></sup>，这是一个现代化的、可自定义的好看的终端模拟器。</p><p>历史命令提示是通过 PowerShell 的 PSReadLine<sup id="fnref-4"><a href="#fn-4" class="footnote-ref">4</a></sup> 模组实现的。</p><h2>前置条件</h2><p>Scoop<sup id="fnref-5"><a href="#fn-5" class="footnote-ref">5</a></sup> 是 Windows 上的一款基于 PowerShell 的包管理器，接下来的软件都是用 Scoop 安装的，因为它能很方便地管理软件和配置环境变量。Scoop 的安装及使用不在本文的讨论范围内。</p><p>由于多数软件来源于 Github，在网络不好的情况下可能会安装失败，请自行寻找代理软件。</p><p>以下命令用于在 PowerShell 中配置代理，请自行替换地址和端口号。</p><pre><code class="language-powershell">$Env:http_proxy=&quot;http://127.0.0.1:11223&quot;;$Env:https_proxy=&quot;http://127.0.0.1:11223&quot;
+</code></pre><p>Scoop 基于 Git，为了让 Scoop 能正常工作，请参考以下命令用于配置 Git 的代理。</p><pre><code class="language-bash">git config --global http.proxy http://127.0.0.1:11223
+git config --global https.proxy https://127.0.0.1:11223
+</code></pre><h2>安装 pwsh</h2><pre><code class="language-powershell">scoop install pwsh
+</code></pre><h2>安装 Windows Terminal</h2><pre><code class="language-powershell">scoop install windows-terminal
+</code></pre><h2>安装 Cascadia Code 字体</h2><p>部分命令行字符需要正确配置字体才能正常显示，安装字体需要管理员权限，注意授权提示。</p><p>更多命令行字符字体可参考 nerd-fonts<sup id="fnref-6"><a href="#fn-6" class="footnote-ref">6</a></sup> 项目。</p><pre><code class="language-powershell">scoop install sudo
+scoop bucket add nerd-fonts
+sudo scoop install CascadiaCode-NF-Mono
+</code></pre><h2>在 Windows Terminal 中集成 PWSH</h2><p>在 Window Terminal 中添加一个新的终端配置。命名为“PWSH”，命令为<code>pwsh</code>。设置字体为“CaskaydiaCove NF”。</p><p><img src="use-pwsh-and-oh-my-posh3-on-windows.assets/image-20211124184401253.png" alt="image-20211124184401253"/></p><p><img src="use-pwsh-and-oh-my-posh3-on-windows.assets/image-20211124184424643.png" alt="image-20211124184424643"/></p><p><img src="use-pwsh-and-oh-my-posh3-on-windows.assets/image-20211124184447256.png" alt="image-20211124184447256"/></p><p><img src="use-pwsh-and-oh-my-posh3-on-windows.assets/image-20211124184503221.png" alt="image-20211124184503221"/></p><p>保存此配置，在“启动”选项卡中把刚刚新增的“PWSH”配置文件设置为默认配置文件。</p><p><img src="use-pwsh-and-oh-my-posh3-on-windows.assets/image-20211124184748158.png" alt="image-20211124184748158"/></p><p>打开 PWSH，配置完成。</p><p><img src="use-pwsh-and-oh-my-posh3-on-windows.assets/image-20211124184925333.png" alt="image-20211124184925333"/></p><h2>安装 oh-my-posh3</h2><p>在 oh-my-posh 的官方文档中使用的安装命令为<code>scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json</code>，请不要使用该命令。</p><p>oh-my-posh3 已存在于 Scoop 的 main 仓库中，请安装此软件包，后面的配置跟包名有关。</p><pre><code class="language-powershell">scoop install oh-my-posh3
+</code></pre><p>接下来编写 PWSH 的用户配置，以下命令用于创建一个配置文件并用记事本打开。该配置文件的作用是在每次 pwsh 初始化的时候自动执行其中的命令。</p><pre><code class="language-powershell">if (!(Test-Path -Path $PROFILE )) { New-Item -Type File -Path $PROFILE -Force }
+notepad $PROFILE
+</code></pre><p>在弹出的记事本里写入 oh-my-posh 的初始化命令，该命令会在每次 pwsh 初始化的时候执行。</p><pre><code class="language-powershell">$env:POSH_GIT_ENABLED = $true
+oh-my-posh --init --shell pwsh --config &quot;$(scoop prefix oh-my-posh3)\themes\wopian.omp.json&quot; | Invoke-Expression
+</code></pre><p>重新打开终端就能看到一个带主题的 PowerShell，如果有些字符显示不出来就是字体没有配置好。</p><p><img src="use-pwsh-and-oh-my-posh3-on-windows.assets/image-20211124185954914.png" alt="image-20211124185954914"/></p><h2>配置历史命令提示</h2><p>在 PWSH 中执行命令，安装 PSReadLine 模组。在安装时请输入“Y”来确认安装。以下命令用于安装 PSReadLine，请在 PWSH 中执行而不是在 PowerShell 中。</p><pre><code class="language-powershell">Install-Module PSReadLine
+</code></pre><p><img src="use-pwsh-and-oh-my-posh3-on-windows.assets/image-20211124194613000.png" alt="image-20211124194613000"/></p><p>然后编辑<code>$PROFILE</code>文件，在每次终端打开的时候对<code>PSReadLine</code>进行初始化。</p><pre><code class="language-powershell">notepad $PROFILE
+</code></pre><p>在配置文件中附加上以下内容。</p><pre><code class="language-powershell">Set-PSReadLineOption -PredictionSource History # 设置预测文本来源为历史记录
+Set-PSReadlineKeyHandler -Key Tab -Function Complete # 设置 Tab 键补全
+Set-PSReadLineKeyHandler -Key &quot;Ctrl+d&quot; -Function MenuComplete # 设置 Ctrl+d 为菜单补全和 Intellisense
+Set-PSReadLineKeyHandler -Key &quot;Ctrl+z&quot; -Function Undo # 设置 Ctrl+z 为撤销
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward # 设置向上键为后向搜索历史记录
+Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward # 设置向下键为前向搜索历史纪录
+</code></pre><p>保存配置文件，重启终端，就能看到一个带历史命令提示的终端了。</p><p><img src="use-pwsh-and-oh-my-posh3-on-windows.assets/image-20211124190601792.png" alt="image-20211124190601792"/></p><h2>更改 oh-my-posh 的主题</h2><p>oh-my-posh 提供了多套主题可供选择，在 PWSH 中执行以下命令对所有主题进行预览。</p><pre><code class="language-powershell">Get-ChildItem -Path &quot;$(scoop prefix oh-my-posh3)\themes\*&quot; -Include &#x27;*.omp.json&#x27; | Sort-Object Name | ForEach-Object -Process {
+    $esc = [char]27
+    Write-Host &quot;&quot;
+    Write-Host &quot;$esc[1m$($_.BaseName)$esc[0m&quot;
+    Write-Host &quot;&quot;
+    oh-my-posh --config $($_.FullName) --pwd $PWD
+    Write-Host &quot;&quot;
+}
+</code></pre><p><img src="use-pwsh-and-oh-my-posh3-on-windows.assets/image-20211124195044478.png" alt="image-20211124195044478"/></p><p>其中以<code>.omp</code>结尾的是主题文件的名称，如果需要使用某个主题就替换掉<code>$PROFILE</code>文件中初始化命令中的配置文件名就可以了。</p><p>以下命令用于用记事本打开<code>$PROFILE</code>文件。</p><pre><code class="language-powershell">notepad $PROFILE
+</code></pre><p>在打开的记事本中你会看到 oh-my-posh 的初始化命令。</p><pre><code class="language-powershell">oh-my-posh --init --shell pwsh --config &quot;$(scoop prefix oh-my-posh3)\themes\wopian.omp.json&quot; | Invoke-Expression
+</code></pre><p>将你中意的主题名称替换命令中的<code>wopian.omp</code>，保存该配置文件然后重启终端就可以看到新主题的效果了。</p><h2>更改 Windows Terminal 的配色</h2><p>在 Windows Terminal 中默认有多套配色方案可选，这里推荐一套自定义的配色方案，来自于 Dracula<sup id="fnref-7"><a href="#fn-7" class="footnote-ref">7</a></sup>。</p><p>在 Windows Terminal 的设置页面中，点击“打开 JSON 文件”，在该文件的<code>schemes</code>数组中添加一个配色方案对象。</p><pre><code class="language-json">&quot;schemes&quot;: [
+    {
+        &quot;name&quot;: &quot;Dracula&quot;,
+        &quot;cursorColor&quot;: &quot;#F8F8F2&quot;,
+        &quot;selectionBackground&quot;: &quot;#44475A&quot;,
+        &quot;background&quot;: &quot;#282A36&quot;,
+        &quot;foreground&quot;: &quot;#F8F8F2&quot;,
+        &quot;black&quot;: &quot;#21222C&quot;,
+        &quot;blue&quot;: &quot;#BD93F9&quot;,
+        &quot;cyan&quot;: &quot;#8BE9FD&quot;,
+        &quot;green&quot;: &quot;#50FA7B&quot;,
+        &quot;purple&quot;: &quot;#FF79C6&quot;,
+        &quot;red&quot;: &quot;#FF5555&quot;,
+        &quot;white&quot;: &quot;#F8F8F2&quot;,
+        &quot;yellow&quot;: &quot;#F1FA8C&quot;,
+        &quot;brightBlack&quot;: &quot;#6272A4&quot;,
+        &quot;brightBlue&quot;: &quot;#D6ACFF&quot;,
+        &quot;brightCyan&quot;: &quot;#A4FFFF&quot;,
+        &quot;brightGreen&quot;: &quot;#69FF94&quot;,
+        &quot;brightPurple&quot;: &quot;#FF92DF&quot;,
+        &quot;brightRed&quot;: &quot;#FF6E6E&quot;,
+        &quot;brightWhite&quot;: &quot;#FFFFFF&quot;,
+        &quot;brightYellow&quot;: &quot;#FFFFA5&quot;
+    }
+]
+</code></pre><p>保存该 JSON 文件，重启 Windows Terminal，在 PWSH 的外观配置中选择新添加的 Dracula 配色方案。前文中我用的配色方案就是 Dracula。</p><p><img src="use-pwsh-and-oh-my-posh3-on-windows.assets/image-20211124202122113.png" alt="image-20211124202122113"/></p><h2>在 VS Code 里使用</h2><p>在 VS Code 的配置文件<code>settings.json</code>中加入以下配置。</p><pre><code class="language-json">&quot;terminal.integrated.profiles.windows&quot;: {
+  &quot;Windows PowerShell&quot;: {
+    &quot;path&quot;: &quot;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe&quot;
+  },
+  &quot;PWSH&quot;: {
+    &quot;path&quot;: &quot;pwsh&quot;
+  }
+},
+&quot;terminal.integrated.defaultProfile.windows&quot;: &quot;PWSH&quot;,
+&quot;terminal.integrated.fontFamily&quot;: &quot;&#x27;CaskaydiaCove NF&#x27;&quot;
+</code></pre><div class="footnotes"><hr/><ol><li id="fn-1"><a href="https://github.com/PowerShell/PowerShell">PowerShell/PowerShell: PowerShell for every system!</a><a href="#fnref-1" class="footnote-backref">↩</a></li><li id="fn-2"><a href="https://ohmyposh.dev/">Home | Oh My Posh</a><a href="#fnref-2" class="footnote-backref">↩</a></li><li id="fn-3"><a href="https://github.com/microsoft/terminal">microsoft/terminal: The new Windows Terminal and the original Windows console host, all in the same place!</a><a href="#fnref-3" class="footnote-backref">↩</a></li><li id="fn-4"><a href="https://github.com/PowerShell/PSReadLine">PowerShell/PSReadLine: A bash inspired readline implementation for PowerShell</a><a href="#fnref-4" class="footnote-backref">↩</a></li><li id="fn-5"><a href="https://scoop.sh/">Scoop</a><a href="#fnref-5" class="footnote-backref">↩</a></li><li id="fn-6"><a href="https://www.nerdfonts.com/">Nerd Fonts - Iconic font aggregator, glyphs/icons collection, &amp; fonts patcher</a><a href="#fnref-6" class="footnote-backref">↩</a></li><li id="fn-7"><a href="https://draculatheme.com/windows-terminal">Dark theme for Windows Terminal and 218+ apps — Dracula</a><a href="#fnref-7" class="footnote-backref">↩</a></li></ol></div>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[以容器的方式暴露 Docker Remote API 并启用 TLS]]></title>
             <link>https://bobo2334.github.io/blog/enable-docker-remote-api-with-tls-protection-via-container</link>
@@ -263,7 +337,7 @@ onShow: function () {
             <guid>用 Windows Terminal 和 oh-my-posh 打造一个好用的终端</guid>
             <pubDate>Mon, 24 Feb 2020 00:00:00 GMT</pubDate>
             <description><![CDATA[2021-11-14 备注]]></description>
-            <content:encoded><![CDATA[<blockquote><p>2021-11-14 备注</p><p>oh-my-posh 项目已被重构，现在由 Go 语言实现，仓库地址为 <a href="https://github.com/JanDeDobbeleer/oh-my-posh">Github</a>。</p><p>文章中所使用的版本现已被重命名为 oh-my-posh2，由 PowerShell 实现，仓库地址为 <a href="https://github.com/JanDeDobbeleer/oh-my-posh2">Github</a>。</p></blockquote><h2>前言</h2><p>Windows 中自带的终端使用体验确实说不上好，尝试了许多组合也感觉都不顺手。这次试试微软亲自出的 Windows Terminal<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup>，再加上 oh-my-posh<sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup> 插件。</p><h2>正文</h2><h3>安装 Windows Terminal</h3><p>Windows Terminal 提供多种安装方式，你可以在 Microsoft Store 中安装；可以自行在该项目的 Github 仓库 <sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup> 中上下载安装程序；虽然官方文档未提及，但是你也可以用 Scoop<sup id="fnref-3"><a href="#fn-3" class="footnote-ref">3</a></sup> 安装：</p><pre><code class="language-powershell">scoop install windows-terminal
+            <content:encoded><![CDATA[<blockquote><p>2021-11-14 备注</p><p>oh-my-posh 项目已被重构，现在由 Go 语言实现，详情见 <a href="https://github.com/JanDeDobbeleer/oh-my-posh">Github</a>。</p><p>文章中所使用的版本现已被重命名为 oh-my-posh2，由 PowerShell 实现，详情见 <a href="https://github.com/JanDeDobbeleer/oh-my-posh2">Github</a>。</p></blockquote><blockquote><p>2021-11-24 备注</p><p>oh-my-posh3 的安装请参考 <a href="use-pwsh-and-oh-my-posh3-on-windows.md">Windows Terminal + PWSH + oh my posh3 + PSReadLine 打造一个好用的终端</a>，下面的内容已过时。</p></blockquote><h2>前言</h2><p>Windows 中自带的终端使用体验确实说不上好，尝试了许多组合也感觉都不顺手。这次试试微软亲自出的 Windows Terminal<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup>，再加上 oh-my-posh<sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup> 插件。</p><h2>正文</h2><h3>安装 Windows Terminal</h3><p>Windows Terminal 提供多种安装方式，你可以在 Microsoft Store 中安装；可以自行在该项目的 Github 仓库 <sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup> 中上下载安装程序；虽然官方文档未提及，但是你也可以用 Scoop<sup id="fnref-3"><a href="#fn-3" class="footnote-ref">3</a></sup> 安装：</p><pre><code class="language-powershell">scoop install windows-terminal
 </code></pre><h3>安装 oh-my-posh</h3><p>oh-my-posh 是针对 Windows PowerShell 设计的主题引擎，类似于 zsh 和 Oh My Zsh 的关系。它可以让你的命令行更强大。</p><p>打开 PowerShell，输入以下命令安装：</p><pre><code class="language-powershell">Install-Module posh-git -Scope CurrentUser
 Install-Module oh-my-posh -Scope CurrentUser
 </code></pre><p>安装完成之后还更改 PowerShell 的用户配置，让它每次启动的时候自动加载 oh-my-posh 插件；执行以下命令：</p><pre><code class="language-powershell">if (!(Test-Path -Path $PROFILE )) { New-Item -Type File -Path $PROFILE -Force }
