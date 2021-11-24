@@ -1,7 +1,7 @@
 ---
 date: 2021-11-24
 ---
-# Windows Terminal + PWSH + oh my posh3 + PSReadLine 打造一个好用的终端
+# Windows Terminal + pwsh + oh my posh3 + PSReadLine 打造一个好用的终端
 
 ## 前言
 
@@ -60,7 +60,7 @@ scoop bucket add nerd-fonts
 sudo scoop install CascadiaCode-NF-Mono
 ```
 
-## 在 Windows Terminal 中集成 PWSH
+## 在 Windows Terminal 中集成 pwsh
 
 在 Window Terminal 中添加一个新的终端配置。命名为“PWSH”，命令为`pwsh`。设置字体为“CaskaydiaCove NF”。
 
