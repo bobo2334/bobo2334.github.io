@@ -1270,7 +1270,7 @@ enum MyEnum implements MyInterface {
 `@Target`的参数`ElementType`的枚举值多了两个：
 
 - `TYPE_PARAMETER`：表明注解可以使用在类型变量的声明语句中，如泛型声明；
-- `TYPE_USE`：表示注解能使用在任何类型的语句中。
+- `TYPE_USE`：表示注解能使用在任何类型的语句中，泛型、变量类型转换、抛出的异常。
 
 ## 常用类
 
@@ -1650,9 +1650,72 @@ int compare(T o1, T o2);
 
 ### Serializable
 
-## 日期时间
-
 ## 集合
+
+![Java Map Collection Tutorial and Examples](java.assets/collections-framework-overview.png)
+
+### List
+
+#### for 循环遍历 List
+
+通过`size()`方法得到集合的长度，通过元素下标遍历，下标从 0 开始。
+
+#### 迭代器遍历 List
+
+调用`Collection#iterator()`方法来得到迭代器对象，每次调用都会得到一个新的迭代器对象。
+
+- `Iterator<E> iterator()`
+
+迭代器是一次性使用的，元素的顺序不能保证，只能向后遍历，不能回溯。Java 8 新加入了`forEachRemaining`方法，可以用函数式接口完成遍历。
+
+- `boolean hasNext()`
+- `E next()`
+- `void remove()`
+- `void forEachRemaining(Consumer<? super E> action)`
+
+在迭代器的过程中不能使用集合本身的有关元素修改的操作如`add()`和`remove()`，不然迭代器在下次迭代的时候会抛出异常，这样做的是为了避免同步问题。
+
+在`AbstractList`中有一个`modCount`变量，在涉及到对列表元素进行修改的方法中会将`modCount++`。在迭代器`Itr`构造的时候会保存当前的`modCount`值为`expectedModCount`，在每次迭代和`remove()`之前都会比对这两个值，如果不相等则意味着在迭代器之外有操作对列表元素进行了修改，为了避免同步问题就会抛出`ConcurrentModificationException`异常。
+
+如果没有调用`next()`直接调用`remove()`，或者在调用了`next()`之后调用了两次`remove()`，都会抛出`IllegalStateException`异常。迭代器`Ite`中维护了一个`lastRet`变量，默认是`-1`，在调用`next()`之后会更新为当前元素的下标，在调用`remove()`之后会更新为`-1`，在调用`remove()`之前会对其进行检查，如果从来没有调用过`next()`或者调用两次`remove()`的时候会抛出异常。
+
+#### 增强 for 循环遍历 List
+
+Java 5 中新增的语法糖，实际上调用的是迭代器的方法，所以有和迭代器一样的限制。数组也可以用这种方式遍历。注意遍历过程中的元素变量只是局部变量。
+
+```java
+for(Person p: persons){
+  System.out.println(p);
+}
+```
+
+#### `ArrayList`、`LinkedList`和`Vector`
+
+这三者都是`List`接口的实现类。
+
+- `Vector`出现较早（Java 1.0），是线程安全的，效率低
+- `ArrayList`出现较晚（Java 1.2），是非线程安全的，效率高
+- `LinkedList`的数据结构是双向链表，其它两者的数据结构是数组，因此对于频繁的插入、删除操作，`LinkedList`的效率更高
+
+### Set
+
+无序、不可重复的数据结构。底层用的是`Map`，只用了 key 的那一列。
+
+```java
+private transient HashMap<E,Object> map;
+```
+
+- `HashSet`，无序，线程不安全，可以存储`null`值，底层用`HashMap`
+- `LinkedHashSet`，元素可以按照添加的顺序遍历，是`HashSet`的子类，底层用`LinkedHashMap`
+- `TreeSet`，用树结构存储，可以对添加的对象进行排序，底层用`TreeMap`
+
+### Queue
+
+`LinkedList`是`Deque`的实现类，可以当作栈或队列使用。
+
+// TODO 补充方法名
+
+### Map
 
 ## 泛型
 
