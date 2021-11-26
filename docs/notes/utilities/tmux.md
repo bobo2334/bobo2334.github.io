@@ -75,6 +75,7 @@ tmux 的快捷键操作都需要先按下前缀快捷键，默认的前缀快捷
 - <kbd>Ctrl+b</kbd><kbd>z</kbd> ，当前窗格全屏显示，再按一次还原。在全屏模式下
 - <kbd>Ctrl+b</kbd><kbd>x</kbd> ，关闭当前窗格
 - <kbd>Ctrl+b</kbd><kbd>!</kbd> ，把当前窗格拆分为一个独立窗口
+- <kbd>Ctrl+b</kbd><kbd>[</kbd> ，开启复制模式，可以用用方向键或滚轮上下滚动，<kbd>q</kbd>退出。
 
 ## 多窗口（window）
 
