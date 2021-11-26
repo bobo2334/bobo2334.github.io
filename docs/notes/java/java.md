@@ -1654,13 +1654,15 @@ int compare(T o1, T o2);
 
 ![Java Map Collection Tutorial and Examples](java.assets/collections-framework-overview.png)
 
-### List
+### Collection
 
-#### for 循环遍历 List
+是单列数据结构的父接口。
+
+#### for 循环遍历
 
 通过`size()`方法得到集合的长度，通过元素下标遍历，下标从 0 开始。
 
-#### 迭代器遍历 List
+#### 迭代器遍历
 
 调用`Collection#iterator()`方法来得到迭代器对象，每次调用都会得到一个新的迭代器对象。
 
@@ -1679,7 +1681,7 @@ int compare(T o1, T o2);
 
 如果没有调用`next()`直接调用`remove()`，或者在调用了`next()`之后调用了两次`remove()`，都会抛出`IllegalStateException`异常。迭代器`Ite`中维护了一个`lastRet`变量，默认是`-1`，在调用`next()`之后会更新为当前元素的下标，在调用`remove()`之后会更新为`-1`，在调用`remove()`之前会对其进行检查，如果从来没有调用过`next()`或者调用两次`remove()`的时候会抛出异常。
 
-#### 增强 for 循环遍历 List
+#### 增强 for 循环遍历
 
 Java 5 中新增的语法糖，实际上调用的是迭代器的方法，所以有和迭代器一样的限制。数组也可以用这种方式遍历。注意遍历过程中的元素变量只是局部变量。
 
@@ -1689,9 +1691,7 @@ for(Person p: persons){
 }
 ```
 
-#### `ArrayList`、`LinkedList`和`Vector`
-
-这三者都是`List`接口的实现类。
+### List
 
 - `Vector`出现较早（Java 1.0），是线程安全的，效率低
 - `ArrayList`出现较晚（Java 1.2），是非线程安全的，效率高
@@ -1701,13 +1701,9 @@ for(Person p: persons){
 
 无序、不可重复的数据结构。底层用的是`Map`，只用了 key 的那一列。
 
-```java
-private transient HashMap<E,Object> map;
-```
-
 - `HashSet`，无序，线程不安全，可以存储`null`值，底层用`HashMap`
 - `LinkedHashSet`，元素可以按照添加的顺序遍历，是`HashSet`的子类，底层用`LinkedHashMap`
-- `TreeSet`，用树结构存储，可以对添加的对象进行排序，底层用`TreeMap`
+- `TreeSet`，可以对添加的对象进行排序，底层用`TreeMap`
 
 ### Queue
 
@@ -1716,6 +1712,14 @@ private transient HashMap<E,Object> map;
 // TODO 补充方法名
 
 ### Map
+
+是双列数据结构的顶层接口。Map 的底层也是数组，每个位置放的都是一个`Entry`，其中包含了 key 和 value。
+
+- `Hashtable`，Java 1.0 引入，当时还没有`Map`接口，后来 Java 1.2 抽取 Map 接口，`Hashtable`是线程安全的，其中`table`是小写，key 不能是`null`
+- `Properties`，`Hashtable`的子类，用于读取和写入`.properties`文件，内容也是键值对的形式，key 和 value 都是`String`类型
+- `HashMap`，`Map`的主要实现类，非线程安全，key 可以为`null`
+- `LinkedHashMap`，存储`key`的时候不仅仅存储 key 的内容，而是存储了一个双向链表的节点，可以按照元素加入的顺序来遍历
+- `TreeMap`，底层用红黑树，是排序二叉树的一种
 
 ## 泛型
 
