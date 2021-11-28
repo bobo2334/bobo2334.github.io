@@ -1670,7 +1670,7 @@ int compare(T o1, T o2);
 
 #### 迭代器遍历
 
-调用`Collection#iterator()`方法来得到迭代器对象，每次调用都会得到一个新的迭代器对象。
+调用`Iterable#iterator()`方法来得到迭代器对象，每次调用都会得到一个新的迭代器对象。
 
 - `Iterator<E> iterator()`
 
@@ -1687,7 +1687,7 @@ int compare(T o1, T o2);
 
 如果没有调用`next()`直接调用`remove()`，或者在调用了`next()`之后调用了两次`remove()`，都会抛出`IllegalStateException`异常。迭代器`Ite`中维护了一个`lastRet`变量，默认是`-1`，在调用`next()`之后会更新为当前元素的下标，在调用`remove()`之后会更新为`-1`，在调用`remove()`之前会对其进行检查，如果从来没有调用过`next()`或者调用两次`remove()`的时候会抛出异常。
 
-#### 增强 for 循环遍历
+#### for-each 循环
 
 Java 5 中新增的语法糖，实际上调用的是迭代器的方法，所以有和迭代器一样的限制。数组也可以用这种方式遍历。注意遍历过程中的元素变量只是局部变量。
 
@@ -1738,7 +1738,7 @@ class/interface 类名<T1, T2> extends .... {
   T1 t1;
   T2 t2;
   public T1 fn(T2 t2){
-    
+
   }
 }
 ```
@@ -1755,9 +1755,39 @@ class/interface 类名<T1, T2> extends .... {
 public <T extends Object> T[] toArray(T ...a);
 ```
 
+### 类型通配符
 
+- `<?>`任意类型，除了`null`外不让存，可以取，取出来是`Object`类型的
+- `<? extends Xxx>`必须是继承此类
+- `<T extends Number & Serializable>`，可以有多个限制，但是父类只能有一个，并且必须写在第一位，后面可以跟多个接口
+- `<? super Xxx>`必须是此类的父类
 
-## IO 流
+## IO
+
+![Knowledge about Java IO and NIO is here - Programmer All](java.assets/b2f96c540f04943564bd96945d663ddf.jpeg)
+
+|                  | Byte Based Input                                             | Byte Based Output                                            | Character Based Input                                        | Character Based Output                                       |
+| ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Basic            | [InputStream](http://tutorials.jenkov.com/java-io/inputstream.html) | [OutputStream](http://tutorials.jenkov.com/java-io/outputstream.html) | [Reader](http://tutorials.jenkov.com/java-io/reader.html) [InputStreamReader](http://tutorials.jenkov.com/java-io/inputstreamreader.html) | [Writer](http://tutorials.jenkov.com/java-io/writer.hml) [OutputStreamWriter](http://tutorials.jenkov.com/java-io/outputstreamwriter.html) |
+| Arrays           | [ByteArrayInputStream](http://tutorials.jenkov.com/java-io/bytearrayinputstream.html) | [ByteArrayOutputStream](http://tutorials.jenkov.com/java-io/bytearrayoutputstream.html) | [CharArrayReader](http://tutorials.jenkov.com/java-io/chararrayreader.html) | [CharArrayWriter](http://tutorials.jenkov.com/java-io/chararraywriter.html) |
+| Files            | [FileInputStream](http://tutorials.jenkov.com/java-io/fileinputstream.html) [RandomAccessFile](http://tutorials.jenkov.com/java-io/randomaccessfile.html) | [FileOutputStream](http://tutorials.jenkov.com/java-io/fileoutputstream.html) [RandomAccessFile](http://tutorials.jenkov.com/java-io/randomaccessfile.html) | [FileReader](http://tutorials.jenkov.com/java-io/filereader.html) | [FileWriter](http://tutorials.jenkov.com/java-io/filewriter.html) |
+| Pipes            | [PipedInputStream](http://tutorials.jenkov.com/java-io/pipedinputstream.html) | [PipedOutputStream](http://tutorials.jenkov.com/java-io/pipedoutputstream.html) | [PipedReader](http://tutorials.jenkov.com/java-io/pipedreader.html) | [PipedWriter](http://tutorials.jenkov.com/java-io/pipedwriter.html) |
+| Buffering        | [BufferedInputStream](http://tutorials.jenkov.com/java-io/bufferedinputstream.html) | [BufferedOutputStream](http://tutorials.jenkov.com/java-io/bufferedoutputstream.html) | [BufferedReader](http://tutorials.jenkov.com/java-io/bufferedreader.html) | [BufferedWriter](http://tutorials.jenkov.com/java-io/bufferedwriter.html) |
+| Filtering        | [FilterInputStream](http://tutorials.jenkov.com/java-io/filterinputstream.html) | [FilterOutputStream](http://tutorials.jenkov.com/java-io/filteroutputstream.html) | [FilterReader](http://tutorials.jenkov.com/java-io/filterreader.html) | [FilterWriter](http://tutorials.jenkov.com/java-io/filterwriter.html) |
+| Parsing          | [PushbackInputStream](http://tutorials.jenkov.com/java-io/pushbackinputstream.html) [StreamTokenizer](http://tutorials.jenkov.com/java-io/streamtokenizer.html) |                                                              | [PushbackReader](http://tutorials.jenkov.com/java-io/pushbackreader.html) [LineNumberReader](http://tutorials.jenkov.com/java-io/linenumberreader.html) |                                                              |
+| Strings          |                                                              |                                                              | [StringReader](http://tutorials.jenkov.com/java-io/stringreader.html) | [StringWriter](http://tutorials.jenkov.com/java-io/stringwriter.html) |
+| Data             | [DataInputStream](http://tutorials.jenkov.com/java-io/datainputstream.html) | [DataOutputStream](http://tutorials.jenkov.com/java-io/dataoutputstream.html) |                                                              |                                                              |
+| Data - Formatted |                                                              | [PrintStream](http://tutorials.jenkov.com/java-io/printstream.html) |                                                              | [PrintWriter](http://tutorials.jenkov.com/java-io/printwriter.html) |
+| Objects          | [ObjectInputStream](http://tutorials.jenkov.com/java-io/objectinputstream.html) | [ObjectOutputStream](http://tutorials.jenkov.com/java-io/objectoutputstream.html) |                                                              |                                                              |
+| Utilities        | [SequenceInputStream](http://tutorials.jenkov.com/java-io/sequenceinputstream.html) |                                                              |                                                              |                                                              |
+
+表格内容来自 [Java IO Tutorial (jenkov.com)](http://tutorials.jenkov.com/java-io/index.html)。
+
+### File
+
+代表一个文件或目录。
+
+## NIO
 
 ## 反射
 
