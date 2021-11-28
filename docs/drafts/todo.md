@@ -2,5 +2,9 @@
 
 - [ ] sdkman
 - [ ] nodebrew
-- [ ] oh-my-posh3
-- [ ] oh-my-posh5
+- [x] oh-my-posh3
+- [x] oh-my-posh5
+- [ ] nrm
+- [ ] nvm
+- [ ] rsync
+- [ ] cmake
