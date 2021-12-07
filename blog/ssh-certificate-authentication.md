@@ -10,7 +10,7 @@ date: 2021-09-08
 
 ## 生成秘钥
 
-可以用 OpenSSH 中的`ssh-keygen`命令行工具来生成秘钥。`-t`参数指定了加密方式，通常为`ras`或`dsa`。
+可以用 OpenSSH 中的`ssh-keygen`命令行工具来生成秘钥。`-t`参数指定了加密方式，通常为`rsa`或`dsa`。
 
 ```bash
 ssh-keygen -t rsa
@@ -36,7 +36,7 @@ ssh-keygen -t rsa
 # 不允许密码直接登录
 PasswordAuthentication no
 # 不允许空密码登录
-PermitEmptyPasswords
+PermitEmptyPasswords no
 # 不允许交互式密码登录
 ChallengeResponseAuthentication no
 # 不允许 root 用户使用密码登录

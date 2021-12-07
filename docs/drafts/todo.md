@@ -8,3 +8,5 @@
 - [ ] nvm
 - [ ] rsync
 - [ ] cmake
+- [ ] zerotier
+
