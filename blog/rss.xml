@@ -4,9 +4,25 @@
         <title>我的学习笔记 Blog</title>
         <link>https://bobo2334.github.io/blog</link>
         <description>我的学习笔记 Blog</description>
-        <lastBuildDate>Sat, 27 Nov 2021 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 07 Dec 2021 17:33:29 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
+        <item>
+            <title><![CDATA[Zerotier 异地组网]]></title>
+            <link>https://bobo2334.github.io/blog/zerotier</link>
+            <guid>Zerotier 异地组网</guid>
+            <pubDate>Tue, 07 Dec 2021 17:33:29 GMT</pubDate>
+            <description><![CDATA[前言]]></description>
+            <content:encoded><![CDATA[<h2>前言</h2><h2>其它方案</h2><h3>蒲公英</h3><h3>VPN</h3><h2>注册</h2><h2>客户端</h2><h2>自动 NAT</h2>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[自建 Zerotier 行星节点]]></title>
+            <link>https://bobo2334.github.io/blog/self-hosted-zerotier-controller</link>
+            <guid>自建 Zerotier 行星节点</guid>
+            <pubDate>Tue, 07 Dec 2021 17:33:29 GMT</pubDate>
+            <description><![CDATA[前言]]></description>
+            <content:encoded><![CDATA[<h2>前言</h2><h2>运行项目</h2><h2>网络配置</h2><h2>客户端</h2>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[在 HTML 中使用 Unicode 代码]]></title>
             <link>https://bobo2334.github.io/blog/use-unicode-in-html</link>
@@ -251,11 +267,11 @@ cp ~/docker-cert/*.pem /etc/.docker/
             <guid>SSH 密钥登录</guid>
             <pubDate>Wed, 08 Sep 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
-            <content:encoded><![CDATA[<h2>前言</h2><blockquote><p>SSH 默认采用密码登录，这种方法有很多缺点，简单的密码不安全，复杂的密码不容易记忆，每次手动输入也很麻烦。密钥登录是比密码登录更好的解决方案。<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup></p></blockquote><h2>生成秘钥</h2><p>可以用 OpenSSH 中的<code>ssh-keygen</code>命令行工具来生成秘钥。<code>-t</code>参数指定了加密方式，通常为<code>ras</code>或<code>dsa</code>。</p><pre><code class="language-bash">ssh-keygen -t rsa
+            <content:encoded><![CDATA[<h2>前言</h2><blockquote><p>SSH 默认采用密码登录，这种方法有很多缺点，简单的密码不安全，复杂的密码不容易记忆，每次手动输入也很麻烦。密钥登录是比密码登录更好的解决方案。<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup></p></blockquote><h2>生成秘钥</h2><p>可以用 OpenSSH 中的<code>ssh-keygen</code>命令行工具来生成秘钥。<code>-t</code>参数指定了加密方式，通常为<code>rsa</code>或<code>dsa</code>。</p><pre><code class="language-bash">ssh-keygen -t rsa
 </code></pre><p>生成的密钥文件默认就会是<code>~/.ssh/id_rsa</code>（私钥）和<code>~/.ssh/id_rsa.pub</code>（公钥）。</p><p>也可以用 PuTTY 中提供的 PuTTY Key Generator（puttygen.exe）<sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup> 来用可视化用户界面来生成秘钥文件。</p><p><img src="./ssh-certificate-authentication.assets/image-20210816230720070.png" alt="image-20210816230720070"/></p><h2>把公钥放在服务器上</h2><p>用户公钥保存在<code>~/.ssh/authorized_keys</code>文件中，如果该文件不存在，你可以手动创建一个。</p><p>然后将公钥的文本内容放入其中，每行一个。</p><h2>关闭密码登录</h2><p>编辑<code>/etc/ssh/sshd_config</code>文件，找到对应的配置项并修改。</p><pre><code class="language-conf"># 不允许密码直接登录
 PasswordAuthentication no
 # 不允许空密码登录
-PermitEmptyPasswords
+PermitEmptyPasswords no
 # 不允许交互式密码登录
 ChallengeResponseAuthentication no
 # 不允许 root 用户使用密码登录
