@@ -1762,7 +1762,19 @@ public <T extends Object> T[] toArray(T ...a);
 - `<T extends Number & Serializable>`，可以有多个限制，但是父类只能有一个，并且必须写在第一位，后面可以跟多个接口
 - `<? super Xxx>`必须是此类的父类
 
-## IO
+## I/O
+
+流的分类：
+
+1. 操作数据单位
+   1. 字节流
+   2. 字符流
+2. 数据的流向
+   1. 输入流
+   2. 输出流
+3. 流的角色
+   1. 节点流
+   2. 处理流
 
 ![Knowledge about Java IO and NIO is here - Programmer All](java.assets/b2f96c540f04943564bd96945d663ddf.jpeg)
 
@@ -1787,7 +1799,91 @@ public <T extends Object> T[] toArray(T ...a);
 
 代表一个文件或目录。
 
+### RandomAccessFile
+
+支持随机读写的文件。对象中维护了一个指针，所有对文件的读写都相对于当前的指针。
+
+### 转换流
+
+下面的两个类可以将字节流转换为字符流。
+
+- `InputStreamReader`
+- `OutputStreamWriter`
+
+### 打印流
+
+- `PrintStream`，是`OutputStream`的子类
+- `PrintWriter`，是`Writer`的子类
+
+`System.in`、`System.out`和`System.err`都是`PrintStream`。
+
+`PrintWriter`少了一些参数为`byte[]`的方法，不能直接写出字节，其它方法都差不多。
+
+以上两者的输出方法都不会抛出 I/O 异常。
+
+### 数据流
+
+- `DataInputStream`
+- `DataOutputStream`
+
+将基本数据类型和`String`持久化和读入。
+
+### 对象流
+
+- `ObjectInputStream`
+- `ObjectOutputStream`
+
+将基本数据类型和`String`持久化和读入。
+
+对象的序列化和反序列化操作。
+
+在序列化和反序列化的过程中会忽略掉静态成员变量和用`transient`修饰的成员变量。
+
+要求被操作的类实现`java.io.Serializable`或`java.io.Externalizable`接口。
+
+`private static final long serialVersionUID`用于标识当前对象的版本号，如果不显式声明的话系统会根据类的结构自动计算一个并写入到序列化的结果中。在反序列化的时候会将内存中加载的类的`serialVersionUID`和序列化结果中的`serialVersionUID`对比，如果不相同则抛出`InvalidClassException`异常。
+
+如果显式声明了该字段，并且两个类结构不相同的情况下，反序列化的过程中会尽量读取变量值。如果新增了字段则该字段为默认值，如果删除了字段则忽略该字段；如果更改了字段的类型则会抛出`InvalidClassException`异常。
+
+在反序列化的过程中可能会抛出`ClassNotFoundException`。
+
 ## NIO
+
+Java 1.4 引入，更高效的流操作。
+
+## NIO 2
+
+Java 7 引入，对 NIO 进行了扩展。
+
+### Path
+
+### Paths
+
+### Files
+
+## 网络编程
+
+### InetAddress
+
+### ServerSocket
+
+TCP 服务端。
+
+### Socket
+
+TCP 客户端。
+
+### DatagramSocket
+
+UDP，不分服务端与客户端。
+
+非面向连接，不可靠的。
+
+### DatagramPacket
+
+UDP 数据包。
+
+### URL
 
 ## 反射
 
