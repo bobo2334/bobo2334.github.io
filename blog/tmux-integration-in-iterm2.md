@@ -26,7 +26,7 @@ tmux ls
 tmux -CC attach -t 0
 ```
 
-下面的命令用于创建一个名为`main`的会话，如果没有则新建一个并附加。
+下面的命令用于创建一个名为`main`的会话，如果该会话存在的话则直接恢复该会话。
 
 ```bash
 tmux -CC new -A -s main
