@@ -2,7 +2,7 @@
 date: 2021-11-24
 ---
 
-# Scoop：Windows 上的包管理器
+# Scoop：最好用的 Windows 包管理器（或许是）
 
 ## 引入 Scoop
 
