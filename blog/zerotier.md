@@ -53,7 +53,7 @@ Zerotier 在常用平台上都有客户端，有图形化的有命令行的。
 - [Telegram: Contact @aixiaoshao](https://t.me/aixiaoshao)
 - [Telegram: Contact @passwallOpenWRT233](https://t.me/passwallOpenWRT233)
 
-OpenWrt 不需要作为你的主路由，它可以通过 LAN 口接入你现有的局域网，作为旁路由使用。
+OpenWrt 不需要作为你的主路由，它可以通过 LAN 口接入你现有的局域网，关闭 LAN 口的 DHCP 服务，作为旁路由使用。
 
 你还需要在 Zerotier 控制台中配置静态路由。
 
