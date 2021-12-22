@@ -2,7 +2,7 @@
 date: 2021-11-24
 ---
 
-# Scoop 安装和使用
+# Scoop：Windows 上的包管理器
 
 ## 引入 Scoop
 
