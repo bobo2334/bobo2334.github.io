@@ -1887,13 +1887,231 @@ UDP 数据包。
 
 ## 反射
 
+Reflection（反射）是被视为动态语言的关键，反射机制允许程序在执行期借助于 Reflection API 取得任何类的内部信息，并能直接操作任意对象的内部属性及方法。
+
+### 获取 Class 实例的方式
+
+1. `Object.class`
+2. `new Object().getClass()`
+3. `Class.forName("com.example.A")`
+4. `<当前类>.class.getClassLoader().loadClass("com.example.A")`
+
+### Class 对象的类型
+
+1. `class`类
+2. `interface`接口
+3. `[]`数组，只要数据类型和维度相同就是同一种 Class
+4. `enum`枚举
+5. `@interface`注解
+6. 基本数据类型
+7. `void`
+
 ## 动态代理
+
+使用一个代理将对象包装起来，然后用该代理对象取代原始对象。任何对原始对象的调用都要通过代理。代理对象决定是否以及何时将方法调用转到原始对象上。
+
+JDK 提供的动态代理要求被代理类必须实现接口。
+
+### Proxy
+
+`java.lang.reflect.Proxy`是专门完成代理的操作类，是所有动态代理类的父类。通过此类为一个或多个接口动态地生成实现类。
+
+```java
+public static Object newProxyInstance(ClassLoader loader,
+                                      Class<?>[] interfaces,
+                                      InvocationHandler h)
+                               throws IllegalArgumentException
+```
+
+创建代理对象的过程就是创建了一个实现了接口的子类对象，并没有创建被代理的对象。
+
+```java
+public class ProxyTest {
+
+    public static void main(String[] args) {
+
+        Handler handler = new Handler();
+        handler.setInstance(new A());
+
+        Object instance = Proxy.newProxyInstance(A.class.getClassLoader(), A.class.getInterfaces(), handler);
+
+        ((Inter) instance).say("hello");
+    }
+
+}
+
+class Handler implements InvocationHandler {
+
+    private Inter instance;
+
+    public void setInstance(Inter instance) {
+        this.instance = instance;
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        for (Class<?> anInterface : proxy.getClass().getInterfaces()) {
+            System.out.println(anInterface);
+        }
+        System.out.println(method);
+        args[0] = "replace";
+        return instance == null ? null : method.invoke(instance, args);
+    }
+
+}
+```
 
 ## 新特性
 
+### Java 7
+
+#### switch 支持 String
+
+#### try-with-resources
+
+#### NIO 2
+
+#### 泛型推断
+
 ### Java 8
 
+#### 函数式（Functional）接口
+
+单方法接口。
+
+![image-20211221052355820](java.assets/image-20211221052355820.png)
+
+![image-20211221052413552](java.assets/image-20211221052413552.png)
+
+#### Lambda 表达式
+
+简化 SAM（Single Abstract Method）接口实现的语法糖。
+
+```
+（形参列表）->{Lambda 体}
+```
+
+1. 如果 Lambda 体里面只有一句话，则可以省略`{}`以及里面的分号；
+2. 如果形参列表中形参类型是已知的，那么数据类型可以省略；
+3. 如果形参列表只有一个形参，并且数据类型可以省略，则可以省略括号；
+4. 如果只有一句`ruturn`语句，可以省略`return`；
+5. 如果没有形参，`()`不能省略。
+
+#### 方法引用与构造器引用
+
+当 Lambda 体的实现是调用一个现有的方法来实现，并且抽象方法的参数列表与该方法的参数列表对象，那么就可以使用**方法引用**来简化。
+
+```java
+list.forEach(num -> System.out.println(num));
+list.forEach(System.out::println);
+```
+
+如果第一个形参是调用方法的，剩下的都作为此方法的参数，也可以使用方法引用。
+
+```java
+Arrays.sort(arr, (e1, e2) -> {e1.compareToIgnoreCase(e2)});
+Arrays.sort(arr, String::compareToIgnoreCase);
+```
+
+**构造器引用**，当 Lambda 的方法体是通过创建对象实现的，并且形参列表一致。
+
+```java
+Supplier<String> s = String::new;
+// String[]::new 数组构造器
+```
+
+#### Stream API
+
+数据加工流。
+
+- Stream 不负责存储数据，它只负责对数据进行处理
+- Stream 不会改变源对象，每次处理都会返回一个有结果的新 Stream
+- Stream 是延迟执行的，在获取结果的时候才会执行之前的操作方法
+
+##### 创建
+
+1. `<集合对象>.stream()`
+2. `Arrays.stream(arr)`
+3. `static <T> Stream<T> of(T... values)`
+4. `static <T> Stream<T> generate(Supplier<T> s)`产生一个无限流
+5. `static <T> Stream<T> iterate(T seed, UnaryOperator<T> f)`无限流
+
+##### 中间操作
+
+- `Stream<T> filter(Predicate<? super T> predicate)`
+- `Stream<T> distinct()`
+- `Stream<T> limit(long maxSize)`
+- `Stream<T> skip(long n)`
+- `static concat()`合并两个流
+- `Stream<T> peek(Consumer<? super T> action)`对每个元素执行操作，相当于 forEach，但是不是终止操作
+- `Stream<T> sorted()`
+- `Stream<T> sorted(Comparator<? super T> comparator)`
+- `<R> Stream<R> map(Function<? super T,? extends R> mapper)`对每个元素执行操作，返回该函数返回的元素组成的流
+- `<R> Stream<R> flatMap(Function<? super T,? extends Stream<? extends R>> mapper)`
+
+##### 终结操作
+
+- `void forEach(Consumer<? super T> action)`
+- `long count()`
+- `boolean allMatch(Predicate<? super T> predicate)`
+- `boolean anyMatch(Predicate<? super T> predicate)`
+- `boolean noneMatch(Predicate<? super T> predicate)`
+- `Optional<T> findFirst()`返回第一个元素
+- `Optional<T> findAny()`返回任意一个
+- `Optional<T> min(Comparator<? super T> comparator)`
+- `Optional<T> max(Comparator<? super T> comparator)`
+- `T reduce(T identity, BinaryOperator<T> accumulator)`相当于 JS 中的 reduce，从左到右依次处理元素值，identity 是初始值，每次 accumulator 的返回值会累加到 identity 上，最后返回该值。
+- `<R,A> R collect(Collector<? super T,A,R> collector)`把流中的数据收集起来，在`Collectors`中有许多方法来提供`Collectoer`的实现类。
+
+#### Optional
+
+单值容器。
+
+- `public static <T> Optional<T> of(T value)`存值
+- `public static <T> Optional<T> ofNullable(T value)`可以存 null，如果是 null 则返回空 Optional
+- `static <T> Optional<T> empty()`直接返回一个空的容器
+- `public boolean isPresent()`
+- `public T get()`
+- `public void ifPresent(Consumer<? super T> consumer)`
+- `public Optional<T> filter(Predicate<? super T> predicate)`
+- `public T orElse(T other)`如果不是空的返回容器中的值，如果是空的返回另一个值
+- `public T orElseGet(Supplier<? extends T> other)`如果是空的执行方法，返回该方法的返回值
+- `public Optional<T> filter(Predicate<? super T> predicate)`
+- `public <U> Optional<U> map(Function<? super T,? extends U> mapper)`
+
+#### 接口中的默认方法和静态方法
+
+在之前的接口笔记中有介绍。
+
+#### 新的日期时间 API
+
+在之前的笔记中有提及。
+
 ### Java 9
+
+#### 模块化系统
+
+在`src`目录下用`module-info.java`文件来声明模块信息。
+
+通过`module`、`export`和`requires`关键字来声明模块信息。
+
+#### 交互式编程环境 jShell
+
+类似于`python`和`node`的命令行交互式编程环境。
+
+#### 接口私有方法
+
+Java 9 中接口方法可以用`private`修饰。
+
+#### 匿名实现类使用泛型
+
+在 Java 8 中，匿名实现类不能声明泛型，Java 9 中可以。
+
+![image-20211221074007069](java.assets/image-20211221074007069.png)
+
+#### try-with-resources sheng
+
+#### 局部变量类型推断
 
 ### Java 10
 
