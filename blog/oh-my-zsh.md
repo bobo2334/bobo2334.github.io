@@ -19,9 +19,9 @@ zsh 的优点是兼容 bash 语法，可以在日常工作中替换掉 bash，�
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
-安装脚本就是帮你克隆了 oh-my-zsh 的仓库到`~/.oh-my-zsh`，并且给你新建了一个`~/.zshrc`文件模板，帮你配置和加载 oh-my-zsh。
+安装脚本就是帮你克隆了 oh-my-zsh 的仓库到`~/.oh-my-zsh`，并且给你新建了一个`~/.zshrc`文件模板，用于在 zsh 启动时加载 oh-my-zsh。
 
-之前的`.zshrc`文件内容被转移到`.zshrc.pre-oh-my-zsh`，现在的`.zshrc`的内容是全新的，如果你之前在用户配置文件里做了重要配置，你需要将`.zshrc.pre-oh-my-zsh`里的内容附加到现在的`.zshrc`之后，以确保之前的功能正常使用。
+你之前的`.zshrc`文件内容被转移到`.zshrc.pre-oh-my-zsh`，现在的`.zshrc`的内容是全新的，如果你之前在用户配置文件里做了重要配置，你需要将`.zshrc.pre-oh-my-zsh`里的内容附加到现在的`.zshrc`之后，以确保之前的功能正常使用。
 
 ## 主题
 
@@ -37,13 +37,13 @@ ZSH_THEME="robbyrussell"
 
 除了默认自带的主题外，你还可以使用第三方主题，如 Dracula[^4] 主题。
 
-下面的命令用于克隆 Dracula 主题的仓库到本地。
+下面的命令用于克隆 Dracula 主题的仓库到本地的`~/zsh-dracula`文件夹。
 
 ```bash
 git clone https://github.com/dracula/zsh.git ~/zsh-dracula
 ```
 
-你可以手动复制`~/git/zsh-dracula`下的`dracula.zsh-theme`文件和`lib`文件夹至`~/.oh-my-zsh/custome/themes/`文件夹下来完成主题的安装。
+你可以手动复制`~/zsh-dracula`下的`dracula.zsh-theme`文件和`lib`文件夹至`~/.oh-my-zsh/custome/themes/`文件夹下来完成主题的安装。
 
 也可以使用以下命令创建一个主题的软连接到主题文件夹，来完成主题的安装。
 
@@ -61,13 +61,13 @@ ZSH_THEME="dracula"
 
 oh-my-zsh 默认自带了许多插件，这些插件文件存放在`~/.oh-my-zsh/plugins/`文件夹下。你可以在 oh-my-zsh 插件 wiki[^5] 中查阅默认插件的目录和文档。
 
-编辑`.zshrc`文件，修改`plugins`配置，把插件名称写入其中即可启用插件，每个插件名称之间用空格或换行分隔，不要用逗号。注意过多的主题会延长启动时间。执行`exec zsh`命令或重启终端即可让配置文件生效。
+编辑`.zshrc`文件，修改`plugins`配置，把插件名称写入其中即可启用插件，每个插件名称之间用空格或换行分隔，不要用逗号。注意过多的插件会影响启动时间。执行`exec zsh`命令或重启终端即可让配置文件生效。
 
 ```bash
 plugins=(git theme)
 ```
 
-下面记录一下自用的 chaji
+下面记录一些自用的插件。
 
 ### git[^6]
 
@@ -128,7 +128,7 @@ plugins=(git theme zsh-syntax-highl3ighting)
 git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 ```
 
-编辑`.zshrc`文件，修改`plugins`配置。
+编辑`.zshrc`文件，修改`plugins`配置，加上`zsh-autosuggestions`。
 
 [^1]:[ohmyzsh/ohmyzsh: 🙃 A delightful community-driven (with 1900+ contributors) framework for managing your zsh configuration. Includes 300+ optional plugins (rails, git, macOS, hub, docker, homebrew, node, php, python, etc), 140+ themes to spice up your morning, and an auto-update tool so that makes it easy to keep up with the latest updates from the community.](https://github.com/ohmyzsh/ohmyzsh)
 [^2]:[Installing ZSH · ohmyzsh/ohmyzsh Wiki](https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH)

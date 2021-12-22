@@ -21,12 +21,13 @@ oh-my-posh3 现在已基于 Go 语言重构，是一个跨平台的命令行工�
 
 Scoop[^5] 是 Windows 上的一款基于 PowerShell 的包管理器，接下来的软件都是用 Scoop 安装的，因为它能很方便地管理软件和配置环境变量。Scoop 的安装及使用不在本文的讨论范围内。
 
-由于多数软件来源于 Github，在网络不好的情况下可能会安装失败，请自行寻找代理软件。
+由于多数软件来源于 Github，在网络不好的情况下可能会安装失败，请自行配置网络代理。
 
 以下命令用于在 PowerShell 中配置代理，请自行替换地址和端口号。
 
 ```powershell
-$Env:http_proxy="http://127.0.0.1:11223";$Env:https_proxy="http://127.0.0.1:11223"
+$Env:http_proxy="http://127.0.0.1:11223";
+$Env:https_proxy="http://127.0.0.1:11223"
 ```
 
 Scoop 基于 Git，为了让 Scoop 能正常工作，请参考以下命令用于配置 Git 的代理。
@@ -82,9 +83,9 @@ sudo scoop install CascadiaCode-NF-Mono
 
 ## 安装 oh-my-posh3
 
-在 oh-my-posh 的官方文档中使用的安装命令为`scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json`，请不要使用该命令。
+目前，在 oh-my-posh 的官方文档中使用的安装命令为`scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json`，请不要使用该命令。
 
-oh-my-posh3 已存在于 Scoop 的 main 仓库中，请安装此软件包，后面的配置跟包名有关。
+oh-my-posh3 已存在于 Scoop 的 main 仓库中，请安装此软件包，后面的配置命令跟包名有关。
 
 ```powershell
 scoop install oh-my-posh3
