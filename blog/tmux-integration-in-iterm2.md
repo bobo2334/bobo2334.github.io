@@ -35,7 +35,7 @@ tmux -CC new -A -s main
 或者在通过 SSH 连接到服务器的时候直接执行此命令，直接打开一个 tmux 会话。
 
 ```bash
-ssh root@1.1.1.1 'tmux -CC new -A -s main'
+ssh -t root@1.1.1.1 'tmux -CC new -A -s main'
 ```
 
 ## 参考资料
