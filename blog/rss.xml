@@ -4,14 +4,14 @@
         <title>我的学习笔记 Blog</title>
         <link>https://bobo2334.github.io/blog</link>
         <description>我的学习笔记 Blog</description>
-        <lastBuildDate>Fri, 10 Dec 2021 20:43:11 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 22 Dec 2021 08:02:27 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <item>
             <title><![CDATA[Zerotier 异地组网]]></title>
             <link>https://bobo2334.github.io/blog/zerotier</link>
             <guid>Zerotier 异地组网</guid>
-            <pubDate>Fri, 10 Dec 2021 20:43:11 GMT</pubDate>
+            <pubDate>Wed, 22 Dec 2021 08:02:27 GMT</pubDate>
             <description><![CDATA[前言]]></description>
             <content:encoded><![CDATA[<h2>前言</h2><h2>其它方案</h2><h3>蒲公英</h3><h3>VPN</h3><h2>注册</h2><h2>客户端</h2><h2>自动 NAT</h2>]]></content:encoded>
         </item>
@@ -19,7 +19,7 @@
             <title><![CDATA[自建 Zerotier 行星节点]]></title>
             <link>https://bobo2334.github.io/blog/self-hosted-zerotier-controller</link>
             <guid>自建 Zerotier 行星节点</guid>
-            <pubDate>Fri, 10 Dec 2021 20:43:11 GMT</pubDate>
+            <pubDate>Wed, 22 Dec 2021 08:02:27 GMT</pubDate>
             <description><![CDATA[前言]]></description>
             <content:encoded><![CDATA[<h2>前言</h2><h2>运行项目</h2><h2>网络配置</h2><h2>客户端</h2>]]></content:encoded>
         </item>
