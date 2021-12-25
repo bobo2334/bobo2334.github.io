@@ -43,6 +43,7 @@ alias bat='batcat'
 alias ll='exa -lha --modified --created --time-style long-iso --group-directories-first'
 alias dc='docker-compose'
 alias lzd='lazydocker'
+alias rm='echo "please use trash-put"'
 ```
 
 ## docker
@@ -51,6 +52,7 @@ alias lzd='lazydocker'
 wget https://get.docker.com/ -O get-docker.sh
 # sh get-docker.sh --mirror Aliyun
 sh get-docker.sh
+systemctl enable docker
 ```
 
 ## docker-compose
@@ -101,3 +103,14 @@ commandTemplates:
 wget https://github.com/schollz/croc/releases/download/v9.5.0/croc_9.5.0_Linux-64bit.deb
 dpkg -i croc_9.5.0_Linux-64bit.deb
 ```
+
+## bat
+
+- [Releases · sharkdp/bat](https://github.com/sharkdp/bat/releases)
+
+```bash
+# wget https://ghproxy.com/https://github.com/sharkdp/bat/releases/download/v0.18.3/bat_0.18.3_amd64.deb
+wget https://github.com/sharkdp/bat/releases/download/v0.18.3/bat_0.18.3_amd64.deb
+dpkg -i bat_0.18.3_amd64.deb
+```
+
