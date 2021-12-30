@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://bobo2334.github.io/blog</id>
     <title>我的学习笔记 Blog</title>
-    <updated>2021-12-24T06:14:25.136Z</updated>
+    <updated>2021-12-30T17:14:41.678Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://bobo2334.github.io/blog"/>
     <subtitle>我的学习笔记 Blog</subtitle>
@@ -11,7 +11,7 @@
         <title type="html"><![CDATA[自建 Zerotier 行星节点]]></title>
         <id>自建 Zerotier 行星节点</id>
         <link href="https://bobo2334.github.io/blog/self-hosted-zerotier-controller"/>
-        <updated>2021-12-24T06:14:25.136Z</updated>
+        <updated>2021-12-30T17:14:41.678Z</updated>
         <summary type="html"><![CDATA[前言]]></summary>
         <content type="html"><![CDATA[<h2>前言</h2><h2>运行项目</h2><h2>网络配置</h2><h2>客户端</h2>]]></content>
     </entry>
@@ -40,9 +40,11 @@ deb https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main 
 alias ll=&#x27;exa -lha --modified --created --time-style long-iso --group-directories-first&#x27;
 alias dc=&#x27;docker-compose&#x27;
 alias lzd=&#x27;lazydocker&#x27;
+alias rm=&#x27;echo &quot;please use trash-put&quot;&#x27;
 </code></pre><h2>docker</h2><pre><code class="language-bash">wget https://get.docker.com/ -O get-docker.sh
 # sh get-docker.sh --mirror Aliyun
 sh get-docker.sh
+systemctl enable docker
 </code></pre><h2>docker-compose</h2><ul><li><a href="https://github.com/docker/compose/releases">Releases · docker/compose</a></li></ul><pre><code class="language-bash"># wget https://ghproxy.com/https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-linux-x86_64 -O /opt/docker-compose
 wget https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-linux-x86_64 -O /opt/docker-compose
 chmod u+x /opt/docker-compose
@@ -68,6 +70,9 @@ commandTemplates:
 </code></pre><h2>croc</h2><ul><li><a href="https://github.com/schollz/croc/releases">Releases · schollz/croc</a></li></ul><pre><code class="language-bash"># wget https://ghproxy.com/https://github.com/schollz/croc/releases/download/v9.5.0/croc_9.5.0_Linux-64bit.deb
 wget https://github.com/schollz/croc/releases/download/v9.5.0/croc_9.5.0_Linux-64bit.deb
 dpkg -i croc_9.5.0_Linux-64bit.deb
+</code></pre><h2>bat</h2><ul><li><a href="https://github.com/sharkdp/bat/releases">Releases · sharkdp/bat</a></li></ul><pre><code class="language-bash"># wget https://ghproxy.com/https://github.com/sharkdp/bat/releases/download/v0.18.3/bat_0.18.3_amd64.deb
+wget https://github.com/sharkdp/bat/releases/download/v0.18.3/bat_0.18.3_amd64.deb
+dpkg -i bat_0.18.3_amd64.deb
 </code></pre>]]></content>
     </entry>
     <entry>
@@ -104,7 +109,7 @@ services:
 tmux -CC attach -t 0
 </code></pre><p>下面的命令用于创建一个名为<code>main</code>的会话，如果该会话存在的话则直接恢复该会话。</p><pre><code class="language-bash">tmux -CC new -A -s main
 </code></pre><p>或者在通过 SSH 连接到服务器的时候直接执行此命令，直接打开一个 tmux 会话。</p><pre><code class="language-bash">ssh -t root@1.1.1.1 &#x27;tmux -CC new -A -s main&#x27;
-</code></pre><h2>参考资料</h2><ul><li><a href="https://gitlab.com/gnachman/iterm2/-/wikis/tmux-Integration-Best-Practices">tmux Integration Best Practices · Wiki · George Nachman / iterm2 · GitLab</a></li></ul><div class="footnotes"><hr/><ol><li id="fn-1"><a href="https://bobo2334.github.io/notes/utilities/tmux">tmux | 我的学习笔记</a><a href="#fnref-1" class="footnote-backref">↩</a></li><li id="fn-2"><a href="https://iterm2.com/documentation-tmux-integration.html">tmux Integration - Documentation - iTerm2 - macOS Terminal Replacement</a><a href="#fnref-2" class="footnote-backref">↩</a></li></ol></div>]]></content>
+</code></pre><h2>参考资料</h2><ul><li><a href="https://gitlab.com/gnachman/iterm2/-/wikis/tmux-Integration-Best-Practices">tmux Integration Best Practices · Wiki · George Nachman / iterm2 · GitLab</a></li></ul><div class="footnotes"><hr/><ol><li id="fn-1"><a href="https://bobo2334.github.io/docs/notes/utilities/tmux">tmux | 我的学习笔记</a><a href="#fnref-1" class="footnote-backref">↩</a></li><li id="fn-2"><a href="https://iterm2.com/documentation-tmux-integration.html">tmux Integration - Documentation - iTerm2 - macOS Terminal Replacement</a><a href="#fnref-2" class="footnote-backref">↩</a></li></ol></div>]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[Zerotier 异地组网]]></title>
