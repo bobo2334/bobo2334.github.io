@@ -29,7 +29,6 @@ const config = {
                     sidebarPath: require.resolve('./sidebars.js'),
                     remarkPlugins: [math, mermaid],
                     rehypePlugins: [katex],
-                    routeBasePath: '/'
                 },
                 blog: {
                     showReadingTime: false,
@@ -107,6 +106,7 @@ const config = {
                     src: 'android-chrome-512x512.png',
                 },
                 items: [
+                    { to: '/docs/bookmarks/interesting-projects', label: '笔记', position: 'left' },
                     { to: '/blog/archive', label: '文章', position: 'left' },
                     {
                         href: 'https://github.com/bobo2334/bobo2334.github.io',
@@ -118,7 +118,7 @@ const config = {
             prism: {
                 theme: lightCodeTheme,
                 darkTheme: darkCodeTheme,
-                additionalLanguages: ['powershell', 'java'],
+                additionalLanguages: ['powershell', 'java', 'c'],
             },
             colorMode: {
                 respectPrefersColorScheme: true,
