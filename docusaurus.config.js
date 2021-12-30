@@ -94,7 +94,7 @@ const config = {
     themeConfig:
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
-            metadata: [
+            metadatas: [
                 { name: 'msapplication-TileColor', contnet: '#da532c' },
                 { name: 'theme-color', contnet: '#25c2a0' },
             ],
