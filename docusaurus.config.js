@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 const math = require('remark-math');
 const katex = require('rehype-katex');
-const mermaid = require('mdx-mermaid');
+const mermaid = import('mdx-mermaid');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -139,21 +139,10 @@ const config = {
             },
         ],
         [
-            require.resolve("@easyops-cn/docusaurus-search-local"),
+            require.resolve('docusaurus-lunr-search'),
             {
-                language: ["en", "zh"],
-                hashed: true,
-                highlightSearchTermsOnTargetPage: true,
-                translations: {
-                    "search_placeholder": "搜索",
-                    "see_all_results": "查看所有结果",
-                    "no_results": "什么也没有搜索到",
-                    "search_results_for": "\"{{ keyword }}\"的搜索结果",
-                    "search_the_documentation": "Search the documentation",
-                    "count_documents_found": "{{ count }} 条搜索结果",
-                    "count_documents_found_plural": "{{ count }} 条搜索结果",
-                    "no_documents_were_found": "什么也没有搜索到"
-                }
+                languages: ["en", "zh"],
+                indexBaseUrl: true
             }
         ]
     ],
