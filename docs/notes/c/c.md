@@ -333,11 +333,7 @@ struct_pointer->title;
 
 ## 错误处理
 
-
-
 ## 可变参数
-
-
 
 ## 内存管理
 
@@ -378,7 +374,7 @@ struct_pointer->title;
 | `%c`       | `char`               |                       |
 | `%s`       | 字符串               | 指定最大输出长度      |
 | `%d`/`%i`  | `int`                |                       |
-| `%u`       | `unsigned int`       | 指定小数位数，默认是6 |
+| `%u`       | `unsigned int`       | 指定小数位数，默认是 6 |
 | `%f`/`%F`  | `float`              |                       |
 | `%e`/`%E`  | 十进制科学计数法     |                       |
 | `%x`/`%X`  | 十六进制             |                       |
@@ -412,14 +408,13 @@ struct_pointer->title;
 | `w+`     | `w+b`/`wb+` | 读写，存在则清空，不存在则创建       |
 | `a+`     | `a+b`/`ab+` | 读写，从头读，追加写                 |
 
-`fseek`中`origin`有以下3个可选值。
+`fseek`中`origin`有以下 3 个可选值。
 
 1. `SEEK_SET`，以文件开头为基准
 2. `SEEK_CUR`，以当前指针位置为基准
 3. `SEEK_END`，以文件结束为基准
 
 ### `stdlib.h`
-
 
 系统：
 
@@ -429,25 +424,25 @@ struct_pointer->title;
 随机数：
 
 - `void srand( unsigned seed );`，重置随机数种子
-- `int rand();`，生成`0`到`RAND_MAX的一个随机数
+- `int rand();`，生成`0`到`RAND_MAX 的一个随机数
 
 ```c
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
- 
+
 int main(void)
 {
     srand(time(NULL)); // use current time as seed for random generator
     int random_variable = rand();
     printf("Random value on [0,%d]: %d\n", RAND_MAX, random_variable);
- 
+
     // roll a 6-sided die 20 times
     for (int n=0; n != 20; ++n) {
         int x = 7;
-        while(x > 6) 
+        while(x > 6)
             x = 1 + rand()/((RAND_MAX + 1u)/6); // Note: 1+rand()%6 is biased
-        printf("%d ",  x); 
+        printf("%d ",  x);
     }
 }
 ```
@@ -476,8 +471,7 @@ Random value on [0,2147483647]: 448749574
 
 字符串操作：
 
-- 
-
+-
 
 ### `time.h`
 
