@@ -5,6 +5,7 @@ tags:
     - tmux
     - iterm2
 ---
+
 # iterm2 对 tmux 的特殊支持
 
 ## 前言

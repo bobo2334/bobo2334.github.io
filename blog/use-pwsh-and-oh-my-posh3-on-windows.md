@@ -5,6 +5,7 @@ tags:
     - powershell
     - oh-my-posh
 ---
+
 # Windows Terminal + pwsh + oh my posh3 + PSReadLine 打造一个好用的终端
 
 ## 前言
