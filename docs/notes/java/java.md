@@ -2109,7 +2109,7 @@ Java 9 中接口方法可以用`private`修饰。
 
 ![image-20211221074007069](java.assets/image-20211221074007069.png)
 
-#### try-with-resources sheng
+#### try-with-resources
 
 #### 局部变量类型推断
 
