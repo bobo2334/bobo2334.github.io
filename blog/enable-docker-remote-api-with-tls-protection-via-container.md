@@ -6,7 +6,7 @@ date: 2021-09-10
 
 ## 前言
 
-之前在“开启 Docker Remote API 并启用 TLS”[^1] 中记录过 Docker 暴露 Remote API 并配置 TLS 支持，虽然其中引用了别人的脚本来简化证书的签发步骤，但是在证书签发完成之后还是需要对 Docker 的启动命令进行修改，还是一个比较繁琐的步骤。
+之前在「开启 Docker Remote API 并启用 TLS」[^1] 中记录过 Docker 暴露 Remote API 并配置 TLS 支持，虽然其中引用了别人的脚本来简化证书的签发步骤，但是在证书签发完成之后还是需要对 Docker 的启动命令进行修改，还是一个比较繁琐的步骤。
 
 后来我发现了 docker-remote-api-tls[^2] 项目，它提供了一个 Docker 镜像，在运行镜像之后它会自动完成证书签发和 API 转发步骤。
 

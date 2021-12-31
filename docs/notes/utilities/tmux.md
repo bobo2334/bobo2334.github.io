@@ -17,7 +17,7 @@ tmux 的快捷键操作都需要先按下前缀快捷键，默认的前缀快捷
 ### 启动
 
 - `tmux`，新建一个会话，默认名称是以数字序号，从 0 开始
-- `tmux new -s session_name`，新建一个会话并命名为“session_name”
+- `tmux new -s session_name`，新建一个会话并命名为「session_name」
 
 ### 退出
 

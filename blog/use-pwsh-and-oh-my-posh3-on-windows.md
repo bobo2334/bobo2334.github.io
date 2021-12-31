@@ -63,7 +63,7 @@ sudo scoop install CascadiaCode-NF-Mono
 
 ## 在 Windows Terminal 中集成 pwsh
 
-在 Window Terminal 中添加一个新的终端配置。命名为“PWSH”，命令为`pwsh`。设置字体为“CaskaydiaCove NF”。
+在 Window Terminal 中添加一个新的终端配置。命名为「PWSH」，命令为`pwsh`。设置字体为「CaskaydiaCove NF」。
 
 ![image-20211124184401253](use-pwsh-and-oh-my-posh3-on-windows.assets/image-20211124184401253.png)
 
@@ -73,7 +73,7 @@ sudo scoop install CascadiaCode-NF-Mono
 
 ![image-20211124184503221](use-pwsh-and-oh-my-posh3-on-windows.assets/image-20211124184503221.png)
 
-保存此配置，在“启动”选项卡中把刚刚新增的“PWSH”配置文件设置为默认配置文件。
+保存此配置，在「启动」选项卡中把刚刚新增的「PWSH」配置文件设置为默认配置文件。
 
 ![image-20211124184748158](use-pwsh-and-oh-my-posh3-on-windows.assets/image-20211124184748158.png)
 
@@ -111,7 +111,7 @@ oh-my-posh --init --shell pwsh --config "$(scoop prefix oh-my-posh3)\themes\wopi
 
 ## 配置历史命令提示
 
-在 PWSH 中执行命令，安装 PSReadLine 模组。在安装时请输入“Y”来确认安装。以下命令用于安装 PSReadLine，请在 PWSH 中执行而不是在 PowerShell 中。
+在 PWSH 中执行命令，安装 PSReadLine 模组。在安装时请输入「Y」来确认安装。以下命令用于安装 PSReadLine，请在 PWSH 中执行而不是在 PowerShell 中。
 
 ```powershell
 Install-Module PSReadLine
@@ -177,7 +177,7 @@ oh-my-posh --init --shell pwsh --config "$(scoop prefix oh-my-posh3)\themes\wopi
 
 在 Windows Terminal 中默认有多套配色方案可选，这里推荐一套自定义的配色方案，来自于 Dracula[^7]。
 
-在 Windows Terminal 的设置页面中，点击“打开 JSON 文件”，在该文件的`schemes`数组中添加一个配色方案对象。
+在 Windows Terminal 的设置页面中，点击「打开 JSON 文件」，在该文件的`schemes`数组中添加一个配色方案对象。
 
 ```json
 "schemes": [

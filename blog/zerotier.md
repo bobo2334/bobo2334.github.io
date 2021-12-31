@@ -43,7 +43,7 @@ Zerotier 在常用平台上都有客户端，有图形化的有命令行的。
 
 借助 OpenWrt 和 Zerotier 可以暴露整个局域网到 Zerotier 网络中，只需要 OpenWrt 中的 Zerotier 加入网络即可。
 
-勾选“自动允许客户端 NAT”即可。
+勾选「自动允许客户端 NAT」即可。
 
 ![image-20211223014114997](zerotier.assets/image-20211223014114997.png)
 
