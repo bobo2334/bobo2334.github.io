@@ -42,5 +42,5 @@ ssh -t root@1.1.1.1 'tmux -CC new -A -s main'
 
 - [tmux Integration Best Practices · Wiki · George Nachman / iterm2 · GitLab](https://gitlab.com/gnachman/iterm2/-/wikis/tmux-Integration-Best-Practices)
 
-[^1]: [tmux | 我的学习笔记](https://bobo2334.github.io/docs/notes/utilities/tmux)
+[^1]: [tmux | 我的学习笔记](../docs/notes/utilities/tmux)
 [^2]: [tmux Integration - Documentation - iTerm2 - macOS Terminal Replacement](https://iterm2.com/documentation-tmux-integration.html)
