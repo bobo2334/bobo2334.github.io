@@ -12,6 +12,8 @@ Vuepress 是一个 Node.js 项目，它可以根据配置将 Markdown 文件转�
 
 传统的做法是在本地安装好 Noed.js 环境，自己手动构建项目之后将构建产物上传到 Github 仓库，从而触发 Github Pages 的构建。现在可以利用 Github Actions 来代替手工劳动，Github Actions 可以自动被触发，它运行在 Github 提供的虚拟环境中，可以执行一系列任务从而代替重复枯燥的手动构建和部署的步骤。
 
+<!-- more -->
+
 ## 创建 Github 仓库
 
 在创建的 Github 仓库时要注意仓库名称，假如你的用户名是 foo。

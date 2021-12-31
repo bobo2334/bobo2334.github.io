@@ -12,6 +12,8 @@ date: 2017-8-25
 
 文中使用的工具和成品可以从 [这里](https://zfile.iuok.me/directlink/1/articles/making-dynamic-spray-paint-for-left-4-dead-2/tools.zip) 下载。
 
+<!-- more -->
+
 ## 准备工作
 
 1. 一张 GIF 图片；

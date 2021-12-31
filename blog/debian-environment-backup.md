@@ -1,7 +1,11 @@
 ---
 date: 2021-12-24
+tags:
+    - debian
 ---
 # Debian 配置备份
+
+<!-- more -->
 
 ## 软件源
 

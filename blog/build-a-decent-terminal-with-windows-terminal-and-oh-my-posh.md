@@ -1,5 +1,9 @@
 ---
 date: 2020-02-24
+tags:
+    - windows-terminal
+    - powershell
+    - oh-my-posh
 ---
 
 # 用 Windows Terminal 和 oh-my-posh 打造一个好用的终端
@@ -17,6 +21,8 @@ date: 2020-02-24
 ## 前言
 
 Windows 中自带的终端使用体验确实说不上好，尝试了许多组合也感觉都不顺手。这次试试微软亲自出的 Windows Terminal[^1]，再加上 oh-my-posh[^2] 插件。
+
+<!-- more -->
 
 ## 正文
 
