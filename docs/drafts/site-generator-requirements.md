@@ -68,4 +68,3 @@
 [^2]: [KaTeX – The fastest math typesetting library for the web](https://katex.org/)
 [^3]: [开源工具，使用简单的文字描述画 UML 图。](https://plantuml.com/zh/)
 [^4]: [mermaid - Markdownish syntax for generating flowcharts, sequence diagrams, class diagrams, gantt charts and git graphs.](https://mermaid-js.github.io/mermaid/#/)
-

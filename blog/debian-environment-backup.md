@@ -113,4 +113,3 @@ dpkg -i croc_9.5.0_Linux-64bit.deb
 wget https://github.com/sharkdp/bat/releases/download/v0.18.3/bat_0.18.3_amd64.deb
 dpkg -i bat_0.18.3_amd64.deb
 ```
-
