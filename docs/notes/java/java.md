@@ -198,9 +198,11 @@ Java 对各种变量、方法和类等要素命名时使用的字符序列称为
 | `boolean` | `false`                      |
 | 引用类型  | `null`                       |
 
-#### 数据类型的大小和范围
+#### 数据类型
 
-// TODO 补充图表
+![img](java.assets/java-data-types.jpg)
+
+![img](java.assets/Java-data-types-sizes-and-ranges.jpg)
 
 | #    | 数据类型  | 占用存储空间 | 表数范围                                             | 备注                                                         |
 | ---- | --------- | ------------ | ---------------------------------------------------- | ------------------------------------------------------------ |
@@ -212,6 +214,27 @@ Java 对各种变量、方法和类等要素命名时使用的字符序列称为
 | 6    | `double`  | 8            | 精度是`float`的两倍 | 默认的浮点数字类型                                           |
 | 7    | `char`    | 2            | `\u0000`\~`\uFFFF`，即`0`\~`65535`，无符号 16 位二进制数 | 存储一个 Unicode 编码字符，用一对单引号`''`包括，可以用 Unicode 编码，比如`'\u00443'` |
 | 8    | `boolean` |              |                                                      | 只可以在`true`或`false`两个字面量之间取值                    |
+
+#### 浮点类型补充
+
+`float` 遵循 IEEE R32.24 规范，`double` 遵循 IEEE R64.53 规范。
+
+无论是单精度还是双精度在存储中都分为三个部分：
+
+1. 符号位（Sign） ：0 代表正，1 代表为负
+2. 指数位（Exponent）：用于存储科学计数法中的指数数据，并且要加上偏移量（`float` 偏移量 127，`double` 偏移量 1023）
+3. 尾数部分（Mantissa）
+
+![image-20200704001123756](java.assets/image-20200704001123756.png)
+
+![image-20200704002502825](java.assets/image-20200704002502825.png)
+
+注意：
+
+1. 浮点类型不精确，因为可能会舍弃存不下的位
+2. float 类型的表示范围比 long 类型的表示范围大
+
+// TODO 补充浮点数知识
 
 #### 自动类型转换
 
@@ -533,13 +556,18 @@ Java 中所有的类都直接或间接继承自`Object`类。
 
 #### 构造器
 
-// TODO 补充构造器内容 public 和 protected 的构造器有什么区别吗
-
 - 没有返回值
 - 在创建对象的时候自动执行
 - 可以用`public`/`protected`/`private`修饰
+  - `protected`的构造器只能在当前包内用，其它地方不能`new`这个对象
+  - `private`的构造器只能在类内部用，不能在外部用，常用于单例模式
+
+- 构造器不是方法
+- 构造器不能被继承
 
 #### 代码块
+
+代码块中的变量都是局部变量。
 
 #### 内部类
 
@@ -779,9 +807,19 @@ class C extends B implements A {
   - 如果该代码块里使用了`return`语句，那么在`try`或者`catch`代码块里的` return`语句将失效，因为在执行` try`代码块里的`return`语句之前会先执行`finally`代码段里的`return`，然后方法就终止了。
   - 还有需要注意的是，如果在`finally`代码块里没有`return`语句的情况下，修改返回变量的值是无效的，在执行`finally`代码块之前就已经将返回值给到`return`处了，再执行`return`的时候不会拿最新的变量值，类似于`i++`的机制。
 
-#### `try-with`
+#### `try-with-resoucees`
 
-// TODO
+Java 8 引入，实现`AutoCloseable`接口的资源可以放在`try`后面的括号里初始化，在之后会自动关闭；多个资源之间用分号分隔。
+
+Java 9 增强，资源可以不在括号中初始化，在其中声明即可。
+
+```java
+try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+  return br.readLine();
+} catch {
+
+}
+```
 
 #### `throws`
 
@@ -1715,7 +1753,30 @@ for(Person p: persons){
 
 `LinkedList`是`Deque`的实现类，可以当作栈或队列使用。
 
-// TODO 补充方法名
+|         | Throws exception | Returns special value |
+| ------- | ---------------- | --------------------- |
+| Insert  | `add(e)`         | `offer(e)`            |
+| Remove  | `remove()`       | `poll()`              |
+| Examine | `element()`      | `peek()`              |
+
+有一个子接口`Deque`。
+
+这些方法可以当作栈使用。
+
+| Stack Method | Equivalent `Deque` Method |
+| ------------ | ------------------------- |
+| `push(e)`    | `addFirst(e)`             |
+| `pop()`      | `removeFirst()`           |
+| `peek()`     | `peekFirst()`             |
+
+这些方法可以当作双向队列使用。
+
+|             | First Element (Head) | First Element (Head) | Last Element (Tail) | Last Element (Tail) |
+| ----------- | -------------------- | -------------------- | ------------------- | ------------------- |
+|             | Throws exception     | Special value        | Throws exception    | Special value       |
+| **Insert**  | `addFirst(e)`        | `offerFirst(e)`      | `addLast(e)`        | `offerLast(e)`      |
+| **Remove**  | `removeFirst()`      | `pollFirst()`        | `removeLast()`      | `pollLast()`        |
+| **Examine** | `getFirst()`         | `peekFirst()`        | `getLast()`         | `peekLast()`        |
 
 ### Map
 
