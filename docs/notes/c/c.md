@@ -332,7 +332,31 @@ struct_pointer->title;
 
 ## 错误处理
 
+- `int atexit(void (*func)(void))`，`<stdlib.h>`，注册程序退出时的回调函数
+- `extern int errno`，`<errno.h>`，存储最后一个错误号
+- `char *strerror(int errnum)`，`<string.h>`，把错误号转为字符串
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <string.h>
+
+void ae() {
+    if (errno) {
+        fprintf(stderr, "%s\n", strerror(errno));
+    }
+}
+
+int main() {
+    atexit(ae);
+    // ...
+}
+```
+
 ## 可变参数
+
+在`<stdarg.h>`中。
 
 ## 内存管理
 
@@ -463,17 +487,70 @@ Random value on [0,2147483647]: 448749574
 
 类型转换函数：
 
-- `int       atoi( const char *str );`，字符串转`int`
-- `long      atol( const char *str );`
+- `int atoi( const char *str );`，字符串转`int`
+- `long atol( const char *str );`
 - `long long atoll( const char *str );`
 - `double atof( const char* str );`
 
 字符串操作：
 
--
+- `void *memchr(const void *str, int c, size_t n)`，字符串中搜索某个字符
+- `char *strchr(const char *str, int c)`
+- `int memcmp(const void *str1, const void *str2, size_t n)`，字符串比较
+- `int strcmp(const char *str1, const char *str2)`
+- `void *memcpy(void *str1, const void *str2, size_t n)`，复制字符串
+- `char *strcpy(char *dest, const char *src)`
+- `void *memmove(void *str1, const void *str2, size_t n)`，移动字符串
+- `char *strcat(char *dest, const char *src)`，连接两个字符串
+- `char *strerror(int errnum)`，把错误号转为对应的错误消息
+- `size_t strlen(const char *str)`，字符串长度，以`\0`为字符串结束
+- `char *strtok(char *str, const char *delim)`，分隔字符串
+- `char *strstr(const char *haystack, const char *needle)`，字符串中查找子串
 
 ### `time.h`
+
+#### 结构
+
+```c
+struct tm {
+   int tm_sec;         /* 秒，范围从 0 到 59        */
+   int tm_min;         /* 分，范围从 0 到 59        */
+   int tm_hour;        /* 小时，范围从 0 到 23        */
+   int tm_mday;        /* 一月中的第几天，范围从 1 到 31    */
+   int tm_mon;         /* 月，范围从 0 到 11        */
+   int tm_year;        /* 自 1900 年起的年数        */
+   int tm_wday;        /* 一周中的第几天，范围从 0 到 6    */
+   int tm_yday;        /* 一年中的第几天，范围从 0 到 365    */
+   int tm_isdst;       /* 夏令时                */
+};
+```
+
+#### 成员
+
+- `CLOCKS_PER_SEC`，表示每秒的处理器时钟个数
+
+#### 函数
+
+- `clock_t clock(void)`，返回自从程序启动起，所经过的处理器时钟
+- `char *asctime(const struct tm *timeptr)`，将`tm`结构解析为字符串
+- `char *ctime(const time_t *timer)`，把时间戳转换为字符串
+- `double difftime(time_t time1, time_t time2)`，计算两个时间戳之间的差值
+- `struct tm *gmtime(const time_t *timer)`，时间戳转`tm`结构，用 UTC 时间，时区为`+0`
+- `struct tm *localtime(const time_t *timer)`，时间戳转`tm`，用本地时区
+- `time_t mktime(struct tm *timeptr)`，`tm`转时间戳，用本地时区
+- `time_t time(time_t *seconds)`，得到当前时间戳
+- `size_t strftime(char *str, size_t maxsize, const char *format, const struct tm *timeptr)`，`tm`转时间戳，可以自定义格式
 
 ### `ctype.h`
 
 类型判断函数。
+
+### `math.h`
+
+- `double modf(double x, double *integer)`，分解整数和小数部分
+- `double fabs(double x)`，求绝对值
+- `double fmod(double x, double y)`，求余数
+- `double sqrt(double x)`，求平方根，$\sqrt{x}$
+- `double pow(double x, double y)`，幂运算，$x^{\frac{1}{2}}=\sqrt{x}$
+- `double floor(double x)`，返回数轴上在`x`左边的最近一个整数值，包括`x`
+- `double ceil(double x)`
