@@ -160,7 +160,7 @@ services:
 tmux -CC attach -t 0
 </code></pre><p>下面的命令用于创建一个名为<code>main</code>的会话，如果该会话存在的话则直接恢复该会话。</p><pre><code class="language-bash">tmux -CC new -A -s main
 </code></pre><p>或者在通过 SSH 连接到服务器的时候直接执行此命令，直接打开一个 tmux 会话。</p><pre><code class="language-bash">ssh -t root@1.1.1.1 &#x27;tmux -CC new -A -s main&#x27;
-</code></pre><h2>参考资料</h2><ul><li><a href="https://gitlab.com/gnachman/iterm2/-/wikis/tmux-Integration-Best-Practices">tmux Integration Best Practices · Wiki · George Nachman / iterm2 · GitLab</a></li></ul><div class="footnotes"><hr/><ol><li id="fn-1"><a href="../docs/notes/utilities/tmux">tmux | 我的学习笔记</a><a href="#fnref-1" class="footnote-backref">↩</a></li><li id="fn-2"><a href="https://iterm2.com/documentation-tmux-integration.html">tmux Integration - Documentation - iTerm2 - macOS Terminal Replacement</a><a href="#fnref-2" class="footnote-backref">↩</a></li></ol></div>]]></content>
+</code></pre><h2>参考资料</h2><ul><li><a href="https://gitlab.com/gnachman/iterm2/-/wikis/tmux-Integration-Best-Practices">tmux Integration Best Practices · Wiki · George Nachman / iterm2 · GitLab</a></li></ul><div class="footnotes"><hr/><ol><li id="fn-1"><a href="../docs/notes/utility/tmux">tmux | 我的学习笔记</a><a href="#fnref-1" class="footnote-backref">↩</a></li><li id="fn-2"><a href="https://iterm2.com/documentation-tmux-integration.html">tmux Integration - Documentation - iTerm2 - macOS Terminal Replacement</a><a href="#fnref-2" class="footnote-backref">↩</a></li></ol></div>]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[Zerotier 异地组网]]></title>
