@@ -12,7 +12,7 @@ const mermaid = import('mdx-mermaid');
 const config = {
     title: '我的学习笔记',
     tagline: '这是一个用 Docusaurus 生成的静态网站，用于存储和展示我的学习笔记。',
-    url: 'https://bobo2334.github.io',
+    url: 'https://iuok.me',
     baseUrl: '/',
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
