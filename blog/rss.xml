@@ -2,14 +2,14 @@
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
     <channel>
         <title>我的学习笔记 Blog</title>
-        <link>https://bobo2334.github.io/blog</link>
+        <link>https://iuok.me/blog</link>
         <description>我的学习笔记 Blog</description>
         <lastBuildDate>Fri, 31 Dec 2021 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <item>
             <title><![CDATA[自建 Zerotier 行星节点]]></title>
-            <link>https://bobo2334.github.io/blog/self-hosted-zerotier-controller</link>
+            <link>https://iuok.me/blog/self-hosted-zerotier-controller</link>
             <guid>自建 Zerotier 行星节点</guid>
             <pubDate>Fri, 31 Dec 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
@@ -35,7 +35,7 @@ volumes:
         </item>
         <item>
             <title><![CDATA[UFW：简单易上手的防火墙规则管理工具]]></title>
-            <link>https://bobo2334.github.io/blog/ufw</link>
+            <link>https://iuok.me/blog/ufw</link>
             <guid>UFW：简单易上手的防火墙规则管理工具</guid>
             <pubDate>Fri, 31 Dec 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
@@ -68,7 +68,7 @@ ufw delete deny ssh
         </item>
         <item>
             <title><![CDATA[Debian 配置备份]]></title>
-            <link>https://bobo2334.github.io/blog/debian-environment-backup</link>
+            <link>https://iuok.me/blog/debian-environment-backup</link>
             <guid>Debian 配置备份</guid>
             <pubDate>Fri, 24 Dec 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[软件源]]></description>
@@ -128,7 +128,7 @@ dpkg -i bat_0.18.3_amd64.deb
         </item>
         <item>
             <title><![CDATA[Docker 穿透防火墙的问题]]></title>
-            <link>https://bobo2334.github.io/blog/docker-and-system-firewall</link>
+            <link>https://iuok.me/blog/docker-and-system-firewall</link>
             <guid>Docker 穿透防火墙的问题</guid>
             <pubDate>Thu, 23 Dec 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
@@ -143,7 +143,7 @@ services:
         </item>
         <item>
             <title><![CDATA[通过代理连接 SSH 服务器]]></title>
-            <link>https://bobo2334.github.io/blog/ssh-under-proxy</link>
+            <link>https://iuok.me/blog/ssh-under-proxy</link>
             <guid>通过代理连接 SSH 服务器</guid>
             <pubDate>Thu, 23 Dec 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[正文]]></description>
@@ -152,7 +152,7 @@ services:
         </item>
         <item>
             <title><![CDATA[iterm2 对 tmux 的特殊支持]]></title>
-            <link>https://bobo2334.github.io/blog/tmux-integration-in-iterm2</link>
+            <link>https://iuok.me/blog/tmux-integration-in-iterm2</link>
             <guid>iterm2 对 tmux 的特殊支持</guid>
             <pubDate>Thu, 23 Dec 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
@@ -164,7 +164,7 @@ tmux -CC attach -t 0
         </item>
         <item>
             <title><![CDATA[Zerotier 异地组网]]></title>
-            <link>https://bobo2334.github.io/blog/zerotier</link>
+            <link>https://iuok.me/blog/zerotier</link>
             <guid>Zerotier 异地组网</guid>
             <pubDate>Thu, 23 Dec 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
@@ -172,7 +172,7 @@ tmux -CC attach -t 0
         </item>
         <item>
             <title><![CDATA[在 HTML 中使用 Unicode 代码]]></title>
-            <link>https://bobo2334.github.io/blog/use-unicode-in-html</link>
+            <link>https://iuok.me/blog/use-unicode-in-html</link>
             <guid>在 HTML 中使用 Unicode 代码</guid>
             <pubDate>Sat, 27 Nov 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
@@ -185,7 +185,7 @@ tmux -CC attach -t 0
         </item>
         <item>
             <title><![CDATA[配置 oh-my-zsh]]></title>
-            <link>https://bobo2334.github.io/blog/oh-my-zsh</link>
+            <link>https://iuok.me/blog/oh-my-zsh</link>
             <guid>配置 oh-my-zsh</guid>
             <pubDate>Fri, 26 Nov 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
@@ -204,7 +204,7 @@ tmux -CC attach -t 0
         </item>
         <item>
             <title><![CDATA[Scoop：最好用的 Windows 包管理器（或许是）]]></title>
-            <link>https://bobo2334.github.io/blog/scoop-the-windows-package-manager</link>
+            <link>https://iuok.me/blog/scoop-the-windows-package-manager</link>
             <guid>Scoop：最好用的 Windows 包管理器（或许是）</guid>
             <pubDate>Wed, 24 Nov 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[引入 Scoop]]></description>
@@ -227,7 +227,7 @@ git config --global https.proxy https://127.0.0.1:11223
         </item>
         <item>
             <title><![CDATA[Windows Terminal + pwsh + oh my posh3 + PSReadLine 打造一个好用的终端]]></title>
-            <link>https://bobo2334.github.io/blog/use-pwsh-and-oh-my-posh3-on-windows</link>
+            <link>https://iuok.me/blog/use-pwsh-and-oh-my-posh3-on-windows</link>
             <guid>Windows Terminal + pwsh + oh my posh3 + PSReadLine 打造一个好用的终端</guid>
             <pubDate>Wed, 24 Nov 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
@@ -302,7 +302,7 @@ Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward # 设置�
         </item>
         <item>
             <title><![CDATA[以容器的方式暴露 Docker Remote API 并启用 TLS]]></title>
-            <link>https://bobo2334.github.io/blog/enable-docker-remote-api-with-tls-protection-via-container</link>
+            <link>https://iuok.me/blog/enable-docker-remote-api-with-tls-protection-via-container</link>
             <guid>以容器的方式暴露 Docker Remote API 并启用 TLS</guid>
             <pubDate>Fri, 10 Sep 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
@@ -334,7 +334,7 @@ services:
         </item>
         <item>
             <title><![CDATA[开启 Docker Remote API 并启用 TLS]]></title>
-            <link>https://bobo2334.github.io/blog/enable-docker-remote-api-with-tls-protection</link>
+            <link>https://iuok.me/blog/enable-docker-remote-api-with-tls-protection</link>
             <guid>开启 Docker Remote API 并启用 TLS</guid>
             <pubDate>Thu, 09 Sep 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
@@ -411,7 +411,7 @@ cp ~/docker-cert/*.pem /etc/.docker/
         </item>
         <item>
             <title><![CDATA[SSH 密钥登录]]></title>
-            <link>https://bobo2334.github.io/blog/ssh-certificate-authentication</link>
+            <link>https://iuok.me/blog/ssh-certificate-authentication</link>
             <guid>SSH 密钥登录</guid>
             <pubDate>Wed, 08 Sep 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
@@ -432,7 +432,7 @@ PubkeyAuthentication yes
         </item>
         <item>
             <title><![CDATA[利用 Github Actions 部署 Vuepress 项目到 Github Pages]]></title>
-            <link>https://bobo2334.github.io/blog/deploy-vuepress-project-to-github-pages-with-github-actions</link>
+            <link>https://iuok.me/blog/deploy-vuepress-project-to-github-pages-with-github-actions</link>
             <guid>利用 Github Actions 部署 Vuepress 项目到 Github Pages</guid>
             <pubDate>Tue, 24 Aug 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
@@ -462,7 +462,7 @@ jobs:
         </item>
         <item>
             <title><![CDATA[使用 Vant Weapp 自定义微信小程序 TabBar]]></title>
-            <link>https://bobo2334.github.io/blog/customize-wechat-mini-program-tabbar-with-vant-weapp</link>
+            <link>https://iuok.me/blog/customize-wechat-mini-program-tabbar-with-vant-weapp</link>
             <guid>使用 Vant Weapp 自定义微信小程序 TabBar</guid>
             <pubDate>Tue, 08 Dec 2020 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
@@ -543,7 +543,7 @@ onShow: function () {
         </item>
         <item>
             <title><![CDATA[解决 IntelliJ IDEA 中 Tomcat 日志输出乱码的问题]]></title>
-            <link>https://bobo2334.github.io/blog/solve-the-problem-of-tomcat-log-output-messy-code-in-intellij-idea</link>
+            <link>https://iuok.me/blog/solve-the-problem-of-tomcat-log-output-messy-code-in-intellij-idea</link>
             <guid>解决 IntelliJ IDEA 中 Tomcat 日志输出乱码的问题</guid>
             <pubDate>Tue, 08 Dec 2020 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
@@ -552,7 +552,7 @@ onShow: function () {
         </item>
         <item>
             <title><![CDATA[用 Windows Terminal 和 oh-my-posh 打造一个好用的终端]]></title>
-            <link>https://bobo2334.github.io/blog/build-a-decent-terminal-with-windows-terminal-and-oh-my-posh</link>
+            <link>https://iuok.me/blog/build-a-decent-terminal-with-windows-terminal-and-oh-my-posh</link>
             <guid>用 Windows Terminal 和 oh-my-posh 打造一个好用的终端</guid>
             <pubDate>Mon, 24 Feb 2020 00:00:00 GMT</pubDate>
             <description><![CDATA[2021-11-14 备注]]></description>
@@ -590,7 +590,7 @@ Set-Theme Paradox
         </item>
         <item>
             <title><![CDATA[《求生之路 2》制作动态喷漆]]></title>
-            <link>https://bobo2334.github.io/blog/making-dynamic-spray-paint-for-left-4-dead-2</link>
+            <link>https://iuok.me/blog/making-dynamic-spray-paint-for-left-4-dead-2</link>
             <guid>《求生之路 2》制作动态喷漆</guid>
             <pubDate>Fri, 25 Aug 2017 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
