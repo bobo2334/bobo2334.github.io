@@ -4,9 +4,22 @@
         <title>我的学习笔记 Blog</title>
         <link>https://iuok.me/blog</link>
         <description>我的学习笔记 Blog</description>
-        <lastBuildDate>Fri, 31 Dec 2021 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 02 Jan 2022 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
+        <item>
+            <title><![CDATA[用 KMS 激活 Windows 和 Office]]></title>
+            <link>https://iuok.me/blog/activate-windows-and-office-with-kms</link>
+            <guid>用 KMS 激活 Windows 和 Office</guid>
+            <pubDate>Sun, 02 Jan 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[激活 Windows]]></description>
+            <content:encoded><![CDATA[<h2>激活 Windows</h2><p>只能激活 VL 版本的系统，零售版不能通过这种方式激活。</p><p>使用管理员权限运行<code>cmd</code>。</p><pre><code class="language-cmd">slmgr /skms kms.03k.org
+slmgr /ato
+</code></pre><h2>激活 Office</h2><p>进入 Office 安装目录，用管理员权限执行命令。</p><pre><code class="language-cmd"># C:\Program Files (x86)\Microsoft Office\Office16
+cscript ospp.vbs /sethst:kms.03k.org
+cscript ospp.vbs /act
+</code></pre><h2>KMS 服务器收集</h2><p>在上面命令中的 KMS 服务器失效的时候可以尝试下面列表中的其它 KMS 服务器。</p><ul><li><code>kms.03k.org</code></li><li><code>kms.v0v.bid</code></li></ul><h2>自建 KMS 服务器</h2><p>或者也可以自己搭建 KMS 服务器，难度不高，通过 Docker 可以快速部署。</p><ul><li><a href="https://hub.docker.com/r/teddysun/kms">teddysun/kms - Docker Image | Docker Hub</a></li></ul><h2>其它激活方式</h2><ul><li><a href="https://cmwtat.cloudmoe.com/cn.html">云萌 Windows 10 激活工具 - 首页</a></li></ul><h2>参考资料</h2><ul><li><a href="https://03k.org/kms.html">本站上线 KMS 服务~一句命令激活 windows/office | 零散坑知识分享</a></li></ul>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[自建 Zerotier 行星节点]]></title>
             <link>https://iuok.me/blog/self-hosted-zerotier-controller</link>
@@ -404,7 +417,7 @@ cp &quot;ca-$CODE.pem&quot; &quot;server-cert-$CODE.pem&quot; &quot;server-key-$
 </code></pre><p>使用<code>sh auto-tls-certs.sh</code>命令来生成证书，并且生成好的证书会被自动打包为<code>.tar.gz</code>归档，非常方便。下面的图片展示了执行脚本后生成的文件列表。</p><p><img src="./enable-docker-remote-api-with-tls-protection.assets/image-20210816222131111-16291236956091.png" alt="image-20210816222131111-16291236956091"/></p><h2>配置 Docker</h2><p>只需关注<code>.pem</code>文件，把证书找个专门的位置存放。</p><pre><code class="language-bash">mkdir /etc/.docker
 cp ~/docker-cert/*.pem /etc/.docker/
 </code></pre><p>修改 Docker 启动文件。</p><pre><code class="language-bash">nano /lib/systemd/system/docker.service
-</code></pre><p>修改<code>Service</code>下的<code>ExecStart</code>配置。</p><pre><code class="language-conf">ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -D -H tcp://0.0.0.0:2376 --tlsverify --tlscacert=/etc/.docker/ca-tx.pem --tlscert=/etc/.docker/server-cert-tx.pem --tlskey=/etc/.docker/server-key-tx.pem
+</code></pre><p>修改<code>Service</code>下的<code>ExecStart</code>配置。</p><pre><code class="language-systemd">ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -D -H tcp://0.0.0.0:2376 --tlsverify --tlscacert=/etc/.docker/ca-tx.pem --tlscert=/etc/.docker/server-cert-tx.pem --tlskey=/etc/.docker/server-key-tx.pem
 </code></pre><p><img src="./enable-docker-remote-api-with-tls-protection.assets/image-20210816222434122-16291238760702.png" alt="image-20210816222434122-16291238760702"/></p><p>重启 Docker。</p><pre><code class="language-bash">systemctl daemon-reloadservice docker restart
 </code></pre><h2>开放端口</h2><p>在防火墙、安全组中放行 2376 端口。</p><h2>测试</h2><p>把证书的压缩包<code>tls-client-certs-tx.tar.gz</code>下载到本机，解压得到证书文件。</p><p><img src="./enable-docker-remote-api-with-tls-protection.assets/image-20210816222527037.png" alt="image-20210816222527037"/></p><p>用<code>curl</code>命令测试，如果有 JSON 格式的信息输出则配置成功。</p><pre><code class="language-bash">curl https://你的 IP/info --cert cert-tx.pem --key key-tx.pem --cacert ca-tx.pem
 </code></pre><p><img src="./enable-docker-remote-api-with-tls-protection.assets/image-20210816222600935-16291239626163.png" alt="image-20210816222600935-16291239626163"/></p><h2>用 Portainer 连接</h2><p>Portainer 是一款非常好用的 Docker 可视化管理工具，通过暴露 Docker Remote API 可以远程连接并管理 Docker 资源。</p><p>在<code>Endpoints</code>页面中点击<code>Add endpoint</code>，<code>Environment type</code>选择<code>Docker</code>。</p><p>在对应的输入框中填写 IP 地址和端口号，开启 TLS，选择三个对应的证书文件。</p><p><img src="./enable-docker-remote-api-with-tls-protection.assets/image-20210816222733033-16291240547284.png" alt="image-20210816222733033-16291240547284"/></p><div class="footnotes"><hr/><ol><li id="fn-1"><a href="https://documentation.portainer.io/">Documentation</a><a href="#fnref-1" class="footnote-backref">↩</a></li><li id="fn-2"><a href="https://docs.docker.com/engine/security/protect-access/">Protect the Docker daemon socket | Docker Documentation</a><a href="#fnref-2" class="footnote-backref">↩</a></li><li id="fn-3"><a href="https://www.gaoyaxuan.net/blog/324.html">Docker 开启 TLS 访问，更加安全 - 实用教程 - 高亚轩的 BLOG</a><a href="#fnref-3" class="footnote-backref">↩</a></li></ol></div>]]></content:encoded>
@@ -416,7 +429,7 @@ cp ~/docker-cert/*.pem /etc/.docker/
             <pubDate>Wed, 08 Sep 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
             <content:encoded><![CDATA[<h2>前言</h2><blockquote><p>SSH 默认采用密码登录，这种方法有很多缺点，简单的密码不安全，复杂的密码不容易记忆，每次手动输入也很麻烦。密钥登录是比密码登录更好的解决方案。<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup></p></blockquote><h2>生成秘钥</h2><p>可以用 OpenSSH 中的<code>ssh-keygen</code>命令行工具来生成秘钥。<code>-t</code>参数指定了加密方式，通常为<code>rsa</code>或<code>dsa</code>。</p><pre><code class="language-bash">ssh-keygen -t rsa
-</code></pre><p>生成的密钥文件默认就会是<code>~/.ssh/id_rsa</code>（私钥）和<code>~/.ssh/id_rsa.pub</code>（公钥）。</p><p>也可以用 PuTTY 中提供的 PuTTY Key Generator（puttygen.exe）<sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup> 来用可视化用户界面来生成秘钥文件。</p><p><img src="./ssh-certificate-authentication.assets/image-20210816230720070.png" alt="image-20210816230720070"/></p><h2>把公钥放在服务器上</h2><p>用户公钥保存在<code>~/.ssh/authorized_keys</code>文件中，如果该文件不存在，你可以手动创建一个。</p><p>然后将公钥的文本内容放入其中，每行一个。</p><h2>关闭密码登录</h2><p>编辑<code>/etc/ssh/sshd_config</code>文件，找到对应的配置项并修改。</p><pre><code class="language-conf"># 不允许密码直接登录
+</code></pre><p>生成的密钥文件默认就会是<code>~/.ssh/id_rsa</code>（私钥）和<code>~/.ssh/id_rsa.pub</code>（公钥）。</p><p>也可以用 PuTTY 中提供的 PuTTY Key Generator（puttygen.exe）<sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup> 来用可视化用户界面来生成秘钥文件。</p><p><img src="./ssh-certificate-authentication.assets/image-20210816230720070.png" alt="image-20210816230720070"/></p><h2>把公钥放在服务器上</h2><p>用户公钥保存在<code>~/.ssh/authorized_keys</code>文件中，如果该文件不存在，你可以手动创建一个。</p><p>然后将公钥的文本内容放入其中，每行一个。</p><h2>关闭密码登录</h2><p>编辑<code>/etc/ssh/sshd_config</code>文件，找到对应的配置项并修改。</p><pre><code class="language-ini"># 不允许密码直接登录
 PasswordAuthentication no
 # 不允许空密码登录
 PermitEmptyPasswords no
@@ -555,8 +568,8 @@ onShow: function () {
             <link>https://iuok.me/blog/build-a-decent-terminal-with-windows-terminal-and-oh-my-posh</link>
             <guid>用 Windows Terminal 和 oh-my-posh 打造一个好用的终端</guid>
             <pubDate>Mon, 24 Feb 2020 00:00:00 GMT</pubDate>
-            <description><![CDATA[2021-11-14 备注]]></description>
-            <content:encoded><![CDATA[<blockquote><p>2021-11-14 备注</p><p>oh-my-posh 项目已被重构，现在由 Go 语言实现，详情见 <a href="https://github.com/JanDeDobbeleer/oh-my-posh">Github</a>。</p><p>文章中所使用的版本现已被重命名为 oh-my-posh2，由 PowerShell 实现，详情见 <a href="https://github.com/JanDeDobbeleer/oh-my-posh2">Github</a>。</p></blockquote><blockquote><p>2021-11-24 备注</p><p>oh-my-posh3 的安装请参考 <a href="use-pwsh-and-oh-my-posh3-on-windows.md">Windows Terminal + PWSH + oh my posh3 + PSReadLine 打造一个好用的终端</a>，下面的内容已过时。</p></blockquote><h2>前言</h2><p>Windows 中自带的终端使用体验确实说不上好，尝试了许多组合也感觉都不顺手。这次试试微软亲自出的 Windows Terminal<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup>，再加上 oh-my-posh<sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup> 插件。</p><h2>正文</h2><h3>安装 Windows Terminal</h3><p>Windows Terminal 提供多种安装方式，你可以在 Microsoft Store 中安装；可以自行在该项目的 Github 仓库 <sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup> 中上下载安装程序；虽然官方文档未提及，但是你也可以用 Scoop<sup id="fnref-3"><a href="#fn-3" class="footnote-ref">3</a></sup> 安装：</p><pre><code class="language-powershell">scoop install windows-terminal
+            <description><![CDATA[补充]]></description>
+            <content:encoded><![CDATA[<h2>补充</h2><p>oh-my-posh 项目已被重构，现在由 Go 语言实现，详情见 <a href="https://github.com/JanDeDobbeleer/oh-my-posh">Github</a>。</p><p>文章中所使用的版本现已被重命名为 oh-my-posh2，由 PowerShell 实现，详情见 <a href="https://github.com/JanDeDobbeleer/oh-my-posh2">Github</a>。</p><p>oh-my-posh3 的安装请参考 <a href="use-pwsh-and-oh-my-posh3-on-windows.md">Windows Terminal + PWSH + oh my posh3 + PSReadLine 打造一个好用的终端</a>，<strong>下面的内容已过时</strong>。</p><h2>前言</h2><p>Windows 中自带的终端使用体验确实说不上好，尝试了许多组合也感觉都不顺手。这次试试微软亲自出的 Windows Terminal<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup>，再加上 oh-my-posh<sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup> 插件。</p><h2>正文</h2><h3>安装 Windows Terminal</h3><p>Windows Terminal 提供多种安装方式，你可以在 Microsoft Store 中安装；可以自行在该项目的 Github 仓库 <sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup> 中上下载安装程序；虽然官方文档未提及，但是你也可以用 Scoop<sup id="fnref-3"><a href="#fn-3" class="footnote-ref">3</a></sup> 安装：</p><pre><code class="language-powershell">scoop install windows-terminal
 </code></pre><h3>安装 oh-my-posh</h3><p>oh-my-posh 是针对 Windows PowerShell 设计的主题引擎，类似于 zsh 和 Oh My Zsh 的关系。它可以让你的命令行更强大。</p><p>打开 PowerShell，输入以下命令安装：</p><pre><code class="language-powershell">Install-Module posh-git -Scope CurrentUser
 Install-Module oh-my-posh -Scope CurrentUser
 </code></pre><p>安装完成之后还更改 PowerShell 的用户配置，让它每次启动的时候自动加载 oh-my-posh 插件；执行以下命令：</p><pre><code class="language-powershell">if (!(Test-Path -Path $PROFILE )) { New-Item -Type File -Path $PROFILE -Force }
@@ -595,6 +608,74 @@ Set-Theme Paradox
             <pubDate>Fri, 25 Aug 2017 00:00:00 GMT</pubDate>
             <description><![CDATA[前言]]></description>
             <content:encoded><![CDATA[<h2>前言</h2><p><img src="./making-dynamic-spray-paint-for-left-4-dead-2.assets/kana.gif" alt="img"/></p><p>动态的喷漆也是这个游戏的乐趣之一，尝试自己制作一下动态喷漆，将 GIF 图片转换为可以在游戏中使用的动态喷涂文件。</p><p>文中使用的工具和成品可以从 <a href="https://zfile.iuok.me/directlink/1/articles/making-dynamic-spray-paint-for-left-4-dead-2/tools.zip">这里</a> 下载。</p><h2>准备工作</h2><ol><li>一张 GIF 图片；</li><li>GIF 图片分解工具，用于把动态图的每一帧分解出来，文中使用的是 GifSplitter<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup>；</li><li>VTFEdit<sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup>，核心工具，用于制作 VTF 格式的动态图。</li></ol><h2>分解 GIF</h2><p>这里使用的是 GifSplitter，目的是将 GIF 图片的每一帧都分解出来；其他功能类似的软件和在线工具都可以。</p><p><img src="./making-dynamic-spray-paint-for-left-4-dead-2.assets/gifsplitter.png" alt="img"/></p><h2>制作 VTF</h2><p>打开 VTFEdit，点击左上角的 「导入」 按钮，选择并导入上一步中分离出来的所有图片。</p><p><img src="./making-dynamic-spray-paint-for-left-4-dead-2.assets/import.png" alt="img"/></p><p>接下来设置贴图尺寸，选中 「限定贴图尺寸」，高度和宽度都设置为 128，其他设置保持默认。</p><p><img src="./making-dynamic-spray-paint-for-left-4-dead-2.assets/options.png" alt="img"/></p><p>再切换到 「信息」 页中，查看文件大小；<strong>要确保其小于 512KB，否则无法喷出</strong>。如果文件太大的话，就把要导入的图片删除一些，再重复这些步骤，直至满足条件。</p><p>再满足条件之后就可以保存了，保存的时候注意<strong>不要使用中文文件名</strong>，不然在游戏里浏览文件的时候中文名会乱码。</p><p><img src="./making-dynamic-spray-paint-for-left-4-dead-2.assets/save.png" alt="img"/></p><h2>在游戏中导入</h2><p>打开游戏，在游戏设置中依次找到 「导入喷漆图案」，选择上一步中制作好的 VTF 文件。</p><p><img src="./making-dynamic-spray-paint-for-left-4-dead-2.assets/import-to-game.png" alt="img"/></p><h2>后记</h2><p>整个制作过程也不复杂，核心工具是 VTFEdit；至于分解 GIF 的工具就很多了，可以很灵活地选择其他软件来完成这个任务。</p><p>最重要的是控制文件大小，不能超过限制，不然在游戏中无法使用。如果文件大小太大的话可以考虑在分解出的图片中删除一些图片，来达到减小文件大小的目的。比如可以隔帧删除，每隔一张图片就删除一张图片，应该会很有效。</p><div class="footnotes"><hr/><ol><li id="fn-1"><a href="https://www.xoyosoft.com/gs/">GifSplitter - Break GIF animation down into individual image frames</a><a href="#fnref-1" class="footnote-backref">↩</a></li><li id="fn-2"><a href="https://developer.valvesoftware.com/wiki/VTFEdit">VTFEdit - Valve Developer Community</a><a href="#fnref-2" class="footnote-backref">↩</a></li></ol></div>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[获取天翼光猫 F412 超级管理员帐号密码]]></title>
+            <link>https://iuok.me/blog/get-super-admin-password-of-f412</link>
+            <guid>获取天翼光猫 F412 超级管理员帐号密码</guid>
+            <pubDate>Sat, 17 Jun 2017 00:00:00 GMT</pubDate>
+            <description><![CDATA[开启 telnet 服务]]></description>
+            <content:encoded><![CDATA[<h2>开启 telnet 服务</h2><p>控制面板 -&gt; 所有控制面板项 -&gt; 程序和功能 -&gt; 启用或关闭 Windows 功能。</p><h2>获取帐号密码</h2><ol><li>打开 cmd，输入命令：<code>telnet 192.168.1.1</code></li><li>登录帐号：<code>root</code></li><li>登录密码：<code>Zte521</code></li><li>输入命令：<code>sendcmd 1 DB p UserInfo</code></li></ol>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[重置 MySQL root 密码]]></title>
+            <link>https://iuok.me/blog/reset-mysql-root-password</link>
+            <guid>重置 MySQL root 密码</guid>
+            <pubDate>Sat, 14 Jan 2017 00:00:00 GMT</pubDate>
+            <description><![CDATA[前言]]></description>
+            <content:encoded><![CDATA[<h2>前言</h2><p>注意：如果你的数据库中存有重要数据，请在保证机器离线的情况下进行以下的操作，最稳妥的办法就是拔掉网线！</p><h2>方法一：修改配置文件</h2><h3>开启安全模式</h3><p>修改 MySQL 的配置文件。</p><pre><code class="language-bash">vi /etc/my.cnf
+</code></pre><p>在<code>[mysqld]</code>段里加上一行<code>skip-grant-tables</code>，保存并退出。</p><h3>重新启动 MySQL</h3><pre><code class="language-bash">service mysqld restart
+</code></pre><h3>修改密码</h3><pre><code class="language-bash">mysql -uroot
+use mysql;
+update user set Password=password(&#x27;newpass&#x27;) where User=&#x27;root&#x27;;
+flush privileges;
+exit;
+</code></pre><h3>关闭安全模式</h3><p>将第一步在 MySQL 配置文件里加入的<code>skip-grant-tables</code>删掉。</p><h3>完成</h3><p>重启 MySQL 之后就可以用新密码登录了。</p><pre><code class="language-bash">service mysqld restart
+</code></pre><h2>方法二：通过命令行传递参数</h2><h3>停止 MySQL</h3><pre><code class="language-bash">service mysqld stop
+</code></pre><h3>以不检查权限的方式启动 MySQL</h3><pre><code class="language-bash">mysqld --skip-grant-tables &amp;
+</code></pre><h3>修改密码</h3><pre><code class="language-bash">mysql -uroot
+</code></pre><pre><code class="language-sql">use mysql;
+update user set Password=password(&#x27;newpass&#x27;) where User=&#x27;root&#x27;;
+flush privileges;
+exit;
+</code></pre><h3>完成</h3><p>用正常的方式重启 MySQL 之后就可以用新密码登录了。</p><pre><code class="language-bash">service mysqld restart
+</code></pre>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[CentOS 网络配置]]></title>
+            <link>https://iuok.me/blog/configuring-centos-network</link>
+            <guid>CentOS 网络配置</guid>
+            <pubDate>Wed, 21 Dec 2016 00:00:00 GMT</pubDate>
+            <description><![CDATA[前言]]></description>
+            <content:encoded><![CDATA[<h2>前言</h2><p>每次装 CentOS 后无法上网都要去搜教程，现在记下来以后就不用到处去搜了（滑稽）。</p><h2>启用网卡</h2><pre><code class="language-bash">ifconfig eth0 up
+</code></pre><p>顺便一提，关闭网卡的命令是<code>ifconfig eth0 down</code>。</p><h2>编辑网络配置文件</h2><pre><code class="language-bash">vi /etc/sysconfig/network-scripts/ifcfg-eth0
+</code></pre><p>按<kbd>i</kbd>进入编辑模式，按<kbd>ESC</kbd>进入命令模式。命令模式中输入<code>:w</code>保存，<code>:q</code>退出，<code>:wq</code>即为退出并保存。</p><p>打开应该是下面这个样子。</p><pre><code class="language-ini">DEVICE=eth0
+HWADDR=08:00:27:A6:5D:89
+TYPE=Ethernet
+UUID=db391271-1cdf-4df2-b040-12f259d5e361
+ONBOOT=no
+NM_CONTROLLED=yes
+BOOTPROTO=dhcp
+</code></pre><ul><li><code>ONBOOT</code>为是否开机启动，值可为 <code>yse</code>/<code>no</code>；</li><li><code>BOOTPROTO</code>为获取 IP 地址的方式，值可为 <code>dhcp</code>/<code>static</code>/<code>bootp</code>；</li></ul><p><code>ONBOOT</code>修改为<code>yes</code>，<code>BOOTPROTO</code>按需修改，其他的不需要修改，下面是示例。</p><h2>两种获取 IP 的方式</h2><h3>动态获取 IP（dhcp）</h3><pre><code class="language-ini">DEVICE=eth0
+HWADDR=08:00:27:A6:5D:89
+TYPE=Ethernet
+UUID=db391271-1cdf-4df2-b040-12f259d5e361
+ONBOOT=yes #开机启动
+NM_CONTROLLED=yes
+BOOTPROTO=dhcp #动态
+</code></pre><h3>静态获取 IP（static）</h3><pre><code class="language-ini">DEVICE=eth0
+HWADDR=08:00:27:A6:5D:89
+TYPE=Ethernet
+UUID=db391271-1cdf-4df2-b040-12f259d5e361
+ONBOOT=yes #开机启动
+NM_CONTROLLED=yes
+BOOTPROTO=static #静态
+IPADDR=192.168.233.234 #IP 地址
+NETMASK=255.255.255.0 #子网掩码
+GATEWAY=192.168.233.1 #网关
+</code></pre><p>static 方式还要手动设置 DNS。</p><pre><code class="language-bash">vi /etc/resolv.conf
+</code></pre><h2>重启网络服务</h2><pre><code class="language-bash">service network restart
+</code></pre>]]></content:encoded>
         </item>
     </channel>
 </rss>
