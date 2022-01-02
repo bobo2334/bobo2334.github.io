@@ -8,15 +8,13 @@ tags:
 
 # 用 Windows Terminal 和 oh-my-posh 打造一个好用的终端
 
-> 2021-11-14 备注
->
-> oh-my-posh 项目已被重构，现在由 Go 语言实现，详情见 [Github](https://github.com/JanDeDobbeleer/oh-my-posh)。
->
-> 文章中所使用的版本现已被重命名为 oh-my-posh2，由 PowerShell 实现，详情见 [Github](https://github.com/JanDeDobbeleer/oh-my-posh2)。
+## 补充
 
-> 2021-11-24 备注
->
-> oh-my-posh3 的安装请参考 [Windows Terminal + PWSH + oh my posh3 + PSReadLine 打造一个好用的终端](use-pwsh-and-oh-my-posh3-on-windows.md)，下面的内容已过时。
+oh-my-posh 项目已被重构，现在由 Go 语言实现，详情见 [Github](https://github.com/JanDeDobbeleer/oh-my-posh)。
+
+文章中所使用的版本现已被重命名为 oh-my-posh2，由 PowerShell 实现，详情见 [Github](https://github.com/JanDeDobbeleer/oh-my-posh2)。
+
+oh-my-posh3 的安装请参考 [Windows Terminal + PWSH + oh my posh3 + PSReadLine 打造一个好用的终端](use-pwsh-and-oh-my-posh3-on-windows.md)，**下面的内容已过时**。
 
 ## 前言
 
@@ -142,8 +140,6 @@ sudo scoop install Cascadia-PL
 
 [^1]: [microsoft/terminal: The new Windows Terminal and the original Windows console host, all in the same place!](https://github.com/microsoft/terminal)
 [^2]: [JanDeDobbeleer/oh-my-posh2: A prompt theming engine for Powershell](https://github.com/JanDeDobbeleer/oh-my-posh2)
-
 [^3]: [lukesampson/scoop: A command-line installer for Windows.](https://github.com/lukesampson/scoop)
-
 [^4]: [microsoft/cascadia-code: This is a fun, new monospaced font that includes programming ligatures and is designed to enhance the modern look and feel of the Windows Terminal.](https://github.com/microsoft/cascadia-code)
 [^5]: [ryanoasis/nerd-fonts: Iconic font aggregator, collection, & patcher. 3,600+ icons, 50+ patched fonts: Hack, Source Code Pro, more. Glyph collections: Font Awesome, Material Design Icons, Octicons, & more](https://github.com/ryanoasis/nerd-fonts)
