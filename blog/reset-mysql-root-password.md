@@ -3,6 +3,7 @@ date: 2017-01-14
 tags:
     - mysql
 ---
+
 # 重置 MySQL root 密码
 
 ## 前言
@@ -69,6 +70,9 @@ mysqld --skip-grant-tables &
 
 ```bash
 mysql -uroot
+```
+
+```sql
 use mysql;
 update user set Password=password('newpass') where User='root';
 flush privileges;
