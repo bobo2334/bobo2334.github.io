@@ -47,7 +47,7 @@ BOOTPROTO=dhcp
 
 ### 动态获取 IP（dhcp）
 
-```
+```ini
 DEVICE=eth0
 HWADDR=08:00:27:A6:5D:89
 TYPE=Ethernet
@@ -59,7 +59,7 @@ BOOTPROTO=dhcp #动态
 
 ### 静态获取 IP（static）
 
-```
+```ini
 DEVICE=eth0
 HWADDR=08:00:27:A6:5D:89
 TYPE=Ethernet

@@ -113,7 +113,7 @@ nano /lib/systemd/system/docker.service
 
 修改`Service`下的`ExecStart`配置。
 
-```
+```systemd
 ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -D -H tcp://0.0.0.0:2376 --tlsverify --tlscacert=/etc/.docker/ca-tx.pem --tlscert=/etc/.docker/server-cert-tx.pem --tlskey=/etc/.docker/server-key-tx.pem
 ```
 
