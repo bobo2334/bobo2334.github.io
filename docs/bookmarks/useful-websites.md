@@ -4,6 +4,11 @@
 
 - [Jiumo Search 鸠摩搜索 - 文档搜索引擎](https://www.jiumodiary.com/)
 - [松鼠文库](http://wk.superlgr.com/)
+- [Kindle 电子书，mobi 电子书，epub 电子书，azw3 电子书，PDF,TXT 格式免费下载|Aibooks 积微书斋](https://www.aibooks.cc/)
+- [我爱电子书 - 注重体验与质量的电子书资源下载网站](https://www.52doc.com/)
+- [XmSearch 熊猫搜索-聚合文档搜索导航](https://xmsoushu.com/#/)
+- [快吧软件--好东西，就是要分享！ - Fast8.CC](http://www.fast8.cc/)
+- [SoBooks - 一起分享阅读的乐趣~](https://sobooks.cc/)
 
 ## Windows 软件
 
