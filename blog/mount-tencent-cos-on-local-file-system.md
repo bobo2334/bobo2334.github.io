@@ -65,9 +65,7 @@ cosfs examplebucket-1250000000 /mnt/cos -ourl=http://cos.shanghai.myqcloud.com
 ## 取消挂载
 
 ```bash
-fusermount -u /mnt/cos
-# umount -l /mnt
-# umount /mnt
+umount /mnt/cos
 ```
 
 ## 开机自动挂载
