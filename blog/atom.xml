@@ -2,11 +2,31 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://iuok.me/blog</id>
     <title>我的学习笔记 Blog</title>
-    <updated>2022-01-02T00:00:00.000Z</updated>
+    <updated>2022-01-10T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://iuok.me/blog"/>
     <subtitle>我的学习笔记 Blog</subtitle>
     <icon>https://iuok.me/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[挂载腾讯云 COS 到本地文件夹]]></title>
+        <id>挂载腾讯云 COS 到本地文件夹</id>
+        <link href="https://iuok.me/blog/mount-tencent-cos-on-local-file-system"/>
+        <updated>2022-01-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[前言]]></summary>
+        <content type="html"><![CDATA[<h2>前言</h2><p>腾讯云提供了一个软件 cosfs<sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup> 用于挂载 COS 到本地，可以使用标准的文件操作命令来操作 COS 中的内容。由于后端是云存储而不是真正的本地存储，所以有些操作的性能比较低。不推荐通过此种方式在其中修改文件内容或文件名称，仅仅下载文件和上传新文件的操作还是可以的。</p><p>文中所涉及的操作系统是 Debian，Debian 系的系统操作应该都差不多。</p><h2>安装软件</h2><p>cosfs 的挂载依赖 fuse，先安装 fuse。</p><pre><code class="language-bash">apt install fuse
+</code></pre><p>安装 cosfs，官方提供了<code>deb</code>和<code>rpm</code>格式的安装包，Debian 系统用<code>deb</code>格式的，下载安装包之前可以先去发布页面 <sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup> 检查一下是否有新版本。</p><pre><code class="language-bash"># wget https://ghproxy.com/https://github.com/tencentyun/cosfs/releases/download/v1.0.19/cosfs_1.0.19-ubuntu20.04_amd64.deb
+wget https://github.com/tencentyun/cosfs/releases/download/v1.0.19/cosfs_1.0.19-ubuntu20.04_amd64.deb
+dpkg -i cosfs_1.0.19-ubuntu20.04_amd64.deb
+</code></pre><h2>编写配置文件</h2><p>配置文件应该存放在<code>/etc/passwd-cosfs</code>中。其中可以有多行，每行的格式如下。</p><pre><code>&lt;BucketName-APPID&gt;:&lt;SecretId&gt;:&lt;SecretKey&gt;
+</code></pre><p>例如你可以这样写。</p><pre><code>examplebucket-1250000000:AKIDHTVVaVR6e3****:PdkhT9e2rZCfy6****
+</code></pre><p>同时需要更改该文件的权限。</p><pre><code class="language-bash">chmod 640 /etc/passwd-cosfs
+</code></pre><h2>挂载</h2><p>先创建一个挂载点。</p><pre><code class="language-bash">mkdir /mnt/cos
+</code></pre><p>挂载，其中<code>ourl</code>指定了地域链接。</p><pre><code class="language-bash">cosfs examplebucket-1250000000 /mnt/cos -ourl=http://cos.shanghai.myqcloud.com
+</code></pre><p>挂载之后就可以像对待普通文件系统的方式来操作 COS 中的文件了。</p><h2>取消挂载</h2><pre><code class="language-bash">fusermount -u /mnt/cos
+# umount -l /mnt
+# umount /mnt
+</code></pre><h2>开机自动挂载</h2><p>// TODO</p><div class="footnotes"><hr/><ol><li id="fn-1"><a href="https://cloud.tencent.com/document/product/436/6883">对象存储 COSFS 工具 - 工具指南 - 文档中心 - 腾讯云</a><a href="#fnref-1" class="footnote-backref">↩</a></li><li id="fn-2"><a href="https://github.com/tencentyun/cosfs/releases">Releases · tencentyun/cosfs</a><a href="#fnref-2" class="footnote-backref">↩</a></li></ol></div>]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[用 KMS 激活 Windows 和 Office]]></title>
         <id>用 KMS 激活 Windows 和 Office</id>
