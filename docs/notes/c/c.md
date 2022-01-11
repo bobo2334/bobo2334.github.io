@@ -2,6 +2,7 @@
 
 ## 参考资料
 
+- [C 语言教程 - 网道](https://wangdoc.com/clang/index.html)
 - [C 语言教程 | 菜鸟教程](https://www.runoob.com/cprogramming/c-tutorial.html)
 - [C reference - cppreference.com](https://en.cppreference.com/w/c)
 
