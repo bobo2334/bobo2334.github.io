@@ -2,6 +2,9 @@
 
 ## 书籍文档
 
+- [Z-Library. The world's largest ebook library.](https://z-lib.org/)
+- [Bookzz - Bookzz.org Alternatives Site](https://www.bookzz.ren/)
+- [Elibcc](https://elib.cc/)
 - [Jiumo Search 鸠摩搜索 - 文档搜索引擎](https://www.jiumodiary.com/)
 - [松鼠文库](http://wk.superlgr.com/)
 - [Kindle 电子书，mobi 电子书，epub 电子书，azw3 电子书，PDF,TXT 格式免费下载|Aibooks 积微书斋](https://www.aibooks.cc/)
@@ -84,6 +87,7 @@
 
 - [ruanyf/document-style-guide: 中文技术文档的写作规范](https://github.com/ruanyf/document-style-guide)
 - [Online LaTeX Equation Editor - create, integrate and download](https://latex.codecogs.com/eqneditor/editor.php)
+- [Supported Functions · KaTeX](https://katex.org/docs/supported.html)
 
 ## IP
 
