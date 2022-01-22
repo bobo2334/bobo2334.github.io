@@ -12,6 +12,8 @@ date: 2022-1-10
 
 文中所涉及的操作系统是 Debian，Debian 系的系统操作应该都差不多。
 
+<!-- more -->
+
 ## 安装软件
 
 cosfs 的挂载依赖 fuse，先安装 fuse。
