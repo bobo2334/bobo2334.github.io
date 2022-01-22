@@ -4,9 +4,118 @@
         <title>我的学习笔记 Blog</title>
         <link>https://iuok.me/blog</link>
         <description>我的学习笔记 Blog</description>
-        <lastBuildDate>Mon, 10 Jan 2022 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 23 Jan 2022 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
+        <item>
+            <title><![CDATA[优雅地重载 Caddyfile]]></title>
+            <link>https://iuok.me/blog/reload-caddyfile-gracefully</link>
+            <guid>优雅地重载 Caddyfile</guid>
+            <pubDate>Sun, 23 Jan 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[前言]]></description>
+            <content:encoded><![CDATA[<h2>前言</h2><p>修改 Caddyfile 之后不需要重新启动 Caddy 服务，Caddy 提供了<code>caddy reload</code>命令可以重新加载配置文件。</p><p>记录两个脚本用于格式化 Caddyfile 并重载配置文件。脚本的内容可能需要根据实际情况作某些修改。</p><h2>Docker</h2><p>如果你使用<code>docker</code>命令启动 Caddy 容器，可以使用下面的脚本来让 Caddy 重新加载配置文件。</p><pre><code class="language-bash">caddy_container_id=$(docker ps | grep caddy | awk &#x27;{print $1;}&#x27;)
+docker exec -w /etc/caddy $caddy_container_id caddy fmt --overwrite Caddyfile
+docker exec -w /etc/caddy $caddy_container_id caddy reload
+</code></pre><h2>Docker Compose</h2><p>如果你使用<code>docker-compose</code>命令启动 Caddy 容器，可以使用下面的脚本来让 Caddy 重新加载配置文件。该脚本需要和<code>docker-compose.yml</code>位于统一目录下，并在该目录下执行此脚本。</p><pre><code class="language-bash">#!bin/bash
+docker-compose exec -w /etc/caddy caddy caddy fmt --overwrite Caddyfile
+docker-compose exec -w /etc/caddy caddy caddy reload
+</code></pre>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[使用 Caddy 自动申请泛域名证书]]></title>
+            <link>https://iuok.me/blog/wildcard-certificates-with-caddy</link>
+            <guid>使用 Caddy 自动申请泛域名证书</guid>
+            <pubDate>Sat, 22 Jan 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[泛域名证书]]></description>
+            <content:encoded><![CDATA[<h2>泛域名证书</h2><p>在 Caddy 中书写 Matcher 时可以使用通配符，如<code>*.example.com</code>，Caddy 会自动为你申请泛域名证书，但是需要合适的配置。</p><p><code>*.example.com</code>包括<code>foo.example.com</code>、<code>bar.example.com</code>等其它二级域名，但是不包括顶级域名<code>example.com</code>；同时不包括其它等级的域名，只包括同等级域名。</p><p>通配符<code>*</code>只能放在最左边，如<code>*.example.com</code>、<code>*.foo.example.com</code>和<code>*.bar.example.com</code>等；不能写为<code>foo.*.example.com</code>。</p><h2>需要做的事情</h2><p>不像单域名证书可以使用文件验证的方式来完成申请，泛域名证书要求 DNS 验证，这要求你得有权限修改该域名的 DNS 记录，并且你的 DNS 服务商要被 Caddy 支持才可以。</p><p>Caddy 对 DNS 的修改功能是由 Caddy 的 DNS 模组实现的，使用模组可以很方便地扩展 Caddy。你可以在 caddy-dns 的仓库列表 <sup id="fnref-1"><a href="#fn-1" class="footnote-ref">1</a></sup> 中查看你的 DNS 服务商是否受支持。</p><p>Caddy 的官方 Docker 镜像 <sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup> 并不包括任何模组，只有原版的 Caddy，如果需要使用带模组的镜像话需要自己构建。Caddy 提供了 xcaddy<sup id="fnref-3"><a href="#fn-3" class="footnote-ref">3</a></sup> 工具来帮助你编译带模组的 Caddy，并且也提供了使用示例 <sup id="fnref-2"><a href="#fn-2" class="footnote-ref">2</a></sup>，参考这些说明可以很方便地构建自己的 Caddy 镜像。</p><p>下文中记录了我用过的两个 DNS 服务商模组，分别是 Cloudflare 和 DNSPod。</p><h2>Cloudflare 例子</h2><h3>编写 Dockerfile</h3><p><code>Dockerfile</code>文件内容如下，用于构建 Docker 镜像。</p><pre><code class="language-dockerfile">FROM caddy:builder AS builder
+RUN xcaddy build --with github.com/caddy-dns/cloudflare
+FROM caddy
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+</code></pre><p>每行命令的解释如下。</p><ol><li>使用<code>caddy:builder</code>镜像，起别名为<code>builder</code>，该镜像中包含了<code>go</code>环境和<code>xcaddy</code>工具；</li><li>使用<code>xcaddy</code>来编译<code>caddy</code>，并使用<code>--with</code>参数指定附加的模组，该参数可以重复使用，意味着你可以附加多个模组，这里使用了<code>github.com/caddy-dns/cloudflare</code><sup id="fnref-4"><a href="#fn-4" class="footnote-ref">4</a></sup>；</li><li>使用原版的<code>caddy</code>镜像；</li><li>复制在<code>builder</code>镜像中你自己编译的<code>caddy</code>覆盖掉原版<code>caddy</code>，并使用此镜像作为最终镜像。</li></ol><h3>获取 Cloudflare Token</h3><p>在 Cloudflare 的 API Tokens<sup id="fnref-5"><a href="#fn-5" class="footnote-ref">5</a></sup> 页面中创建一个 API Token。</p><p><img src="wildcard-certificates-with-caddy.assets/image-20220123001758949.png" alt="image-20220123001758949"/></p><p>选择使用编辑 DNS 模板来创建 API Token。</p><p><img src="wildcard-certificates-with-caddy.assets/image-20220123001847246.png" alt="image-20220123001847246"/></p><p>在 Zone Resources 中选择目标域名。</p><p><img src="wildcard-certificates-with-caddy.assets/image-20220123002105447.png" alt="image-20220123002105447"/></p><p>确认之后会给你生成一个 Token，你需要保存它。</p><h3>编写 Caddyfile</h3><p><code>Caddyfile</code>文件内容如下，作为 Caddy 的配置文件。</p><pre><code class="language-caddyfile">{
+    email example@gmail.com
+}
+
+*.example.com {
+    tls {
+        dns cloudflare &lt;CF_API_TOKEN&gt;
+    }
+
+    @foo host foo.example.com
+    handle @foo {
+        reverse_proxy localhost:1000
+    }
+
+    @bar host bar.example.com
+    handle @bar {
+        reverse_proxy localhost:2000
+    }
+
+    handle {
+        abort
+    }
+}
+
+example.com {
+    reverse_proxy localhost:3000
+}
+
+foo.bar.example.com {
+    reverse_proxy localhost:4000
+}
+</code></pre><ul><li>1-3：全局配置区块，其中<code>email</code>指定申请证书时用的邮箱，写你自己的邮箱；</li><li>5-23：<code>*.example.com</code>泛域名配置；<ul><li>7：指定 DNS 服务商为 Cloudflare 并且配置 Cloudflare 的 API Token，替换<code>&lt;CF_API_TOKEN&gt;</code>为你自己的；</li><li>10-18：使用具名 Matcher 和<code>handle</code>指令来配置每个使用泛域名证书的站点；</li><li>20-22：其它未定义的域名直接丢弃连接，这需要写在所有站点后面。</li></ul></li><li>25-31：其它不匹配泛域名的域名配置，还和正常使用一样。</li></ul><h3>使用 Docker Compose 运行</h3><p><code>docker-compose.yml</code>文件内容如下，用于快速运行容器。</p><pre><code class="language-yml">version: &quot;3&quot;
+services:
+  caddy:
+    build: .
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - data:/data
+      - ./Caddyfile:/etc/caddy/Caddyfile
+volumes:
+  data:
+</code></pre><p>当前的目录结构如下。</p><pre><code>caddy
+├── Dockerfile
+├── Caddyfile
+└── docker-compose.yml
+</code></pre><p>在 caddy 目录下运行命令。Docker Compose 会根据 Dockerfile 构建镜像并运行。</p><pre><code class="language-bash">docker-compose up --build -d
+</code></pre><h2>DNSPod 例子</h2><p>和使用 Cloudflare 差不多。</p><h3>编写 Dockerfile</h3><pre><code class="language-dockerfile">FROM caddy:builder AS builder
+RUN go env -w GOPROXY=https://goproxy.cn,direct
+RUN xcaddy build --with github.com/caddy-dns/dnspod
+FROM caddy
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+</code></pre><p>这个 Dockerfile 文件的内容和使用 Cloudfalre 时 Dockerfile 的内容有些许不同。</p><ul><li>第 2 行指定了<code>go get</code>使用国内代理，因为我的这台服务器在国内，在下载依赖的时候遇到了一些网络问题，如果你在使用<code>go get</code>的时候也遇到了网络问题可以试试添加这行命令，在<code>xcaddy build</code>命令之前；</li><li>第 3 行使用<code>xcaddy</code>来编译<code>caddy</code>，并使用<code>--with</code>参数指定附加的模组，该参数可以重复使用，意味着你可以附加多个模组，这里使用了<code>github.com/caddy-dns/dnspod</code><sup id="fnref-6"><a href="#fn-6" class="footnote-ref">6</a></sup>；</li></ul><h3>获取 DNSPod Token</h3><p>在 DNSPod API 密钥页面 <sup id="fnref-7"><a href="#fn-7" class="footnote-ref">7</a></sup> 中生成一个 Token，在生成 Token 之后你需要保存下来，它只会完整地显示一次，以后都不能完整地查看了。</p><p><img src="wildcard-certificates-with-caddy.assets/image-20220123003832951.png" alt="image-20220123003832951"/></p><p>需要注意的是 DNSPod Token 使用时有些不一样，你申请的密钥有 ID 和 Token，在使用时需要把两者组合起来，中间用英文逗号分隔，如<code>&lt;id&gt;,&lt;token&gt;</code>，在使用时你需要将内容替换为自己的 ID 和 Token，更多说明请参考 DNSPod 的 API 使用文档 <sup id="fnref-8"><a href="#fn-8" class="footnote-ref">8</a></sup>。</p><h3>编写 Caddyfile</h3><pre><code>{
+    email example@gmail.com
+}
+
+*.example.com {
+    tls {
+        dns dnspod &lt;DNSPOD_TOKEN&gt;
+    }
+
+    @foo host foo.example.com
+    handle @foo {
+        reverse_proxy localhost:1000
+    }
+
+    @bar host bar.example.com
+    handle @bar {
+        reverse_proxy localhost:2000
+    }
+
+    handle {
+        abort
+    }
+}
+
+example.com {
+    reverse_proxy localhost:3000
+}
+
+foo.bar.example.com {
+    reverse_proxy localhost:4000
+}
+</code></pre><p>第 7 行不一样，指定了 DNS 服务商为<code>dnspod</code>，并且你需要替换掉<code>&lt;DNSPOD_TOKEN&gt;</code>为你自己的。需要注意 DNSPod 的 API Token 格式特殊，是由 ID 和 Token 组合在一起，并用英文逗号分隔。</p><p>其它内容和使用 Cloudflare 时一样，请参考上文。</p><h3>使用 Docker Compose 运行</h3><p>和使用 Cloudflare 时一样，请参考上文。</p><h2>后记</h2><p>更多使用帮助请参考其官方文档 <sup id="fnref-9"><a href="#fn-9" class="footnote-ref">9</a></sup>，镜像构建出错请查看构建日志，Caddy 运行时出错请查看 Caddy 镜像的日志。</p><div class="footnotes"><hr/><ol><li id="fn-1"><a href="https://github.com/caddy-dns">caddy-dns</a><a href="#fnref-1" class="footnote-backref">↩</a></li><li id="fn-2"><a href="https://hub.docker.com/_/caddy">Caddy - Official Image | Docker Hub</a><a href="#fnref-2" class="footnote-backref">↩</a></li><li id="fn-3"><a href="https://github.com/caddyserver/xcaddy">caddyserver/xcaddy: Build Caddy with plugins</a><a href="#fnref-3" class="footnote-backref">↩</a></li><li id="fn-4"><a href="https://github.com/caddy-dns/cloudflare">caddy-dns/cloudflare: Caddy module: dns.providers.cloudflare</a><a href="#fnref-4" class="footnote-backref">↩</a></li><li id="fn-5"><a href="https://dash.cloudflare.com/profile/api-tokens">API Tokens | Cloudflare</a><a href="#fnref-5" class="footnote-backref">↩</a></li><li id="fn-6"><a href="https://github.com/caddy-dns/dnspod">caddy-dns/dnspod</a><a href="#fnref-6" class="footnote-backref">↩</a></li><li id="fn-7"><a href="https://console.dnspod.cn/account/token/token">API 密钥 - DNSPod-免费智能 DNS 解析服务商-电信<em>网通</em>教育网，智能 DNS</a><a href="#fnref-7" class="footnote-backref">↩</a></li><li id="fn-8"><a href="https://docs.dnspod.cn/account/5f2d466de8320f1a740d9ff3/">密钥管理 - DNSPod 服务与支持</a><a href="#fnref-8" class="footnote-backref">↩</a></li><li id="fn-9"><a href="https://caddyserver.com/docs/caddyfile/patterns#wildcard-certificates">Common Caddyfile Patterns — Caddy Documentation</a><a href="#fnref-9" class="footnote-backref">↩</a></li></ol></div>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[挂载腾讯云 COS 到本地文件夹]]></title>
             <link>https://iuok.me/blog/mount-tencent-cos-on-local-file-system</link>
