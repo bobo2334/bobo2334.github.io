@@ -49,7 +49,7 @@ tmux 的快捷键操作都需要先按下前缀快捷键，默认的前缀快捷
 - `tmux split-window`，向下划分窗格（垂直）
 - <kbd>Ctrl+b</kbd><kbd>%</kbd> ，向下划分窗格
 - `tmux split-window -h`，向右划分窗格（水平）
-- <kbd>Ctrl+b</kbd><kbd>"</kbd> ，向下划分窗格
+- <kbd>Ctrl+b</kbd><kbd>"</kbd> ，向右划分窗格
 
 ### 切换光标
 
