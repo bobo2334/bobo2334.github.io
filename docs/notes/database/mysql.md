@@ -16,6 +16,21 @@
 - DBA（Database Administrator），数据库管理员
 - SQL（Structure Query Language），结构化查询语言
 
+## 关系型数据库
+
+### 概念
+
+- 关系型数据库的典型数据结构就是`数据表`，这些数据表的组成都是结构化的（Structured）。
+
+- 将数据放到表中，表再放到库中。
+
+### 关系
+
+- 一对一
+- 一对多
+- 多对多
+- 自我引用
+
 ## 命令行
 
 ```bash
@@ -27,23 +42,46 @@ mysql -h localhost -P 3306 -u root -proot
 
 ## 默认数据库
 
-
+// TODO Mysql 默认带的几个数据库的作用
 
 ## SQL
 
 ### SQL 概念
 
-- 结构化查询语言（Structured Query Language），是一种规范，用来操作关系型数据库。但是每种数据库在实现上有略微不同，称为「方言」；
-- 不区分大小写，但建议关键字大写；
-- 分号作为语句结束；
-- 单双引号都可以。
+结构化查询语言（Structured Query Language），是一种规范，用来操作关系型数据库。但是每种数据库在实现上有略微不同，称为「方言」；
 
 ### 分类
 
-1. DDL（Data Definition Language）数据定义语言：用于操作数据库对象，如数据库、表、字段等。关键字：`create`、`drop`、`alter` ；
-2. DML（Data Manipulation Language）数据操作语言：用于操作数据本身。关键字 `insert`、`delete`、`update` ；
-3. DQL（Data Query Language）数据查询语言：用于查询数据。关键字 `select`；
-4. DCL（Data Control Language）数据控制语言：用户操作数据库 的访问权限和安全级别，以及管理用户，关键字 `grant`、`revoke`。
+1. DDL（Data Definition Language）数据定义语言：用于操作数据库对象，如数据库、表、字段等。关键字：`create`、`drop`、`alter`、`rename`、`truncate` ；
+2. DML（Data Manipulation Language）数据操作语言：用于操作数据本身。关键字 `insert`、`delete`、`update`、`select` ；
+3. DCL（Data Control Language）数据控制语言：用户操作数据库 的访问权限和安全级别，以及管理用户，关键字 `grant`、`revoke`、`commit`、`rollback`、`savepoint`。
+
+### 规则
+
+- SQL 可以写在一行或者多行。为了提高可读性，各子句分行写，必要时使用缩进
+- 每条命令以`;`或 `\g`或`\G`结束
+  - `\g`和`\G`只能在命令行中使用
+  - `\g`和`;`的效果一样
+  - `\G`会将结果表转置，行列转换
+
+- 关键字不能被缩写也不能分行
+- 关于标点符号
+  - 必须保证所有的`()`、`单引号`、`双引号`是成对结束的
+  - 必须使用**英文**状态下的**半角**输入方式
+  - 字符串型和日期时间类型的数据可以使用单引号表示
+  - 列的别名，尽量使用双引号，而且不建议省略`as`
+
+### 规范
+
+这是建议遵守的，不强制。
+
+- MySQL 在 Windows 环境下是大小写不敏感的
+- MySQL 在 Linux 环境下是大小写敏感的
+  - 数据库名、表名、表的别名、变量名是严格区分大小写的
+  - 关键字、函数名、列名(或字段名)、列的别名(字段的别名) 是忽略大小写的。
+- 推荐采用统一的书写规范
+  - 数据库名、表名、表别名、字段名、字段别名等都小写
+  - SQL 关键字、函数名、绑定变量等都大写
 
 ### 注释
 
@@ -83,8 +121,6 @@ show tables from test;
 ```sql
 select database();
 ```
-
-// TODO
 
 查询变量。
 
