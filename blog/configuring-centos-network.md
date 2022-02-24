@@ -1,5 +1,7 @@
 ---
 date: 2016-12-21
+tags:
+    - linux
 ---
 
 # CentOS 网络配置
