@@ -2,6 +2,7 @@
 date: 2021-12-24
 tags:
     - debian
+    - linux
 ---
 
 # Debian 配置备份
@@ -87,6 +88,10 @@ trash-put ~/lazydocker
 # rm -rf ~/lazydocker
 ```
 
+```bash
+brew install lazydocker
+```
+
 ```yaml
 # ~/.config/jesseduffield/lazydocker/config.yml
 reporting: "off"
@@ -109,6 +114,10 @@ wget https://github.com/schollz/croc/releases/download/v9.5.0/croc_9.5.0_Linux-6
 dpkg -i croc_9.5.0_Linux-64bit.deb
 ```
 
+```bash
+brew install croc
+```
+
 ## bat
 
 - [Releases · sharkdp/bat](https://github.com/sharkdp/bat/releases)
@@ -117,4 +126,19 @@ dpkg -i croc_9.5.0_Linux-64bit.deb
 # wget https://ghproxy.com/https://github.com/sharkdp/bat/releases/download/v0.18.3/bat_0.18.3_amd64.deb
 wget https://github.com/sharkdp/bat/releases/download/v0.18.3/bat_0.18.3_amd64.deb
 dpkg -i bat_0.18.3_amd64.deb
+```
+
+```bash
+apt install bat
+# alias bat='batcat'
+```
+
+```bash
+brew install bat
+```
+
+## glance
+
+```bash
+pip3 install glance
 ```
