@@ -38,7 +38,7 @@
 | 程序员做饭指南                    | 程序员做饭指南，步骤详细，食材及调味料的用量描述精确，可以一试。~~要是做饭有 Docker 就好了。~~ | 生活   | [Anduin2017/HowToCook: 程序员在家做饭方法指南。Programmer's guide about how to cook at home (Chinese).](https://github.com/Anduin2017/HowToCook) |
 | lazygit                           | 懒人用 Git，在命令行中以图形化的方式使用 Git。               | Git    | [jesseduffield/lazygit: simple terminal UI for git commands](https://github.com/jesseduffield/lazygit) |
 | Tabby                             | 终端模拟器，SSH 客户端，SFTP 客户端。                        | SSH    | [Eugeny/tabby: A terminal for a more modern age](https://github.com/Eugeny/tabby) |
-| 中文文案排版指北                  | 中文文案排版建议。                                           | 排版   | [sparanoid/chinese-copywriting-guidelines: Chinese copywriting guidelines for better written communication／中文文案排版指北]( |
+| 中文文案排版指北                  | 中文文案排版建议。                                           | 排版   | [sparanoid/chinese-copywriting-guidelines: Chinese copywriting guidelines for better written communication／中文文案排版指北](https://github.com/sparanoid/chinese-copywriting-guidelines) |
 | typo.css                          | 适合中文阅读的网页排版样式。                                 | 排版   | [sofish/typo.css: 中文网页重设与排版：一致化浏览器排版效果，构建最适合中文阅读的网页排版](https://github.com/sofish/typo.css) |
 | pangu.js                          | 在中英文之间自动插入空格。                                   | 排版   | [vinta/pangu.js: Paranoid text spacing in JavaScript](https://github.com/vinta/pangu.js) |
 | Xbox 下载助手                      | 帮助解决 Xbox 下载问题，如下载域名测速、电脑下载回传至 Xbox。   | 游戏   | [skydevil88/XboxDownload: Xbox 下载助手，支持 Xbox、微软商店、PSN、NS、EA Desktop & Origin、战网国际服、Epic 下载加速。](https://github.com/skydevil88/XboxDownload) |
