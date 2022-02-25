@@ -1,10 +1,12 @@
 ---
-date: 2021-02-24
+date: 2022-02-24
 tags:
     - linux
 ---
 
 # Linuxbrew：Linux 上的 Homebrew
+
+## 前言
 
 Homebrew[^1] 是一款用 Ruby 编写的、针对 macOS 系统的包管理器。后来又更新了对 Linux 的支持，现在你可以在你的 Linux 系统中引入一个新的包管理器 Linuxbrew。
 
@@ -59,8 +61,12 @@ su - linuxbrew
 配置环境变量。将 Linuxbrew 的可执行文件目录加入`PATH`，并配置一些和 Linuxbrew 相关的环境变量。修改`/etc/profile`需要 root 权限，你需要退出到 root 用户。
 
 ```bash
+exit
+```
+
+```bash
 echo $(/home/linuxbrew/.linuxbrew/bin/brew shellenv) >> /etc/profile
-eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+source /etc/profile
 ```
 
 测试。运行下面的命令来测试 Linuxbrew 是否能正常工作，如果得到「Your system is ready to brew.」的提示则证明你的安装过程如期完成。如果你的 Linuxbrew 不能正常运行，它应该会给你提示。brew 要求用非 root 权限运行，所以你需要在使用 brew 命令的时候先切换到 linuxbrew 用户。其安装的软件包可以在 root 用户下运行。
@@ -89,7 +95,7 @@ brew install hello
 
 Linuxbrew 其实就是 Homebrew，如果你使用过 Homebrew，那么你可以直接使用 Linuxbrew，就像在 macOS 上一样。
 
-如果你没有用过 Homebrew，你可以参考一下`brew help`的帮助以及 Homebrew 的官方文档 [^4]。
+如果你没有用过 Homebrew，你可以参考一下`brew help`命令和`brew commands`命令的帮助以及 Homebrew 的官方文档 [^4]。
 
 [^1]: [The Missing Package Manager for macOS (or Linux) — Homebrew](https://brew.sh/)
 [^2]: [Homebrew on Linux — Homebrew Documentation](https://docs.brew.sh/Homebrew-on-Linux)
