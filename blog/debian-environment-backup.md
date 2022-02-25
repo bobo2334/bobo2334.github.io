@@ -142,15 +142,3 @@ brew install bat
 ```bash
 pip3 install glance
 ```
-
-## nodebrew
-
-```bash
-brew install nodebrew
-```
-
-```bash
-echo "export PATH=$HOME/.nodebrew/current/bin:$PATH" >> ~/.profile
-export PATH=$HOME/.nodebrew/current/bin:$PATH
-```
-
