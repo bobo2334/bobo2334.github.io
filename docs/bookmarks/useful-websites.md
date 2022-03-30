@@ -35,7 +35,6 @@
 ## 网址导航
 
 - [龙喵网 - 有态度的网址导航](https://ailongmiao.com/)
-- [白鹭学园 | ACG 社区](https://srsg.moe/)
 
 ## Xbox
 
@@ -57,6 +56,7 @@
 - [freefq/free](https://github.com/freefq/free)
 - [BuLink 永久免费网络加速](https://bulink.xyz/)
 - [众筹加速器](https://zcjd.top/#/login)
+- [GitHub Proxy 代理加速](https://ghproxy.com/)
 
 ## 技术文档
 
@@ -70,6 +70,8 @@
 
 - [豆瓣电影](https://movie.douban.com/)
 - [RARBG Torrents , films , download](https://www.rarbgmirror.com/torrents.php)
+- [在线动画 动漫下载 - AGE 动漫](https://www.agemys.com/)
+- [大师兄影视-永久免费的福利超清影视站](https://dsxys.com/)
 
 ## 网站工具
 
@@ -82,12 +84,15 @@
 - [PageSpeed Insights](https://pagespeed.web.dev/)
 - [Compare Prices of All Top-Level Domains | TLD List](https://tld-list.com/)
 - [Domain Availability and Price Comparison – Find cheap domain to buy!](https://www.domcomp.com/)
+- [VPS 服务器常用性能测试脚本 | SafeCDN](https://www.safecdn.cn/other/2020/07/vps-ceshi.html)
 
 ## 写作
 
 - [ruanyf/document-style-guide: 中文技术文档的写作规范](https://github.com/ruanyf/document-style-guide)
 - [Online LaTeX Equation Editor - create, integrate and download](https://latex.codecogs.com/eqneditor/editor.php)
 - [Supported Functions · KaTeX](https://katex.org/docs/supported.html)
+- [Markdown 向 Tree 目录转化生成器· 开发者工具箱](https://devtool.tech/tree)
+- [AutoCorrect WebAssembly](https://huacnlee.com/autocorrect/)
 
 ## IP
 
@@ -100,3 +105,9 @@
 - `curl ip.sb`
 - [IP 地址查询 - 在线工具](https://tool.lu/ip/)
 - `curl ip.tool.lu`
+
+## 文件传输
+
+- [Piping Server - 支持 curl 的轻量级开源文件传输工具 - 小众软件](https://www.appinn.com/piping-server/)
+- [AirPortal（空投快传）：无需注册，免费不限速 1GB 临时网盘服务 - 小众软件](https://www.appinn.com/airportal-online-2/)
+- [Snapdrop](https://snapdrop.net/)
