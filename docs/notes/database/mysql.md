@@ -2,7 +2,7 @@
 
 ## 参考资料
 
-- [【宋红康】MySQL数据库（mysql安装/基础/高级/优化）_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1iq4y1u7vj)
+- [【宋红康】MySQL 数据库（mysql 安装/基础/高级/优化）_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1iq4y1u7vj)
 
 ## 数据库的作用
 
@@ -78,7 +78,7 @@ mysql -h localhost -P 3306 -u root -proot
 - MySQL 在 Windows 环境下是大小写不敏感的
 - MySQL 在 Linux 环境下是大小写敏感的
   - 数据库名、表名、表的别名、变量名是严格区分大小写的
-  - 关键字、函数名、列名(或字段名)、列的别名(字段的别名) 是忽略大小写的。
+  - 关键字、函数名、列名（或字段名）、列的别名（字段的别名） 是忽略大小写的。
 - 推荐采用统一的书写规范
   - 数据库名、表名、表别名、字段名、字段别名等都小写
   - SQL 关键字、函数名、绑定变量等都大写
@@ -169,6 +169,15 @@ create table table_name(
 create table stu like student;
 ```
 
+#### DESCRIBE/DESC
+
+显示表结构。
+
+```sql
+describe employees;
+desc employees;
+```
+
 ### DQL
 
 #### SELECT
@@ -181,23 +190,39 @@ group by 分组条件
 having 分组之后的条件
 order by 排序
 limit 分页条件
-escape '转移字符'
+escape '转义字符'
 ```
+
+#### 字段列表
+
+每个字段用逗号`,`分隔；可以用`*`代表所有字段。生产环境中不建议用`*`，性能不好。
 
 #### 关键词
 
 用在字段列表之前：
 
-- `distinct`：去除重复
+- `distinct`：去除重复行
 
 用在字段列表：
 
-- `as`：起别名
+- `as`：起别名，别名可以为中文；可以有空格，但是需要用双引号包裹起来。
+
+在字段名和关键词名称冲突的时候，可以用着重号来包裹字段名，以区分字段名和关键词。
+
+`from`之后可以用关键词`dual`，表示伪表，和不加`fron dual`一样，加了是保持查询语句格式完整。
 
 #### 运算符
 
-- `>`、`<`、`>=`、`<=`、`=`、`<>`
+- `+`、`-`、`*`、`/`、`div`、`%`、`mod`
+  - `/`和`div`一样
+  - `%`和`mod`一样
+  - `100 + '1'`的结果是`101`，字符串转为数值（隐式转换）
+
+- `>`、`<`、`>=`、`<=`、`=`、`<>`、`!=`
+  - `<>`和`!=`一样
+  - `=`，在判断的时候不区分大小写，MySQL是这样的
 - `<=>`，安全等于，可以用来判断`null`
+  - 除了这个运算符，`null`参与运算的结果都是`null`
 - `between` ... `and` ...
 - `in()`
 - `like`
@@ -225,7 +250,7 @@ select * from student order by id desc, name asc;
 - `concat()`，拼接字符串
 - `upper()`，字符串转大写
 - `lower()`，字符串转小写
-- `substr(str, pos, len)`/`substring()`，编号从1开始
+- `substr(str, pos, len)`/`substring()`，编号从 1 开始
 - `instr(str, substr)`，搜索字符串第一次出现的位置
 - `trim()`，去除字符串前后空格
 - `trim('a' FROM 'aaaabaaaaa')`，去除字符串前后的`a`
@@ -240,6 +265,8 @@ select * from student order by id desc, name asc;
 - `floor()`，数轴向左取整
 - `truncate(x, n)`，保留`n`位小数，后面的全都舍弃
 - `mod()`，求余数
+- `least()`，求最小值
+- `greatest()`，求最大值
 
 ##### 日期函数
 
@@ -263,6 +290,7 @@ select * from student order by id desc, name asc;
 - `version()`，查询 MySQL 版本
 - `database()`，当前选择的数据库
 - `user()`，当前用户
+- `isnull()`，判断是否为`null`
 
 ##### 流程控制函数
 
@@ -274,7 +302,7 @@ SELECT
 	salary ,
 	department_id ,
 	CASE
-		department_id 
+		department_id
 when 30 then salary * 1.1
 		when 40 then salary * 1.2
 		when 50 then salary * 1.3
@@ -361,8 +389,6 @@ select * from (select cat_id,good_id,good_name from goods order by cat_id asc, g
 -- all 型
 select * from department where did > all(SELECT did from employee);
 ```
-
-
 
 ## 数据结构
 
