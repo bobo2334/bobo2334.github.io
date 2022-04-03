@@ -7,10 +7,10 @@
 - [Elibcc](https://elib.cc/)
 - [Jiumo Search 鸠摩搜索 - 文档搜索引擎](https://www.jiumodiary.com/)
 - [松鼠文库](http://wk.superlgr.com/)
-- [Kindle 电子书，mobi 电子书，epub 电子书，azw3 电子书，PDF,TXT 格式免费下载|Aibooks 积微书斋](https://www.aibooks.cc/)
+- [Kindle 电子书，mobi 电子书，epub 电子书，azw3 电子书，PDF,TXT 格式免费下载 |Aibooks 积微书斋](https://www.aibooks.cc/)
 - [我爱电子书 - 注重体验与质量的电子书资源下载网站](https://www.52doc.com/)
-- [XmSearch 熊猫搜索-聚合文档搜索导航](https://xmsoushu.com/#/)
-- [快吧软件--好东西，就是要分享！ - Fast8.CC](http://www.fast8.cc/)
+- [XmSearch 熊猫搜索 - 聚合文档搜索导航](https://xmsoushu.com/#/)
+- [快吧软件 -- 好东西，就是要分享！ - Fast8.CC](http://www.fast8.cc/)
 - [SoBooks - 一起分享阅读的乐趣~](https://sobooks.cc/)
 
 ## Windows 软件
@@ -20,7 +20,7 @@
 
 ## Windows 系统镜像
 
-- [MSDN, 我告诉你 - 做一个安静的工具站](https://msdn.itellyou.cn/)
+- [MSDN，我告诉你 - 做一个安静的工具站](https://msdn.itellyou.cn/)
 - [不忘初心博客 - 精简版系统官网](https://www.pc521.net/)
 - [UUP dump](https://uupdump.net/)
 
@@ -28,9 +28,9 @@
 
 - [MacWk - 精品 mac 软件下载](https://macwk.com/)
 - [精品 MAC 应用分享](https://xclient.info/)
-- [Mac 萌新网|最全的 Mac/Win/Linux 软件，科学软件，化学软件下载，软件首发站](https://www.macxin.com/)
+- [Mac 萌新网 | 最全的 Mac/Win/Linux 软件，科学软件，化学软件下载，软件首发站](https://www.macxin.com/)
 - [麦氪搜 (iMacSO.com)-我们致力于让您的 Mac 更有价值 ！](https://www.imacso.com/)
-- [mac 软件下载-分享优质 mac 软件游戏 - 苹果软件盒子](https://www.macappbox.com/)
+- [mac 软件下载 - 分享优质 mac 软件游戏 - 苹果软件盒子](https://www.macappbox.com/)
 
 ## 网址导航
 
@@ -71,7 +71,7 @@
 - [豆瓣电影](https://movie.douban.com/)
 - [RARBG Torrents , films , download](https://www.rarbgmirror.com/torrents.php)
 - [在线动画 动漫下载 - AGE 动漫](https://www.agemys.com/)
-- [大师兄影视-永久免费的福利超清影视站](https://dsxys.com/)
+- [大师兄影视 - 永久免费的福利超清影视站](https://dsxys.com/)
 
 ## 网站工具
 
