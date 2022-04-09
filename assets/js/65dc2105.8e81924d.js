@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[9695],{6995:function(s){s.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"/blog/tags/windows-terminal","name":"windows-terminal","count":2,"permalink":"/blog/tags/windows-terminal"}')}}]);

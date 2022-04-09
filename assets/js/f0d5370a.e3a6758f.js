@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[2942],{9094:function(e){e.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"/blog/tags/iterm-2","name":"iterm2","count":1,"permalink":"/blog/tags/iterm-2"}')}}]);
