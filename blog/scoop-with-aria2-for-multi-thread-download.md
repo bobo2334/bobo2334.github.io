@@ -10,6 +10,8 @@ tags:
 
 aria2[^1] 是一款流行的多线程下载器。Scoop 在默认情况下使用单线程下载，你可以通过安装 aria2 来让 Scoop 支持多线程下载。
 
+<!-- more -->
+
 ## 安装 aria2
 
 在 PowerShell 中执行用下面的命令来安装 aria2。
