@@ -76,5 +76,18 @@ umount /mnt/cos
 
 // TODO
 
+## 局限性
+
+该方法有一定局限性 [^3]，只在特定情况下好用，使用时要考虑性能问题。
+
+- 随机或者追加写文件会导致整个文件的重写；
+- 元数据操作，例如 list directory，性能较差，因为需要远程访问 COS 服务器；
+- 文件/文件夹的 rename 操作不是原子的；
+- 多个客户端挂载同一个 COS bucket 时，依赖用户自行协调各个客户端的行为。例如避免多个客户端写同一个文件等等；
+- 不支持 hard link；
+- 不适合用在高并发读/写的场景，这样会让系统的 load 升高。
+
 [^1]: [对象存储 COSFS 工具 - 工具指南 - 文档中心 - 腾讯云](https://cloud.tencent.com/document/product/436/6883)
 [^2]: [Releases · tencentyun/cosfs](https://github.com/tencentyun/cosfs/releases)
+[^3]: [tencentyun/cosfs](https://github.com/tencentyun/cosfs#%E5%B1%80%E9%99%90%E6%80%A7)
+
