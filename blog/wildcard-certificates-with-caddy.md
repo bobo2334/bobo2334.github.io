@@ -221,6 +221,6 @@ foo.bar.example.com {
 [^4]: [caddy-dns/cloudflare: Caddy module: dns.providers.cloudflare](https://github.com/caddy-dns/cloudflare)
 [^5]: [API Tokens | Cloudflare](https://dash.cloudflare.com/profile/api-tokens)
 [^6]: [caddy-dns/dnspod](https://github.com/caddy-dns/dnspod)
-[^7]: [API 密钥 - DNSPod-免费智能 DNS 解析服务商-电信_网通_教育网，智能 DNS](https://console.dnspod.cn/account/token/token)
+[^7]: [API 密钥 - DNSPod-免费智能 DNS 解析服务商 - 电信_网通_教育网，智能 DNS](https://console.dnspod.cn/account/token/token)
 [^8]: [密钥管理 - DNSPod 服务与支持](https://docs.dnspod.cn/account/5f2d466de8320f1a740d9ff3/)
 [^9]: [Common Caddyfile Patterns — Caddy Documentation](https://caddyserver.com/docs/caddyfile/patterns#wildcard-certificates)
