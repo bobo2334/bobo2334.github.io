@@ -475,3 +475,78 @@ LIMIT 2 # 顺序 7
 - 将子查询放在比较条件的右侧
 - 单行操作符对应单行子查询，多行操作符对应多行子查询
 
+在下列子句中都可以写子查询。
+
+- `SELECT`
+- `FROM`
+- `WHERE`
+- `HAVING`
+- `ORDER BY`
+
+### 单行子查询
+
+单行比较操作符后面只能是单行子查询。
+
+### 多行子查询
+
+多行操作符后面可以是单行子查询，也可以是多行子查询。
+
+| 操作符 | 含义                                                         |
+| ------ | ------------------------------------------------------------ |
+| `IN`   | 等于列表中的**任意一个**                                     |
+| `ANY`  | 需要和单行比较操作符一起使用，和子查询返回的**某一个**值比较，只要有一行满足条件即可 |
+| `ALL`  | 需要和单行比较操作符一起使用，和子查询返回的**所有**值比较，需要所有行都满足条件 |
+| `SOME` | 实际上是ANY的别名，作用相同，一般常使用ANY                   |
+
+### 相关子查询
+
+子查询会执行多次。子查询中使用了外部的信息。
+
+### `EXISTS`与`NOT EXISTS`
+
+用在`WHERE`子句中。`EXISTS`与`NOT EXISTS`后面都跟一个子查询，如果子查询返回有数据则`EXISTS`返回`1`，否则返回`0`；`NOT EXISTS`正相反。
+
+```sql
+SELECT
+	employee_id ,
+	last_name ,
+	job_id ,
+	department_id
+from
+	employees e
+WHERE
+	EXISTS (
+	select
+		1
+	from
+		employees e2
+	WHERE
+		e2.manager_id = e.employee_id 
+);
+```
+
+### 相关更新
+
+使用相关子查询依据一个表中的数据更新另一个表的数据。
+
+```sql
+UPDATE employees e
+SET department_name =  (SELECT department_name 
+	                       FROM   departments d
+	                       WHERE  e.department_id = d.department_id);
+```
+
+### 相关删除
+
+使用相关子查询依据一个表中的数据删除另一个表的数据。
+
+```sql
+DELETE FROM employees e
+WHERE employee_id in  
+           (SELECT employee_id
+            FROM   emp_history 
+            WHERE  employee_id = e.employee_id);
+```
+
+## 创建表和管理表
+
