@@ -89,7 +89,7 @@ Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.
 在安装完成之后你将得到一个新的可执行命令`scoop`。下面的命令用于安装 7-zip 和 Git。
 
 ```powershell
-scoop install 7-zip git
+scoop install 7zip git
 ```
 
 等待命令执行完毕之后你就可以在命令行中使用`7z`和`git`命令，Scoop 已经为你配置好了环境变量和命令链接。
@@ -98,7 +98,7 @@ scoop install 7-zip git
 
 ```bash
 git config --global http.proxy http://127.0.0.1:11223
-git config --global https.proxy https://127.0.0.1:11223
+git config --global https.proxy http://127.0.0.1:11223
 ```
 
 对 Git 的设置是永久性的，以下命令用于取消为 Git 设置代理，使用时请去掉注释前缀。
