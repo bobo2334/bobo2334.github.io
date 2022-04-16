@@ -81,7 +81,7 @@ brew doctor
 
 ## 安装软件包
 
-Linuxbrew 仅在 linuxbrew 用户中可用，所以在使用`brew`命令之前你需要先切换到
+在使用`brew`命令之前你需要先切换到 Linuxbrew 用户，但是通过 Linuxbrew 安装的软件包是可以供所有用户使用的。
 
 下面的命令用于安装一个名为 hello 的软件包，其提供了一个名为`hello`的可执行文件，用于在控制台输出「Hello, world!」。
 
