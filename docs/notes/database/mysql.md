@@ -521,7 +521,7 @@ WHERE
 	from
 		employees e2
 	WHERE
-		e2.manager_id = e.employee_id 
+		e2.manager_id = e.employee_id
 );
 ```
 
@@ -531,7 +531,7 @@ WHERE
 
 ```sql
 UPDATE employees e
-SET department_name =  (SELECT department_name 
+SET department_name =  (SELECT department_name
 	                       FROM   departments d
 	                       WHERE  e.department_id = d.department_id);
 ```
@@ -542,9 +542,9 @@ SET department_name =  (SELECT department_name
 
 ```sql
 DELETE FROM employees e
-WHERE employee_id in  
+WHERE employee_id in
            (SELECT employee_id
-            FROM   emp_history 
+            FROM   emp_history
             WHERE  employee_id = e.employee_id);
 ```
 
