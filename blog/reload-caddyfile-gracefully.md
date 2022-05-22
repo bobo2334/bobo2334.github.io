@@ -16,9 +16,10 @@ tags:
 
 ## Docker
 
-如果你使用`docker`命令启动 Caddy 容器，可以使用下面的脚本来让 Caddy 重新加载配置文件。
+如果你使用`docker`命令启动 Caddy 容器，可以使用下面的脚本来让 Caddy 重新加载配置文件。该脚本内容参考于 Caddy Docker 镜像文档 [^1]。
 
 ```bash
+#!bin/bash
 caddy_container_id=$(docker ps | grep caddy | awk '{print $1;}')
 docker exec -w /etc/caddy $caddy_container_id caddy fmt --overwrite Caddyfile
 docker exec -w /etc/caddy $caddy_container_id caddy reload
@@ -33,3 +34,5 @@ docker exec -w /etc/caddy $caddy_container_id caddy reload
 docker-compose exec -w /etc/caddy caddy caddy fmt --overwrite Caddyfile
 docker-compose exec -w /etc/caddy caddy caddy reload
 ```
+
+[^1]: [Caddy - Official Image | Docker Hub](https://hub.docker.com/_/caddy)
