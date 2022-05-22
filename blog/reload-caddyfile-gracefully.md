@@ -26,7 +26,7 @@ docker exec -w /etc/caddy $caddy_container_id caddy reload
 
 ## Docker Compose
 
-如果你使用`docker-compose`命令启动 Caddy 容器，可以使用下面的脚本来让 Caddy 重新加载配置文件。该脚本需要和`docker-compose.yml`位于统一目录下，并在该目录下执行此脚本。
+如果你使用`docker-compose`命令启动 Caddy 容器，可以使用下面的脚本来让 Caddy 重新加载配置文件。该脚本需要和`docker-compose.yml`位于同一目录下，并在该目录下执行此脚本。
 
 ```bash
 #!bin/bash
