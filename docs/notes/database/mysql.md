@@ -85,7 +85,7 @@ mysql -h localhost -P 3306 -u root -proot
 
 ### 注释
 
-```sql
+```mysql
 -- 单行注释
 # 单行注释
 /*
@@ -95,7 +95,7 @@ mysql -h localhost -P 3306 -u root -proot
 
 ## SELECT 语句
 
-```sql
+```mysql
 select [distinct | ] 字段列表
 from 表名列表
 where 条件列表
@@ -117,7 +117,7 @@ escape '转义字符'
 
 在表名或字段名和关键字冲突时可能会造成歧义，这是使用着重号包裹字段名来避免歧义。
 
-```sql
+```mysql
 SELECT * FROM `ORDER`;
 ```
 
@@ -188,7 +188,7 @@ LIKE 运算符通常使用如下通配符。
 
 使用`ORDER BY`子句排序。
 
-```sql
+```mysql
 select * from 表 order by 字段 1 [, 字段 2, ...] [asc | desc];
 ```
 
@@ -201,7 +201,7 @@ select * from 表 order by 字段 1 [, 字段 2, ...] [asc | desc];
 
 使用`LIMIT`进行分页。
 
-```sql
+```mysql
 select * from 表 limit [offset,] rows;
 ```
 
@@ -212,7 +212,7 @@ select * from 表 limit [offset,] rows;
 
 ### 内连接
 
-```sql
+```mysql
 select * from a [inner] join b on a.id = b.id;
 ```
 
@@ -220,7 +220,7 @@ select * from a [inner] join b on a.id = b.id;
 
 ### 外连接
 
-```sql
+```mysql
 select * from a left | right [outer] join b on a.id = b.id;
 ```
 
@@ -244,7 +244,7 @@ MySQL 没有全连接，可以使用`UNION`来实现。
 
 使用`USING`来简化`ON`子句，如果连接条件中的字段名称相同的话可以使用。
 
-```sql
+```mysql
 select * from a join b on a.id = b.id;
 select * from a join b using (id);
 ```
@@ -422,7 +422,7 @@ MySQL 中，字符串的位置是从 1 开始的。
 
 在`SELECT`列表中的字段都必须出现在`GROUP BY`子句中，除了在聚合函数中的字段。如果不遵守的话在 MySQL 中不会提示错误，但是这个字段在行中是无意义的。
 
-```sql
+```mysql
 SELECT   department_id, AVG(salary)
 FROM     employees
 GROUP BY department_id ;
@@ -430,7 +430,7 @@ GROUP BY department_id ;
 
 包含在`GROUP BY`子句中的列不必包含在`SELECT`列表中。
 
-```sql
+```mysql
 SELECT   AVG(salary)
 FROM     employees
 GROUP BY department_id ;
@@ -457,7 +457,7 @@ GROUP BY department_id ;
 
 在 SELECT 语句执行这些步骤的时候，每个步骤都会产生一个`虚拟表`，然后将这个虚拟表传入下一个步骤中作为输入。需要注意的是，这些步骤隐含在 SQL 的执行过程中，对于我们来说是不可见的。
 
-```sql
+```mysql
 SELECT DISTINCT player_id, player_name, count(*) as num # 顺序 5
 FROM player JOIN team ON player.team_id = team.team_id # 顺序 1
 WHERE height > 1.80 # 顺序 2
@@ -496,7 +496,7 @@ LIMIT 2 # 顺序 7
 | `IN`   | 等于列表中的**任意一个**                                     |
 | `ANY`  | 需要和单行比较操作符一起使用，和子查询返回的**某一个**值比较，只要有一行满足条件即可 |
 | `ALL`  | 需要和单行比较操作符一起使用，和子查询返回的**所有**值比较，需要所有行都满足条件 |
-| `SOME` | 实际上是ANY的别名，作用相同，一般常使用ANY                   |
+| `SOME` | 实际上是 ANY 的别名，作用相同，一般常使用 ANY                   |
 
 ### 相关子查询
 
@@ -506,7 +506,7 @@ LIMIT 2 # 顺序 7
 
 用在`WHERE`子句中。`EXISTS`与`NOT EXISTS`后面都跟一个子查询，如果子查询返回有数据则`EXISTS`返回`1`，否则返回`0`；`NOT EXISTS`正相反。
 
-```sql
+```mysql
 SELECT
 	employee_id ,
 	last_name ,
@@ -529,7 +529,7 @@ WHERE
 
 使用相关子查询依据一个表中的数据更新另一个表的数据。
 
-```sql
+```mysql
 UPDATE employees e
 SET department_name =  (SELECT department_name
 	                       FROM   departments d
@@ -540,7 +540,7 @@ SET department_name =  (SELECT department_name
 
 使用相关子查询依据一个表中的数据删除另一个表的数据。
 
-```sql
+```mysql
 DELETE FROM employees e
 WHERE employee_id in
            (SELECT employee_id
@@ -549,4 +549,138 @@ WHERE employee_id in
 ```
 
 ## 创建表和管理表
+
+### 标识符命名规则
+
+- 数据库名、表名不得超过 30 个字符，变量名限制为 29 个
+- 必须只能包含 `A–Z`、`a–z`、`0–9`和`_`共 63 个字符
+- 同一个 MySQL 软件中，数据库不能同名；同一个库中，表不能重名；同一个表中，字段不能重名
+- 必须保证你的字段没有和保留字、数据库系统或常用方法冲突。如果坚持使用，请在 SQL 语句中使用`（着重号）引起来
+- 保持字段名和类型的一致性：在命名字段并为其指定数据类型的时候一定要保证一致性，假如数据类型在一个表里是整数，那在另一个表里可就别变成字符型了
+
+### MySQL 中的数据类型
+
+| 类型             | 类型举例                                                     |
+| ---------------- | ------------------------------------------------------------ |
+| 整数类型         | TINYINT、SMALLINT、MEDIUMINT、**INT（或 INTEGER）**、BIGINT     |
+| 浮点类型         | FLOAT、DOUBLE                                                |
+| 定点数类型       | **DECIMAL**                                                  |
+| 位类型           | BIT                                                          |
+| 日期时间类型     | YEAR、TIME、**DATE**、DATETIME、TIMESTAMP                    |
+| 文本字符串类型   | CHAR、**VARCHAR**、TINYTEXT、TEXT、MEDIUMTEXT、LONGTEXT      |
+| 枚举类型         | ENUM                                                         |
+| 集合类型         | SET                                                          |
+| 二进制字符串类型 | BINARY、VARBINARY、TINYBLOB、BLOB、MEDIUMBLOB、LONGBLOB      |
+| JSON 类型         | JSON 对象、JSON 数组                                           |
+| 空间数据类型     | 单值：GEOMETRY、POINT、LINESTRING、POLYGON；<br/>集合：MULTIPOINT、MULTILINESTRING、MULTIPOLYGON、GEOMETRYCOLLECTION |
+
+其中，常用的几类类型介绍如下。
+
+| 数据类型      | 描述                                                         |
+| ------------- | ------------------------------------------------------------ |
+| INT           | 从 $-2^{31}$ 到 $2^{31}-1$ 的整型数据。存储大小为 4 个字节       |
+| CHAR(size)    | 定长字符数据。若未指定，默认为 1 个字符，最大长度 255        |
+| VARCHAR(size) | 可变长字符数据，根据字符串实际长度保存，**必须指定长度**     |
+| FLOAT(M,D)    | 单精度，占用 4 个字节，$M=整数位 + 小数位$，$D=小数位$。 $D<=M<=255$，$0<=D<=30$，默认 $M+D<=6$ |
+| DOUBLE(M,D)   | 双精度，占用 8 个字节，$D<=M<=255$，$0<=D<=30$，默认 $M+D<=15$ |
+| DECIMAL(M,D)  | 高精度小数，占用 $M+2$ 个字节，$D<=M<=65$，$0<=D<=30$，最大取值范围与 DOUBLE 相同。 |
+| DATE          | 日期型数据，格式「YYYY-MM-DD」                               |
+| BLOB          | 二进制形式的长文本数据，最大可达 4G                          |
+| TEXT          | 长文本数据，最大可达 4G                                      |
+
+### 管理数据库
+
+#### 创建数据库
+
+```mysql
+CREATE DATABASE 数据库名;
+CREATE DATABASE 数据库名 CHARACTER SET 'utf8mb4';
+CREATE DATABASE IF NOT EXISTS 数据库名 CHARACTER SET 'utf8mb4';
+```
+
+数据库不能改名，只能删除重建。
+
+#### 使用数据库
+
+```mysql
+# 查看所有数据库
+SHOW DATABASES;
+
+# 查询建表语句
+SHOW CREATE DATABASE 数据库名;
+
+# 选择使用某个数据库
+USE 数据库名;
+
+# 查看当前正在使用的数据库
+SELECT DATABASE();
+```
+
+#### 修改数据库
+
+```mysql
+# 更改数据库字符集
+ALTER DATABASE 数据库名 CHARACTER SET 字符集;
+```
+
+#### 删除数据库
+
+```mysql
+DROP DATABASE 数据库名;
+# 数据库不存在时不会报错
+DROP DATABASE IF EXISTS 数据库名;
+```
+
+### 管理表
+
+#### 创建表
+
+```mysql
+# 方式一 直接创建表
+CREATE TABLE [IF NOT EXISTS] 表名(
+	字段1, 数据类型 [约束条件] [默认值],
+	字段2, 数据类型 [约束条件] [默认值],
+	字段3, 数据类型 [约束条件] [默认值],
+	……
+	[表约束条件]
+);
+```
+
+```mysql
+CREATE TABLE dept(
+    -- int类型，自增
+	deptno INT(2) AUTO_INCREMENT,
+	dname VARCHAR(14),
+	loc VARCHAR(13),
+    -- 主键
+    PRIMARY KEY (deptno)
+);
+```
+
+```mysql
+# 方式二 基于子查询创建表，并导入数据
+CREATE TABLE 表名
+	[(列, 列...)]
+AS (子查询)
+```
+
+```mysql
+CREATE TABLE emp1 AS SELECT * FROM employees;
+```
+
+#### 使用表
+
+```mysql
+# 查看当前数据库下的所有表
+show tables;
+
+# 查询建表语句
+show create table t1;
+
+# 查询表结构
+desc t1;
+describe t1;
+```
+
+#### 修改表
 
