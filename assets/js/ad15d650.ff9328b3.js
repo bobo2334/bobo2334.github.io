@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[9584],{1620:function(e){e.exports=JSON.parse('{"label":"restic","permalink":"/blog/tags/restic","allTagsPath":"/blog/tags","count":1}')}}]);

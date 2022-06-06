@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[7086],{9602:function(e){e.exports=JSON.parse('{"allTagsPath":"/blog/tags","name":"powershell","count":2,"permalink":"/blog/tags/powershell"}')}}]);
