@@ -39,7 +39,7 @@ apt update
 ## 小工具
 
 ```bash
-apt install curl wget tmux bat htop exa neofetch trash-cli
+apt install curl wget tmux bat htop btop exa neofetch trash-cli
 ```
 
 ## alias
@@ -48,8 +48,6 @@ apt install curl wget tmux bat htop exa neofetch trash-cli
 alias bat='batcat'
 alias ll='exa -lha --modified --created --time-style long-iso --group-directories-first'
 alias dc='docker-compose'
-alias lzd='lazydocker'
-alias rm='echo "please use trash-put"'
 ```
 
 ## docker
