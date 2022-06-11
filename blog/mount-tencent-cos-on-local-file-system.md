@@ -61,7 +61,7 @@ mkdir /mnt/cos
 挂载，其中`ourl`指定了地域链接。
 
 ```bash
-cosfs examplebucket-1250000000 /mnt/cos -ourl=http://cos.shanghai.myqcloud.com
+cosfs examplebucket-1250000000 /mnt/ -ourl=http://cos.ap-guangzhou.myqcloud.com
 ```
 
 挂载之后就可以像对待普通文件系统的方式来操作 COS 中的文件了。
