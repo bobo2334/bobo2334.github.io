@@ -48,21 +48,14 @@ mkdir /home/linuxbrew
 chown linuxbrew /home/linuxbrew
 ```
 
-切换到 linuxbrew 用户，安装 Linuxbrew。
+切换到 linuxbrew 用户，执行安装脚本。
 
 ```bash
-su - linuxbrew
-```
-
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+su - linuxbrew -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
 配置环境变量。将 Linuxbrew 的可执行文件目录加入`PATH`，并配置一些和 Linuxbrew 相关的环境变量。修改`/etc/profile`需要 root 权限，你需要退出到 root 用户。
 
-```bash
-exit
-```
 
 ```bash
 echo $(/home/linuxbrew/.linuxbrew/bin/brew shellenv) >> /etc/profile
@@ -72,11 +65,7 @@ source /etc/profile
 测试。运行下面的命令来测试 Linuxbrew 是否能正常工作，如果得到「Your system is ready to brew.」的提示则证明你的安装过程如期完成。如果你的 Linuxbrew 不能正常运行，它应该会给你提示。brew 要求用非 root 权限运行，所以你需要在使用 brew 命令的时候先切换到 linuxbrew 用户。其安装的软件包可以在 root 用户下运行。
 
 ```bash
-su - linuxbrew
-```
-
-```bash
-brew doctor
+su - linuxbrew -c brew doctor
 ```
 
 ## 安装软件包
@@ -86,7 +75,7 @@ brew doctor
 下面的命令用于安装一个名为 hello 的软件包，其提供了一个名为`hello`的可执行文件，用于在控制台输出「Hello, world!」。
 
 ```bash
-brew install hello
+su - linuxbrew -c brew install hello
 ```
 
 你可以使用`brew search`命令来搜索软件包；或者在网页 Homebrew Formulae[^3] 中搜索软件包，但是并不是所有软件包都适用于 Linux。
