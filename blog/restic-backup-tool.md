@@ -28,7 +28,7 @@ restic 在 Github[^1] 开源。
 
 ## 安装 restic
 
-restic 是一个单文件的可执行程序，没有其它依赖。你可以手动从其 Github Releases[^2] 页下载可执行程序；你也可以通过包管理器安装 restic；restic 也可以通过 Docker 运行。安装细节可以参考其官方文档中的 Installation[^3] 部分 。
+restic 是一个单文件的可执行程序，没有其它依赖。你可以手动从其 Github Releases[^2] 页下载可执行程序；你也可以通过包管理器安装 restic；restic 也可以通过 Docker 运行。安装细节可以参考其官方文档中的 Installation[^3] 部分。
 
 在 restic 正确安装后，你可以得到一个`restic`命令。
 
