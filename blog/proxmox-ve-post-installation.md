@@ -82,6 +82,14 @@ apt install curl wget tmux bat htop btop exa neofetch trash-cli
 
 ## 配置别名
 
+执行命令。
+
+```
+nano .profile
+```
+
+加入内容。
+
 ```bash
 alias bat='batcat'
 alias ll='exa -lha --modified --created --time-style long-iso --group-directories-first'
