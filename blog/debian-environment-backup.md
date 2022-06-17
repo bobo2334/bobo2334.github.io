@@ -11,13 +11,15 @@ tags:
 
 ## 软件源
 
-- [debian | 镜像站使用帮助 | 清华大学开源软件镜像站 | Tsinghua Open Source Mirror](https://mirrors.tuna.tsinghua.edu.cn/help/debian/)
+执行命令。
 
 ```bash
 apt edit-sources
 ```
 
-```bash
+替换内容，这里使用了 *清华大学开源软件镜像站 [^1]*。
+
+```
 # 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
 deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye main contrib non-free
 # deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye main contrib non-free
@@ -32,17 +34,42 @@ deb https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main 
 # deb-src https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main contrib non-free
 ```
 
-```bash
-apt update
+或者使用 *阿里巴巴开源镜像站点 [^2]*
+
+```
+deb http://mirrors.aliyun.com/debian/ bullseye main non-free contrib
+# deb-src http://mirrors.aliyun.com/debian/ bullseye main non-free contrib
+deb http://mirrors.aliyun.com/debian-security/ bullseye-security main
+# deb-src http://mirrors.aliyun.com/debian-security/ bullseye-security main
+deb http://mirrors.aliyun.com/debian/ bullseye-updates main non-free contrib
+# deb-src http://mirrors.aliyun.com/debian/ bullseye-updates main non-free contrib
+deb http://mirrors.aliyun.com/debian/ bullseye-backports main non-free contrib
+# deb-src http://mirrors.aliyun.com/debian/ bullseye-backports main non-free contrib
 ```
 
-## 小工具
+## 更新系统
+
+```bash
+apt update
+apt upgrade
+```
+
+## 安装小工具
 
 ```bash
 apt install curl wget tmux bat htop btop exa neofetch trash-cli
+apt install croc
 ```
 
-## alias
+## 配置别名
+
+执行命令。
+
+```
+nano .profile
+```
+
+加入内容。
 
 ```bash
 alias bat='batcat'
@@ -59,9 +86,7 @@ sh get-docker.sh
 systemctl enable docker
 ```
 
-## docker-compose
-
-- [Releases · docker/compose](https://github.com/docker/compose/releases)
+## *docker-compose[^3]*
 
 ```bash
 # wget https://ghproxy.com/https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-linux-x86_64 -O /opt/docker-compose
@@ -70,73 +95,9 @@ chmod u+x /opt/docker-compose
 ln -s /opt/docker-compose /usr/local/sbin/docker-compose
 ```
 
-## lazydocker
+或者通过 Linuxbrew[^4] 安装。
 
-- [Releases · jesseduffield/lazydocker](https://github.com/jesseduffield/lazydocker/releases)
-
-```bash
-# wget https://ghproxy.com/https://github.com/jesseduffield/lazydocker/releases/download/v0.12/lazydocker_0.12_Linux_x86_64.tar.gz
-wget https://github.com/jesseduffield/lazydocker/releases/download/v0.12/lazydocker_0.12_Linux_x86_64.tar.gz
-mkdir ~/lazydocker
-tar -zxvf lazydocker_0.12_Linux_x86_64.tar.gz -C ~/lazydocker
-mv ~/lazydocker/lazydocker /opt/lazydocker
-chmod u+x /opt/lazydocker
-ln -s /opt/lazydocker /usr/local/sbin/lazydocker
-trash-put ~/lazydocker
-# rm -rf ~/lazydocker
-```
-
-```bash
-brew install lazydocker
-```
-
-```yaml
-# ~/.config/jesseduffield/lazydocker/config.yml
-reporting: "off"
-gui:
-  returnImmediately: true
-commandTemplates:
-  serviceLogs: '{{ .DockerCompose }} logs --timestamps --follow --tail 500 {{ .Service.Name }}'
-  viewServiceLogs: '{{ .DockerCompose }} logs --tail 500 --follow {{ .Service.Name }}'
-  containerLogs: docker logs --timestamps --follow --tail 500 {{ .Container.ID }}
-  viewContainerLogs: docker logs --timestamps --follow --tail 500 {{ .Container.ID}}
-```
-
-## croc
-
-- [Releases · schollz/croc](https://github.com/schollz/croc/releases)
-
-```bash
-# wget https://ghproxy.com/https://github.com/schollz/croc/releases/download/v9.5.0/croc_9.5.0_Linux-64bit.deb
-wget https://github.com/schollz/croc/releases/download/v9.5.0/croc_9.5.0_Linux-64bit.deb
-dpkg -i croc_9.5.0_Linux-64bit.deb
-```
-
-```bash
-brew install croc
-```
-
-## bat
-
-- [Releases · sharkdp/bat](https://github.com/sharkdp/bat/releases)
-
-```bash
-# wget https://ghproxy.com/https://github.com/sharkdp/bat/releases/download/v0.18.3/bat_0.18.3_amd64.deb
-wget https://github.com/sharkdp/bat/releases/download/v0.18.3/bat_0.18.3_amd64.deb
-dpkg -i bat_0.18.3_amd64.deb
-```
-
-```bash
-apt install bat
-# alias bat='batcat'
-```
-
-```bash
-brew install bat
-```
-
-## glance
-
-```bash
-pip3 install glance
-```
+[^1]: [debian | 镜像站使用帮助 | 清华大学开源软件镜像站 | Tsinghua Open Source Mirror](https://mirrors.tuna.tsinghua.edu.cn/help/debian/)
+[^2]: [debian 镜像-debian 下载地址-debian 安装教程 - 阿里巴巴开源镜像站](https://developer.aliyun.com/mirror/debian)
+[^3]: [Releases · docker/compose](https://github.com/docker/compose/releases)
+[^4]: [Linuxbrew：Linux 上的 Homebrew](./linuxbrew-the-homebrew-on-linux.md)
