@@ -3,6 +3,7 @@ date: 2022-06-18
 tags:
     - restic
     - docker
+    - tencent cos
 ---
 
 # 使用 restic 定时备份文件
