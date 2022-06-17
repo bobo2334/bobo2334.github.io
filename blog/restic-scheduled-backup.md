@@ -70,7 +70,7 @@ tmp
 
 1. `TZ`，设置容器内的时区，格式为 *IANA time zone[^3]*；
 2. `BACKUP_CRON`，执行备份任务的 cron 表达式，`0 */6 * * *`表示每 6 小时执行一次。可以使用一些 *在线工具 [^4]* 来验证 cron 表达式；
-3. `RESTIC_REPOSITORY`，restic 备份目的地，这里备份到腾讯云的 COS 中，腾讯云 COS 兼容 AWS S3 协议。具体可以参考 *腾讯云 COS 文档 [^5]* 和 *restic 文档 [^6]*。容器在启动时候会检测该仓库是否用 restic 初始化过，如果没有的话则会自动初始化仓库；
+3. `RESTIC_REPOSITORY`，restic 备份目的地，这里备份到腾讯云的 COS 中，腾讯云 COS 兼容 Amazon S3 协议。具体可以参考 *腾讯云 COS 文档 [^5]* 和 *restic 文档 [^6]*。容器在启动时候会检测该仓库是否用 restic 初始化过，如果没有的话则会自动初始化仓库；
 4. `AWS_ACCESS_KEY_ID`，腾讯云 COS 相关配置；
 5. `AWS_SECRET_ACCESS_KEY`，腾讯云 COS 相关配置；
 6. `RESTIC_PASSWORD`，restic 仓库的密码；
