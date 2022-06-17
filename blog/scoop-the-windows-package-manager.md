@@ -4,7 +4,7 @@ tags:
     - scoop
 ---
 
-# Scoop：最好用的 Windows 包管理器（或许是）
+# Scoop：Windows 包管理器
 
 ## 引入 Scoop
 
