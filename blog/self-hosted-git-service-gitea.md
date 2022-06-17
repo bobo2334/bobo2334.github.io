@@ -52,7 +52,7 @@ volumes:
 
 以下是对`docker-compose.yml`文件的简短说明。
 
-- `ports`：容器的 3000 端口为 Web UI 的监听端口；容器的 22 端口为 SSH 端口，用于 SSH 方式访问 Git 仓库；如果你需要配置 SSH 方式访问 Git 仓库的话，建议你把主机的 SSH 端口改为非 22 端口，让 Gitea 使用主机的 22 端口；
+- `ports`：容器的 3000 端口为 Web UI 的监听端口；容器的 22 端口为 SSH 端口，用于 SSH 方式访问 Git 仓库；
 - `volumes`：Gitea 的数据都保存在容器内的`/data`目录中，包括所有 Git 仓库的文件都保存在此目录中。
 
 ## 反向代理以及 HTTPS 配置
