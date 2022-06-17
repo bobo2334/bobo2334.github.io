@@ -5,7 +5,7 @@ tags:
     - docker
 ---
 
-# 配置 restic 备份计划
+# 使用 restic 定时备份文件
 
 ## 前言
 
@@ -54,10 +54,13 @@ volumes:
 
 创建`excludes.txt`文本文件，作为 restic 的`--exclude-file`参数内容。restic 在备份过程中会忽略掉匹配这些规则的文件。
 
+注意以`#`开头的行会被视为注释，如果你想排除某个以`#`开头的文件或文件夹，请使用`\#`来转义。
+
 ```txt title="restic-backup-docker/excludes.txt"
 *log*
 *cache*
 tmp
+\#recycle
 ```
 
 `docker-compose.yml`文件中的`hostname`设置容器的主机名，restic 在进行备份的时候会用上主机名，表名此次备份是从哪台主机上创建的。
