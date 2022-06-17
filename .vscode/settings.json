@@ -1,4 +1,3 @@
 {
-    "editor.formatOnSave": true,
-    "pangu.auto_format_on_save": true
+  "editor.formatOnSave": true,
 }
