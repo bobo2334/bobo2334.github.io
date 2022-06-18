@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[4101],{3198:function(s){s.exports=JSON.parse('{"label":"synology","permalink":"/blog/tags/synology","allTagsPath":"/blog/tags","count":1}')}}]);
