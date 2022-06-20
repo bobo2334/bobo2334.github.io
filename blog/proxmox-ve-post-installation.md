@@ -105,12 +105,10 @@ alias ll='exa -lha --modified --created --time-style long-iso --group-directorie
 
 ## 挂载点
 
-// TODO 补充`local-lvm`的位置
-
 - local：`/var/lib/vz/`
-- local-lvm：``
-- 其它硬盘：`/mnt/pve/*`
-- 虚拟机配置文件：`/etc/pve/nodes/pve`
+- local-lvm：`/dev/pve`，不能直接访问其中的文件
+- 其它硬盘：`/mnt/`
+- 虚拟机配置文件：`/etc/pve/qemu-server/`
 
 [^1]: [debian | 镜像站使用帮助 | 清华大学开源软件镜像站 | Tsinghua Open Source Mirror](https://mirrors.tuna.tsinghua.edu.cn/help/debian/)
 [^2]: [debian 镜像-debian 下载地址-debian 安装教程 - 阿里巴巴开源镜像站](https://developer.aliyun.com/mirror/debian)
