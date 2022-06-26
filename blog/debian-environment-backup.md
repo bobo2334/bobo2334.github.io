@@ -57,8 +57,7 @@ apt upgrade
 ## 安装小工具
 
 ```bash
-apt install curl wget tmux bat htop btop exa neofetch trash-cli
-apt install croc
+apt install curl wget tmux bat htop btop exa neofetch trash-cli croc
 ```
 
 ## 配置别名
@@ -72,9 +71,11 @@ nano .profile
 加入内容。
 
 ```bash
-alias bat='batcat'
-alias ll='exa -lha --modified --created --time-style long-iso --group-directories-first'
-alias dc='docker-compose'
+alias dc=docker-compose
+alias l='exa -lha --modified --created --time-style long-iso --group-directories-first'
+alias bcua='brew cu -a'
+alias ..='cd ..'
+alias ...='cd ../..'
 ```
 
 ## docker
@@ -95,7 +96,7 @@ chmod u+x /opt/docker-compose
 ln -s /opt/docker-compose /usr/local/sbin/docker-compose
 ```
 
-或者通过 Linuxbrew[^4] 安装。
+或者通过 *Linuxbrew* [^4] 安装。
 
 [^1]: [debian | 镜像站使用帮助 | 清华大学开源软件镜像站 | Tsinghua Open Source Mirror](https://mirrors.tuna.tsinghua.edu.cn/help/debian/)
 [^2]: [debian 镜像-debian 下载地址-debian 安装教程 - 阿里巴巴开源镜像站](https://developer.aliyun.com/mirror/debian)
