@@ -4,7 +4,7 @@ tags:
     - zerotier
 ---
 
-# ztncui：自建 Zerotier 行星节点和网页控制器
+# ztncui：自建 Zerotier 网页控制器
 
 ## 前言
 
