@@ -1,15 +1,14 @@
 ---
 date: 2022-02-25
 tags:
-    - nodejs
-    - linux
+    - node-js
 ---
 
 # Nodebrew：Node.js 安装以及版本切换
 
 ## 前言
 
-在许多 Linux 包管理器中 Node.js 的版本比较混乱，或者在官方软件仓库中不存在 Node.js 软件包；自己动手安装又比较繁琐；在某些情况下需要切换 Node.js 版本就更麻烦了，这时 Nodebrew[^1] 就派上用场了。
+在许多 Linux 包管理器中 Node.js 的版本比较混乱，或者在官方软件仓库中不存在 Node.js 软件包；自己动手安装又比较繁琐；在某些情况下需要切换 Node.js 版本就更麻烦了，这时 Nodebrew 就派上用场了。
 
 Nodebrew 是 Node.js 版本管理器，用 Perl 编写，可以简化你关于 Node.js 安装、卸载、版本管理等过程。
 
@@ -19,7 +18,7 @@ Nodebrew 没有为 Windows 而设计，不支持在 Windows 使用。
 
 ## 安装
 
-Nodebrew 的安装过程就是把 Perl 脚本下载到本地，然后将其所在的目录加入`PATH`中。
+*Nodebrew* [^1] 的安装过程就是把 Perl 脚本下载到本地，然后将其所在的目录加入`PATH`环境变量中。
 
 ### 安装位置
 
@@ -61,7 +60,7 @@ nodebrew setup_dirs
 
 ### 通过 Homebrew 来安装
 
-Homebrew[^2] 是一个包管理器，由 Ruby 编写，可以在 macOS 或 Linux 平台上运行。
+*Homebrew* [^2] 是一个包管理器，由 Ruby 编写，可以在 macOS 或 Linux 平台上运行。
 
 使用下面的命令来通过`brew`命令安装 Nodebrew。
 
@@ -103,7 +102,7 @@ nodebrew install stable
 nodebrew use stable
 ```
 
-更多使用帮助请参考其 Github 仓库 [^1] 页面和命令行中提供的说明信息。
+更多使用帮助请参考其 *Github 仓库页面* [^1] 和命令行中提供的说明信息。
 
 [^1]: [hokaccha/nodebrew: Node.js version manager](https://github.com/hokaccha/nodebrew)
 [^2]: [The Missing Package Manager for macOS (or Linux) — Homebrew](https://brew.sh/)
