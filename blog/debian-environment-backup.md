@@ -71,11 +71,12 @@ nano .profile
 加入内容。
 
 ```bash
-alias dc=docker-compose
+alias ll='ls -alFGh'
 alias l='exa -lha --modified --created --time-style long-iso --group-directories-first'
-alias bcua='brew cu -a'
+alias dc='docker-compose'
 alias ..='cd ..'
 alias ...='cd ../..'
+alias bat='batcat'
 ```
 
 ## docker
