@@ -58,7 +58,7 @@ Import-Module oh-my-posh
 Set-Theme Paradox
 ```
 
-保存该文件，重新打开 PowerShell 你就能看到一个发生改变了的 PowerShell 。
+保存该文件，重新打开 PowerShell 你就能看到一个发生改变了的 PowerShell。
 
 ![img](./build-a-decent-terminal-with-windows-terminal-and-oh-my-posh.assets/vMcBOyiREC-1024x523.png)
 
