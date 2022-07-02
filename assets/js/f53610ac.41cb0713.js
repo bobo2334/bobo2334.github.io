@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[5948],{1998:function(s){s.exports=JSON.parse('{"label":"zsh","permalink":"/blog/tags/zsh","allTagsPath":"/blog/tags","count":3}')}}]);
