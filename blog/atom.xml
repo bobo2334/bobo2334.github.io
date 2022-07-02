@@ -2,11 +2,20 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://iuok.me/blog</id>
     <title>我的学习笔记 Blog</title>
-    <updated>2022-07-02T00:00:00.000Z</updated>
+    <updated>2022-07-03T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://iuok.me/blog"/>
     <subtitle>我的学习笔记 Blog</subtitle>
     <icon>https://iuok.me/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[使用 Google 搜索时指定 No Counrty Redirect]]></title>
+        <id>/google-no-counrty-redirect</id>
+        <link href="https://iuok.me/blog/google-no-counrty-redirect"/>
+        <updated>2022-07-03T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[前言]]></summary>
+        <content type="html"><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="前言">前言<a class="hash-link" href="#前言" title="标题的直接链接">​</a></h2><p>在使用爱国上网的过程中，IP 地址经常在不同国家间变动。默认情况下 Google 搜索的结果会偏好当前 IP 属地的语言，这就导致在使用日本 IP 时会有一堆日文结果看不懂。</p><p>你可以在搜索参数中加上<code>gws_rd=cr</code>来组织这样的默认行为，并且加上<code>gl=cn</code>来强制使用中文。</p><h2 class="anchor anchorWithStickyNavbar_LWe7" id="使用">使用<a class="hash-link" href="#使用" title="标题的直接链接">​</a></h2><p>搜索时使用如下请求，<code>%s</code>替换为搜索词。<code>gl</code>参数可以改为任意国家代码。</p><div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">https://www.google.com/search?q=%s&amp;pws=0&amp;gl=cn&amp;gws_rd=cr</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="复制代码到剪贴板" title="复制" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg class="copyButtonIcon_y97N" viewBox="0 0 24 24"><path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg class="copyButtonSuccessIcon_LjdS" viewBox="0 0 24 24"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div><h2 class="anchor anchorWithStickyNavbar_LWe7" id="在-chrome-中设置">在 Chrome 中设置<a class="hash-link" href="#在-chrome-中设置" title="标题的直接链接">​</a></h2><p>在 Chrome 搜索引擎的设置中添加一个新的搜索引擎，然后将其设为默认搜索引擎。</p><p><img loading="lazy" alt="image-20220703002722383" src="/assets/images/image-20220703002722383-e5bf8d69a9e6fe7360e24138befd9986.png" width="1026" height="698" class="img_ev3q"></p>]]></content>
+        <category label="google" term="google"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[使用 SDKMAN 在 M1 Mac 上安装 JDK]]></title>
         <id>/using-sdkman-to-install-jdk-on-m1-mac</id>
