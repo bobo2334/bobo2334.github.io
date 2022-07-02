@@ -31,3 +31,4 @@ https://www.google.com/search?q=%s&pws=0&gl=cn&gws_rd=cr
 ## 参考资料
 
 - [建议大家都把 Google 给 ncr 一下 - V2EX](https://v2ex.com/t/770093)
+- [How to Force Google Chrome to Use Google.com Instead of Country Specific Version](http://www.thesempost.com/force-google-chrome-to-use-google-com-not-country-version/)
