@@ -24,7 +24,7 @@ Node.js 版本管理器有很多。
 
 其中：
 
-- n，还不错；
+- n，不好，要 root 权限；
 - nvm，严重拖慢 Shell 的启动速度；
 - nodebrew，还不错，但是需要 Perl；
 - fnm，个人感觉最好的；
