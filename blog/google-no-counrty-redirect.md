@@ -27,3 +27,7 @@ https://www.google.com/search?q=%s&pws=0&gl=cn&gws_rd=cr
 在 Chrome 搜索引擎的设置中添加一个新的搜索引擎，然后将其设为默认搜索引擎。
 
 ![image-20220703002722383](google-no-counrty-redirect.assets/image-20220703002722383.png)
+
+## 参考资料
+
+- [建议大家都把 Google 给 ncr 一下 - V2EX](https://v2ex.com/t/770093)
