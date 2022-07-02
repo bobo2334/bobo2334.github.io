@@ -2,6 +2,7 @@
 date: 2022-03-09
 tags:
     - scoop
+    - aria2
 ---
 
 # Scoop：用 aria2 加速下载

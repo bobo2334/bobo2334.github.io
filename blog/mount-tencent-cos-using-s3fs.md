@@ -1,8 +1,9 @@
 ---
 date: 2022-06-18
 tags:
-    - tencent cos
+    - tencent-cos
     - docker
+    - s3fs
 ---
 
 # 使用 s3fs 挂载腾讯云 COS 中的内容

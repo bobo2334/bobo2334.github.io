@@ -1,5 +1,8 @@
 ---
 date: 2021-11-26
+tags:
+    - zsh
+    - oh-my-zsh
 ---
 
 # 配置 oh-my-zsh

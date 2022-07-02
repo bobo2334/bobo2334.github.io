@@ -1,7 +1,7 @@
 ---
 date: 2022-01-10
 tags:
-    - tencent cos
+    - tencent-cos
 ---
 
 # 挂载腾讯云 COS 到本地文件夹

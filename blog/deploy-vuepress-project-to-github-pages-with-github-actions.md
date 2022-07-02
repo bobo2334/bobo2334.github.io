@@ -1,5 +1,8 @@
 ---
 date: 2021-08-24
+tags:
+    - github
+    - node-js
 ---
 
 # 利用 Github Actions 部署 Vuepress 项目到 Github Pages

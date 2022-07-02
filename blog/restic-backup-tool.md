@@ -2,7 +2,7 @@
 date: 2022-05-22
 tags:
     - restic
-    - tencent cos
+    - tencent-cos
 ---
 
 # restic：轻量、跨平台的增量备份工具

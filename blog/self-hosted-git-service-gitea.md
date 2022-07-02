@@ -3,6 +3,7 @@ date: 2022-05-21
 tags:
     - git
     - docker
+    - gitea
 ---
 
 # Gitea：轻量级自建 Git 服务

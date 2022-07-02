@@ -2,6 +2,7 @@
 date: 2022-06-27
 tags:
     - linux
+    - shell
 ---
 
 # 修复 PATH 环境变量

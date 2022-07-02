@@ -1,7 +1,7 @@
 ---
 date: 2022-06-18
 tags:
-    - proxmox ve
+    - proxmox-ve
     - synology
 ---
 

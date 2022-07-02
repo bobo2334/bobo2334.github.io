@@ -1,5 +1,8 @@
 ---
 date: 2020-12-08
+tags:
+    - jetbrain
+    - tomcat
 ---
 
 # 解决 IntelliJ IDEA 中 Tomcat 日志输出乱码的问题

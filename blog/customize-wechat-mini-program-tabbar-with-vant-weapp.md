@@ -1,5 +1,7 @@
 ---
 date: 2020-12-08
+tags:
+    - wechat-mini-program
 ---
 
 # 使用 Vant Weapp 自定义微信小程序 TabBar
