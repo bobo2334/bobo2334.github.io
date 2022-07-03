@@ -1,0 +1,146 @@
+---
+date: 2022-07-03
+tags:
+    - ssh
+---
+
+# 为 SSH 登录启用多重要素验证
+
+## 前言
+
+通过 libpam-google-authenticator 为 SSH 启用多重要素验证，在使用密码或者秘钥登录之后还要输入一个基于时间变化的密码才能登录，增加服务器安全性。
+
+本文中使用 Debian 11 系统作为例子。
+
+<!-- more -->
+
+## 安装 libpam-google-authenticator
+
+安装 libpam-google-authenticator。
+
+```bash
+apt update
+apt install libpam-google-authenticator -y
+```
+
+运行设置向导。
+
+```bash
+google-authenticator
+```
+
+记住 secret key，导入到支持 TOTP 的软件里生成密码。
+
+```
+Do you want authentication tokens to be time-based (y/n) y
+Your new secret key is: ****************
+```
+
+在下一步中验证密码，密码是从密码生成器中得到的。
+
+```
+Enter code from app (-1 to skip): *******
+```
+
+下面有备用密码，记录下来，当你的密码生成器丢失的时候有用，每个密码可以用一次。
+
+```
+Your emergency scratch codes are:
+  ********
+  ********
+  ********
+  ********
+  ********
+```
+
+更新配置文件。
+
+```
+Do you want me to update your "/root/.google_authenticator" file? (y/n) y
+```
+
+设置最大时间误差 30 秒，默认可以使用前一个、现在的和后一个验证码通过认证。
+
+```
+By default, a new token is generated every 30 seconds by the mobile app.
+In order to compensate for possible time-skew between the client and the server,
+we allow an extra token before and after the current time. This allows for a
+time skew of up to 30 seconds between authentication server and client. If you
+experience problems with poor time synchronization, you can increase the window
+from its default size of 3 permitted codes (one previous code, the current
+code, the next code) to 17 permitted codes (the 8 previous codes, the current
+code, and the 8 next codes). This will permit for a time skew of up to 4 minutes
+between client and server.
+Do you want to do so? (y/n) y
+```
+
+设置每 30 秒最多重试 3 次。
+
+```
+If the computer that you are logging into isn't hardened against brute-force
+login attempts, you can enable rate-limiting for the authentication module.
+By default, this limits attackers to no more than 3 login attempts every 30s.
+Do you want to enable rate-limiting? (y/n) y
+```
+
+## 配置 SSH 服务器
+
+修改`/etc/pam.d/sshd`文件。
+
+```bash
+nano /etc/pam.d/sshd
+```
+
+注释掉`@include common-auth`，并加入新行。
+
+```bash
+# Standard Un*x authentication.
+# @include common-auth
+auth required pam_google_authenticator.so
+```
+
+修改`/etc/ssh/sshd_config`文件。
+
+```bash
+nano /etc/ssh/sshd_config
+```
+
+修改以下几项。其中`AuthenticationMethods`指定了先使用秘钥方式登录，再要求验证额外密码。
+
+```
+ChallengeResponseAuthentication yes
+PasswordAuthentication no
+AuthenticationMethods publickey,keyboard-interactive
+```
+
+重启 ssh 服务器。
+
+```bash
+systemctl restart sshd
+```
+
+## SSH 服务器启动错误排查
+
+首先停止 sshd 服务。
+
+```bash
+systemctl stop sshd
+```
+
+手动启动 sshd，指定`-d`参数，该参数会让 sshd 打印出更多错误信息。
+
+```bash
+/usr/bin/sshd -d
+```
+
+根据打印出的信息排查错误。错误修复之后再通过服务启动 sshd。
+
+```bash
+systemctl start sshd
+```
+
+## 参考资料
+
+- [多重要素验证 - 维基百科，自由的百科全书](https://zh.wikipedia.org/wiki/%E5%A4%9A%E9%87%8D%E8%A6%81%E7%B4%A0%E9%A9%97%E8%AD%89)
+- [How to Setup Two-Factor Authentication (2FA) for SSH on Debian 9 Using Google Authenticator - Vultr.com](https://www.vultr.com/docs/how-to-setup-two-factor-authentication-2fa-for-ssh-on-debian-9-using-google-authenticator/)
+- [\[SOLVED\] SSH Service Failed to Start / Networking, Server, and Protection / Arch Linux Forums](https://bbs.archlinux.org/viewtopic.php?id=227787)
