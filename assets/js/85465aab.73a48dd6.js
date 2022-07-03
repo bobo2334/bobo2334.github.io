@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[2939],{17980:function(s){s.exports=JSON.parse('{"label":"oh-my-posh","permalink":"/blog/tags/oh-my-posh","allTagsPath":"/blog/tags","count":2}')}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[8515],{48471:function(e){e.exports=JSON.parse('{"label":"zinit","permalink":"/blog/tags/zinit","allTagsPath":"/blog/tags","count":1}')}}]);

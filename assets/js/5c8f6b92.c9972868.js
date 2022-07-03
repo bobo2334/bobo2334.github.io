@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[8127],{35903:function(e){e.exports=JSON.parse('{"label":"tmux","permalink":"/blog/tags/tmux","allTagsPath":"/blog/tags","count":1}')}}]);
