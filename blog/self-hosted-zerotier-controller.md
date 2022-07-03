@@ -2,6 +2,7 @@
 date: 2021-12-31
 tags:
     - zerotier
+    - vpn
 ---
 
 # ztncui：自建 Zerotier 网页控制器

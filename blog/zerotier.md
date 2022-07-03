@@ -2,6 +2,7 @@
 date: 2021-12-23
 tags:
     - zerotier
+    - vpn
 ---
 
 # Zerotier 异地组网
