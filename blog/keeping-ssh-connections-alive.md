@@ -38,3 +38,8 @@ ClientAliveCountMax 5
 ```bash
 systemctl restart sshd
 ```
+
+## 参考资料
+
+- [ssh 与远程机器保持心跳（linux） - MTJO](https://mtjo.net/blog/article/30.html)
+- [ssh\_config(5): OpenSSH SSH client config files - Linux man page](https://linux.die.net/man/5/ssh_config)
