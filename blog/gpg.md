@@ -554,6 +554,8 @@ gpg -a -o bug-proof.revoked.pub --export 8A8FB3D3C4C81471E7D0DBA77DCE475DEA06B27
 
 因为 Git 设置中的 username 和 email 都是可以随意修改的，所以并不一定能保证某个 Git 提交是真的你做的。
 
+首先你需要把你的公钥上传至 Git 服务器，如 Github 或者 Gitlab。
+
 设置 Git，使用子密钥签名。
 
 ```bash
