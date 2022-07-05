@@ -14,7 +14,7 @@ oh-my-posh 项目已被重构，现在由 Go 语言实现，详情见 [Github](h
 
 文章中所使用的版本现已被重命名为 oh-my-posh2，由 PowerShell 实现，详情见 [Github](https://github.com/JanDeDobbeleer/oh-my-posh2)。
 
-oh-my-posh3 的安装请参考 [Windows Terminal + PWSH + oh my posh3 + PSReadLine 打造一个好用的终端](use-pwsh-and-oh-my-posh3-on-windows.md)，**下面的内容已过时**。
+oh-my-posh3 的安装请参考 [Windows Terminal + PWSH + oh my posh3 + PSReadLine 打造一个好用的终端](./use-pwsh-and-oh-my-posh3-on-windows.md)，**下面的内容已过时**。
 
 ## 前言
 
