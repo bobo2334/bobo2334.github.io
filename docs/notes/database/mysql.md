@@ -63,7 +63,6 @@ mysql -h localhost -P 3306 -u root -proot
   - `\g`和`\G`只能在命令行中使用
   - `\g`和`;`的效果一样
   - `\G`会将结果表转置，行列转换
-
 - 关键字不能被缩写也不能分行
 - 关于标点符号
   - 必须保证所有的`()`、`单引号`、`双引号`是成对结束的
@@ -85,7 +84,7 @@ mysql -h localhost -P 3306 -u root -proot
 
 ### 注释
 
-```mysql
+```sql
 -- 单行注释
 # 单行注释
 /*
@@ -95,7 +94,7 @@ mysql -h localhost -P 3306 -u root -proot
 
 ## SELECT 语句
 
-```mysql
+```sql
 select [distinct | ] 字段列表
 from 表名列表
 where 条件列表
@@ -117,7 +116,7 @@ escape '转义字符'
 
 在表名或字段名和关键字冲突时可能会造成歧义，这是使用着重号包裹字段名来避免歧义。
 
-```mysql
+```sql
 SELECT * FROM `ORDER`;
 ```
 
@@ -188,7 +187,7 @@ LIKE 运算符通常使用如下通配符。
 
 使用`ORDER BY`子句排序。
 
-```mysql
+```sql
 select * from 表 order by 字段 1 [, 字段 2, ...] [asc | desc];
 ```
 
@@ -201,7 +200,7 @@ select * from 表 order by 字段 1 [, 字段 2, ...] [asc | desc];
 
 使用`LIMIT`进行分页。
 
-```mysql
+```sql
 select * from 表 limit [offset,] rows;
 ```
 
@@ -212,7 +211,7 @@ select * from 表 limit [offset,] rows;
 
 ### 内连接
 
-```mysql
+```sql
 select * from a [inner] join b on a.id = b.id;
 ```
 
@@ -220,7 +219,7 @@ select * from a [inner] join b on a.id = b.id;
 
 ### 外连接
 
-```mysql
+```sql
 select * from a left | right [outer] join b on a.id = b.id;
 ```
 
@@ -244,7 +243,7 @@ MySQL 没有全连接，可以使用`UNION`来实现。
 
 使用`USING`来简化`ON`子句，如果连接条件中的字段名称相同的话可以使用。
 
-```mysql
+```sql
 select * from a join b on a.id = b.id;
 select * from a join b using (id);
 ```
@@ -347,6 +346,75 @@ MySQL 中，字符串的位置是从 1 开始的。
 
 ### 日期和时间函数
 
+#### 获取日期、时间
+
+| 函数                                                         | 用法                           |
+| ------------------------------------------------------------ | ------------------------------ |
+| **CURDATE()** ，CURRENT_DATE()                               | 返回当前日期，只包含年、月、日 |
+| **CURTIME()** ，CURRENT_TIME()                              | 返回当前时间，只包含时、分、秒 |
+| **NOW()** / SYSDATE() / CURRENT_TIMESTAMP() / LOCALTIME() / LOCALTIMESTAMP() | 返回当前系统日期和时间         |
+| UTC_DATE()                                                   | 返回 UTC（世界标准时间）日期    |
+| UTC_TIME()                                                   | 返回 UTC（世界标准时间）时间    |
+
+#### 日期与时间戳的转换
+
+| 函数                     | 用法                                                         |
+| ------------------------ | ------------------------------------------------------------ |
+| UNIX_TIMESTAMP()         | 以 UNIX 时间戳的形式返回当前时间。SELECT UNIX_TIMESTAMP() ->1634348884 |
+| UNIX_TIMESTAMP(date)     | 将时间 date 以 UNIX 时间戳的形式返回。                           |
+| FROM_UNIXTIME(timestamp) | 将 UNIX 时间戳的时间转换为普通格式的时间                       |
+
+#### 获取月份、星期、星期数、天数等函数
+
+| 函数                                     | 用法                                            |
+| ---------------------------------------- | ----------------------------------------------- |
+| YEAR(date) / MONTH(date) / DAY(date)     | 返回具体的日期值                                |
+| HOUR(time) / MINUTE(time) / SECOND(time) | 返回具体的时间值                                |
+| MONTHNAME(date)                          | 返回月份：January，...                          |
+| DAYNAME(date)                            | 返回星期几：MONDAY，TUESDAY.....SUNDAY          |
+| WEEKDAY(date)                            | 返回周几，注意，周 1 是 0，周 2 是 1，。。。周日是 6   |
+| QUARTER(date)                            | 返回日期对应的季度，范围为 1～4                  |
+| WEEK(date) ， WEEKOFYEAR(date)           | 返回一年中的第几周                              |
+| DAYOFYEAR(date)                          | 返回日期是一年中的第几天                        |
+| DAYOFMONTH(date)                         | 返回日期位于所在月份的第几天                    |
+| DAYOFWEEK(date)                          | 返回周几，注意：周日是 1，周一是 2，。。。周六是 7 |
+
+#### 时间和秒钟转换的函数
+
+| 函数                 | 用法                                                         |
+| -------------------- | ------------------------------------------------------------ |
+| TIME_TO_SEC(time)    | 将 time 转化为秒并返回结果值。转化的公式为：`小时*3600+分钟*60+秒` |
+| SEC_TO_TIME(seconds) | 将 seconds 描述转化为包含小时、分钟和秒的时间                |
+
+#### 计算日期和时间的函数
+
+| 函数                                                         | 用法                                           |
+| ------------------------------------------------------------ | ---------------------------------------------- |
+| DATE_ADD(datetime, INTERVAL  expr type)，ADDDATE(date,INTERVAL expr type) | 返回与给定日期时间相差 INTERVAL 时间段的日期时间 |
+| DATE_SUB(date,INTERVAL expr type)，SUBDATE(date,INTERVAL expr type) | 返回与 date 相差 INTERVAL 时间间隔的日期           |
+
+| 函数                         | 用法                                                         |
+| ---------------------------- | ------------------------------------------------------------ |
+| ADDTIME(time1,time2)         | 返回 time1 加上 time2 的时间。当 time2 为一个数字时，代表的是`秒`，可以为负数 |
+| SUBTIME(time1,time2)         | 返回 time1 减去 time2 后的时间。当 time2 为一个数字时，代表的是`秒`，可以为负数 |
+| DATEDIFF(date1,date2)        | 返回 date1 - date2 的日期间隔天数                              |
+| TIMEDIFF(time1, time2)       | 返回 time1 - time2 的时间间隔                                  |
+| FROM_DAYS(N)                 | 返回从 0000 年 1 月 1 日起，N 天以后的日期                          |
+| TO_DAYS(date)                | 返回日期 date 距离 0000 年 1 月 1 日的天数                           |
+| LAST_DAY(date)               | 返回 date 所在月份的最后一天的日期                             |
+| MAKEDATE(year,n)             | 针对给定年份与所在年份中的天数返回一个日期                   |
+| MAKETIME(hour,minute,second) | 将给定的小时、分钟和秒组合成时间并返回                       |
+| PERIOD_ADD(time,n)           | 返回 time 加上 n 后的时间                                        |
+
+#### 日期的格式化与解析
+
+| 函数                              | 用法                                       |
+| --------------------------------- | ------------------------------------------ |
+| DATE_FORMAT(date,fmt)             | 按照字符串 fmt 格式化日期 date 值              |
+| TIME_FORMAT(time,fmt)             | 按照字符串 fmt 格式化时间 time 值              |
+| GET_FORMAT(date_type,format_type) | 返回日期字符串的显示格式                   |
+| STR_TO_DATE(str, fmt)             | 按照字符串 fmt 对 str 进行解析，解析为一个日期 |
+
 ### 流程控制函数
 
 | 函数                                                         | 用法                                            |
@@ -422,7 +490,7 @@ MySQL 中，字符串的位置是从 1 开始的。
 
 在`SELECT`列表中的字段都必须出现在`GROUP BY`子句中，除了在聚合函数中的字段。如果不遵守的话在 MySQL 中不会提示错误，但是这个字段在行中是无意义的。
 
-```mysql
+```sql
 SELECT   department_id, AVG(salary)
 FROM     employees
 GROUP BY department_id ;
@@ -430,7 +498,7 @@ GROUP BY department_id ;
 
 包含在`GROUP BY`子句中的列不必包含在`SELECT`列表中。
 
-```mysql
+```sql
 SELECT   AVG(salary)
 FROM     employees
 GROUP BY department_id ;
@@ -457,7 +525,7 @@ GROUP BY department_id ;
 
 在 SELECT 语句执行这些步骤的时候，每个步骤都会产生一个`虚拟表`，然后将这个虚拟表传入下一个步骤中作为输入。需要注意的是，这些步骤隐含在 SQL 的执行过程中，对于我们来说是不可见的。
 
-```mysql
+```sql
 SELECT DISTINCT player_id, player_name, count(*) as num # 顺序 5
 FROM player JOIN team ON player.team_id = team.team_id # 顺序 1
 WHERE height > 1.80 # 顺序 2
@@ -506,7 +574,7 @@ LIMIT 2 # 顺序 7
 
 用在`WHERE`子句中。`EXISTS`与`NOT EXISTS`后面都跟一个子查询，如果子查询返回有数据则`EXISTS`返回`1`，否则返回`0`；`NOT EXISTS`正相反。
 
-```mysql
+```sql
 SELECT
 	employee_id ,
 	last_name ,
@@ -529,7 +597,7 @@ WHERE
 
 使用相关子查询依据一个表中的数据更新另一个表的数据。
 
-```mysql
+```sql
 UPDATE employees e
 SET department_name =  (SELECT department_name
 	                       FROM   departments d
@@ -540,7 +608,7 @@ SET department_name =  (SELECT department_name
 
 使用相关子查询依据一个表中的数据删除另一个表的数据。
 
-```mysql
+```sql
 DELETE FROM employees e
 WHERE employee_id in
            (SELECT employee_id
@@ -592,7 +660,7 @@ WHERE employee_id in
 
 #### 创建数据库
 
-```mysql
+```sql
 CREATE DATABASE 数据库名;
 CREATE DATABASE 数据库名 CHARACTER SET 'utf8mb4';
 CREATE DATABASE IF NOT EXISTS 数据库名 CHARACTER SET 'utf8mb4';
@@ -602,7 +670,7 @@ CREATE DATABASE IF NOT EXISTS 数据库名 CHARACTER SET 'utf8mb4';
 
 #### 使用数据库
 
-```mysql
+```sql
 # 查看所有数据库
 SHOW DATABASES;
 
@@ -618,14 +686,14 @@ SELECT DATABASE();
 
 #### 修改数据库
 
-```mysql
+```sql
 # 更改数据库字符集
 ALTER DATABASE 数据库名 CHARACTER SET 字符集;
 ```
 
 #### 删除数据库
 
-```mysql
+```sql
 DROP DATABASE 数据库名;
 # 数据库不存在时不会报错
 DROP DATABASE IF EXISTS 数据库名;
@@ -635,7 +703,7 @@ DROP DATABASE IF EXISTS 数据库名;
 
 #### 创建表
 
-```mysql
+```sql
 # 方式一 直接创建表
 CREATE TABLE [IF NOT EXISTS] 表名(
 	字段1, 数据类型 [约束条件] [默认值],
@@ -646,9 +714,9 @@ CREATE TABLE [IF NOT EXISTS] 表名(
 );
 ```
 
-```mysql
+```sql
 CREATE TABLE dept(
-    -- int类型，自增
+    -- int 类型，自增
 	deptno INT(2) AUTO_INCREMENT,
 	dname VARCHAR(14),
 	loc VARCHAR(13),
@@ -657,20 +725,20 @@ CREATE TABLE dept(
 );
 ```
 
-```mysql
+```sql
 # 方式二 基于子查询创建表，并导入数据
 CREATE TABLE 表名
 	[(列, 列...)]
 AS (子查询)
 ```
 
-```mysql
+```sql
 CREATE TABLE emp1 AS SELECT * FROM employees;
 ```
 
 #### 使用表
 
-```mysql
+```sql
 # 查看当前数据库下的所有表
 show tables;
 
@@ -683,4 +751,176 @@ describe t1;
 ```
 
 #### 修改表
+
+```sql
+# 新增列
+ALTER TABLE 表名 ADD 【COLUMN】 字段名 字段类型 【FIRST|AFTER 字段名】;
+
+ALTER TABLE dept80
+ADD job_id varchar(15);
+
+# 修改列
+ALTER TABLE 表名 MODIFY 【COLUMN】 字段名1 字段类型 【DEFAULT 默认值】【FIRST|AFTER 字段名2】;
+
+ALTER TABLE	dept80
+MODIFY last_name VARCHAR(30);
+
+ALTER TABLE	dept80
+MODIFY salary double(9,2) default 1000;
+
+# 重名命列
+ALTER TABLE 表名 CHANGE 【column】 列名 新列名 新数据类型;
+
+ALTER TABLE  dept80
+CHANGE department_name dept_name varchar(15);
+
+# 删除列
+ALTER TABLE 表名 DROP 【COLUMN】字段名
+
+ALTER TABLE  dept80
+DROP COLUMN  job_id;
+```
+
+#### 重命名表
+
+```sql
+# 方式一
+RENAME TABLE emp
+TO myemp;
+
+# 方式二
+ALTER table dept
+RENAME [TO] detail_dept;  -- [TO] 可以省略
+```
+
+#### 删除表
+
+- 在 MySQL 中，当一张数据表没有与其他任何数据表形成关联关系时，可以将当前数据表直接删除；
+- 数据和结构都被删除；
+- 所有正在运行的相关事务被提交；
+- 所有相关索引被删除；
+- `DROP TABLE`语句不能回滚。
+
+```sql
+DROP TABLE [IF EXISTS] 数据表1 [, 数据表2, …, 数据表n];
+
+DROP TABLE dept80;
+```
+
+#### 清空表
+
+- 删除表中所有的数据；
+- 释放表的存储空间；
+- `TRUNCATE`语句**不能回滚**，而使用`DELETE`语句删除数据，可以回滚。
+
+```sql
+TRUNCATE TABLE detail_dept;
+```
+
+> 阿里开发规范：
+>
+> 【参考】TRUNCATE TABLE 比 DELETE 速度快，且使用的系统和事务日志资源少，但 TRUNCATE 无事务且不触发 TRIGGER，有可能造成事故，故不建议在开发代码中使用此语句。
+>
+> 说明：TRUNCATE TABLE 在功能上与不带 WHERE 子句的 DELETE 语句相同。
+
+### DDL 原子化
+
+MySQL 8 中支持。在执行 DDL 语句的时候遇到错误可以回滚，不会部分提交。
+
+## DCL
+
+- `COMMIT`，一旦提交，数据就写入到数据库中，不能回滚了；
+- `ROLLBACK`，回滚到最近一次`COMMIT`之后。
+
+```sql
+# 不器用自动提交，默认情况下是自动提交的
+SET autocommit = FALSE
+```
+
+## DML
+
+### 插入数据
+
+```sql
+# 1
+INSERT INTO 表名
+VALUES (value1,value2,....);
+
+INSERT INTO departments
+VALUES (70, 'Pub', 100, 1700);
+
+# 2
+INSERT INTO 表名(column1 [, column2, …, columnn])
+VALUES (value1 [,value2, …, valuen]);
+
+INSERT INTO departments(department_id, department_name)
+VALUES (80, 'IT');
+
+# 3
+INSERT INTO table_name
+VALUES
+(value1 [,value2, …, valuen]),
+(value1 [,value2, …, valuen]),
+……
+(value1 [,value2, …, valuen]);
+
+INSERT INTO emp(emp_id,emp_name)
+    VALUES (1001,'shkstart'),
+    (1002,'atguigu'),
+    (1003,'Tom');
+
+# 4 将查询结果插入到表中
+INSERT INTO 目标表名
+(tar_column1 [, tar_column2, …, tar_columnn])
+SELECT
+(src_column1 [, src_column2, …, src_columnn])
+FROM 源表名
+[WHERE condition]
+
+INSERT INTO emp2
+SELECT *
+FROM employees
+WHERE department_id = 90;
+```
+
+### 更新数据
+
+```sql
+UPDATE table_name
+SET column1=value1, column2=value2, … , column=valuen
+[WHERE condition]
+```
+
+### 删除数据
+
+```sql
+DELETE FROM table_name [WHERE <condition>];
+```
+
+### 计算列
+
+MySQL 8 新特性。某一列的值是通过别的列计算得来的。
+
+在 MySQL 8.0 中，`CREATE TABLE`和`ALTER TABLE`中都支持增加计算列。
+
+```sql
+CREATE TABLE tb1(
+id INT,
+a INT,
+b INT,
+c INT GENERATED ALWAYS AS (a + b) VIRTUAL
+);
+
+INSERT INTO tb1(a,b) VALUES (100,200);
+
+SELECT * FROM tb1;
+```
+
+```
++------+------+------+------+
+| id   | a    | b    | c    |
++------+------+------+------+
+| NULL |  100 |  200 |  300 |
++------+------+------+------+
+```
 
