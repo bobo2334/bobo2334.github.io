@@ -120,7 +120,7 @@ const config = {
             prism: {
                 theme: lightCodeTheme,
                 darkTheme: darkCodeTheme,
-                additionalLanguages: ['powershell', 'java', 'c', 'ini', 'properties', 'systemd'],
+                additionalLanguages: ['powershell', 'java', 'c', 'ini', 'properties', 'systemd', 'sql'],
             },
             colorMode: {
                 respectPrefersColorScheme: true,
