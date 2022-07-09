@@ -1032,3 +1032,205 @@ SELECT * FROM tb1;
 +------+------+------+------+
 ```
 
+## 约束
+
+### 非空约束
+
+```sql
+# 建表时添加
+CREATE TABLE 表名称(
+	字段名  数据类型,
+    字段名  数据类型 NOT NULL,
+    字段名  数据类型 NOT NULL
+);
+
+# 建表后添加
+alter table 表名称 modify 字段名 数据类型 not null;
+
+# 删除
+# 去掉not null，相当于修改某个非注解字段，该字段允许为空
+alter table 表名称 modify 字段名 数据类型;
+```
+
+### 唯一性约束
+
+```sql
+# 建表时添加
+create table 表名称(
+	字段名  数据类型,
+    字段名  数据类型  unique,
+    字段名  数据类型  unique key,
+    字段名  数据类型
+);
+create table 表名称(
+	字段名  数据类型,
+    字段名  数据类型,
+    字段名  数据类型,
+    [constraint 约束名] unique key(字段名)
+);
+
+# 建表后添加
+alter table 表名称 modify 字段名 字段类型 unique;
+ALTER TABLE USER ADD CONSTRAINT uk_name_pwd UNIQUE(NAME,PASSWORD);
+
+# 删除
+# 查看都有哪些约束
+SELECT * FROM information_schema.table_constraints WHERE table_name = '表名';
+# 查看表的索引
+show index from 表名称;
+ALTER TABLE USER DROP INDEX uk_name_pwd;
+```
+
+### 主键约束
+
+```sql
+# 建表时添加
+create table 表名称(
+	字段名  数据类型  primary key, #列级模式
+    字段名  数据类型,
+    字段名  数据类型
+);
+create table 表名称(
+	字段名  数据类型,
+    字段名  数据类型,
+    字段名  数据类型,
+    [constraint 约束名] primary key(字段名) #表级模式
+);
+
+# 建表后添加
+# 字段列表可以是一个字段，也可以是多个字段，如果是多个字段的话，是复合主键
+ALTER TABLE 表名称 ADD PRIMARY KEY(字段列表);
+
+# 删除
+alter table 表名称 drop primary key;
+```
+
+### 自增列
+
+- 一个表最多只能有一个自增长列；
+- 自增长列约束的列必须是键列（主键列，唯一键列）；
+- 自增约束的列的数据类型必须是整数类型；
+- 如果自增列指定了 0 和 null，会在当前最大值的基础上自增；如果自增列手动指定了具体值，直接赋值为具体值。
+
+```sql
+# 建表时添加
+create table 表名称(
+	字段名  数据类型  primary key auto_increment,
+    字段名  数据类型  unique key not null,
+    字段名  数据类型  unique key,
+    字段名  数据类型  not null default 默认值,
+);
+create table 表名称(
+	字段名  数据类型 default 默认值 ,
+    字段名  数据类型 unique key auto_increment,
+    字段名  数据类型 not null default 默认值,,
+    primary key(字段名)
+);
+
+# 建表后添加
+alter table 表名称 modify 字段名 数据类型 auto_increment;
+
+# 删除
+# 去掉auto_increment相当于删除
+alter table 表名称 modify 字段名 数据类型;
+```
+
+在 MySQL 8.0 之前，自增主键 AUTO_INCREMENT 的值如果大于`max(primary key)+1`，在 MySQL 重启后，会重置 `AUTO_INCREMENT=max(primary key)+1`，这种现象在某些情况下会导致业务主键冲突或者其他难以发现的问题。
+
+MySQL 8.0 将自增主键的计数器持久化到**重做日志**中。每次计数器发生改变，都会将其写入重做日志中。如果数据库重启，InnoDB 会根据重做日志中的信息来初始化计数器的内存值。
+
+### 外键约束
+
+- 从表的外键列，必须引用/参考主表的主键或唯一约束的列；
+- **当创建外键约束时，系统默认会在所在的列上建立对应的普通索引**。但是索引名是外键的约束名，根据外键查询效率很高；
+- 删除外键约束后，必须`手动`删除对应的索引。
+
+```sql
+# 建表时添加
+create table 主表名称(
+	字段1  数据类型  primary key,
+    字段2  数据类型
+);
+
+create table 从表名称(
+	字段1  数据类型  primary key,
+    字段2  数据类型,
+    [CONSTRAINT <外键约束名称>] FOREIGN KEY（从表的某个字段) references 主表名(被参考字段)
+);
+
+# 建表后添加
+ALTER TABLE 从表名 ADD [CONSTRAINT 约束名] FOREIGN KEY (从表的字段) REFERENCES 主表名(被引用字段) [on update xx][on delete xx];
+
+# 删除
+# 查看某个表的约束名
+SELECT * FROM information_schema.table_constraints WHERE table_name = '表名称';
+ALTER TABLE 从表名 DROP FOREIGN KEY 外键约束名;
+# 查看某个表的索引名
+SHOW INDEX FROM 表名称;
+ALTER TABLE 从表名 DROP INDEX 索引名;
+```
+
+以下是对约束等级的说明。
+
+- `Cascade`：在父表上 update/delete 记录时，同步 update/delete 掉子表的匹配记录；
+- `Set null`：在父表上 update/delete 记录时，将子表上匹配记录的列设为 null，但是要注意子表的外键列不能为 not null；
+- `No action`：如果子表中有匹配的记录，则不允许对父表对应候选键进行 update/delete 操作；
+- `Restrict`：同 no action，都是立即检查外键约束；
+- `Set default`：父表有变更时，子表将外键列设置成一个默认的值，但 Innodb 不能识别。
+
+如果没有指定等级，就相当于`Restrict`方式。对于外键约束，最好是采用：`ON UPDATE CASCADE ON DELETE RESTRICT` 的方式。
+
+### CHECK 约束
+
+MySQL5.7 可以使用 check 约束，但 check 约束对数据验证没有任何作用。添加数据时，没有任何错误或警告。但是 MySQL 8.0 中可以使用 check 约束了。
+
+```sql
+create table employee(
+	eid int primary key,
+    ename varchar(5),
+    gender char check ('男' or '女')
+);
+```
+
+### DEFAULT 约束
+
+```sql
+# 建表时添加
+create table 表名称(
+	字段名  数据类型  primary key,
+    字段名  数据类型  unique key not null,
+    字段名  数据类型  unique key,
+    字段名  数据类型  not null default 默认值,
+);
+
+# 建表后添加
+alter table 表名称 modify 字段名 数据类型 default 默认值 not null;
+
+# 删除
+# 删除默认值约束，也不保留非空约束
+# 删除默认值约束，保留非空约束
+alter table 表名称 modify 字段名 数据类型;
+alter table 表名称 modify 字段名 数据类型  not null;
+```
+
+### 面试
+
+> 为什么建表时，加`not null default ''`或`default 0`
+
+不想让表中出现 null 值。
+
+> 为什么不想要 null 的值
+
+1. 不好比较。null 是一种特殊值，比较时只能用专门的 is null 和 is not null 来比较。碰到运算符，通常返回 null；
+2. 效率不高。影响提高索引效果。因此，我们往往在建表时`not null default ''`或`default 0`。
+
+> 带 AUTO_INCREMENT 约束的字段值是从 1 开始的吗
+
+在 MySQL 中，默认 AUTO_INCREMENT 的初始值是 1，每新增一条记录，字段值自动加 1。设置自增属性（AUTO_INCREMENT）的时候，还可以指定第一条插入记录的自增字段的值，这样新插入的记录的自增字段值从初始值开始递增，如在表中插入第一条记录，同时指定 id 值为 5，则以后插入的记录的 id 值就会从 6 开始往上增加。添加主键约束时，往往需要设置字段自动增加属性。
+
+> 并不是每个表都可以任意选择存储引擎
+
+外键约束（FOREIGN KEY）不能跨引擎使用。
+
+## 视图
+
