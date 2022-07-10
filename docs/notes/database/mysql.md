@@ -230,7 +230,7 @@ select * from a left | right [outer] join b on a.id = b.id;
 
 MySQL 没有全连接，可以使用`UNION`来实现。
 
-- `UNION`操作符返回两个查询的结果集的并集，去除重复记录。
+- `UNION`操作符返回两个查询的结果集的并集，去除重复记录；
 - `UNION ALL`不除重复记录。
 
 ### SQL99 语法新特性
@@ -614,6 +614,35 @@ WHERE employee_id in
            (SELECT employee_id
             FROM   emp_history
             WHERE  employee_id = e.employee_id);
+```
+
+### 通用表表达式
+
+MySQL 8 新特性。
+
+```sql
+WITH salesrep AS (
+    SELECT
+        employeeNumber,
+        CONCAT(firstName, ' ', lastName) AS salesrepName
+    FROM
+        employees
+    WHERE
+        jobTitle = 'Sales Rep'
+),
+customer_salesrep AS (
+    SELECT
+        customerName, salesrepName
+    FROM
+        customers
+            INNER JOIN
+        salesrep ON employeeNumber = salesrepEmployeeNumber
+)
+SELECT
+    *
+FROM
+    customer_salesrep join salesrep
+ORDER BY customerName;
 ```
 
 ## 创建表和管理表
@@ -1233,4 +1262,67 @@ alter table 表名称 modify 字段名 数据类型  not null;
 外键约束（FOREIGN KEY）不能跨引擎使用。
 
 ## 视图
+
+- 视图是一种虚拟表，本身是不具有数据的，占用很少的内存空间，它是 SQL 中的一个重要概念；
+- **视图建立在已有表的基础上**, 视图赖以建立的这些表称为**基表**；
+- 视图的创建和删除只影响视图本身，不影响对应的基表。但是当对视图中的数据进行增加、删除和修改操作时，数据表中的数据会相应地发生变化，反之亦然。
+
+### 创建视图
+
+```sql
+CREATE [OR REPLACE]
+[ALGORITHM = {UNDEFINED | MERGE | TEMPTABLE}]
+VIEW 视图名称 [(字段列表)]
+AS 查询语句
+[WITH [CASCADED|LOCAL] CHECK OPTION]
+
+CREATE VIEW 视图名称
+AS 查询语句
+```
+
+### 查看视图
+
+```sql
+SHOW TABLES;
+DESC / DESCRIBE 视图名称;
+SHOW TABLE STATUS LIKE '视图名称'\G
+# 执行结果显示，注释Comment为VIEW，说明该表为视图，其他的信息为NULL，说明这是一个虚表。
+SHOW CREATE VIEW 视图名称;
+```
+
+### 更新视图的数据
+
+MySQL 支持使用 INSERT、UPDATE 和 DELETE 语句对视图中的数据进行插入、更新和删除操作。当视图中的数据发生变化时，数据表中的数据也会发生变化，反之亦然。
+
+要使视图可更新，视图中的行和底层基本表中的行之间必须存在`一对一`的关系。另外当视图定义出现如下情况时，视图不支持更新操作。
+
+- 在定义视图的时候指定了“ALGORITHM = TEMPTABLE”，视图将不支持 INSERT 和 DELETE 操作；
+- 视图中不包含基表中所有被定义为非空又未指定默认值的列，视图将不支持 INSERT 操作；
+- 在定义视图的 SELECT 语句中使用了`JOIN 联合查询`，视图将不支持 INSERT 和 DELETE 操作；
+- 在定义视图的 SELECT 语句后的字段列表中使用了`数学表达式`或`子查询`，视图将不支持 INSERT，也不支持 UPDATE 使用了数学表达式、子查询的字段值；
+- 在定义视图的 SELECT 语句后的字段列表中使用`DISTINCT`、`聚合函数`、`GROUP BY`、`HAVING`、`UNION`等，视图将不支持 INSERT、UPDATE、DELETE；
+- 在定义视图的 SELECT 语句中包含了子查询，而子查询中引用了 FROM 后面的表，视图将不支持 INSERT、UPDATE、DELETE；
+- 视图定义基于一个不可更新视图；
+- 常量视图。
+
+### 修改视图
+
+```sql
+CREATE OR REPLACE VIEW empvu80
+(id_number, name, sal, department_id)
+AS
+SELECT  employee_id, first_name || ' ' || last_name, salary, department_id
+FROM employees
+WHERE department_id = 80;
+
+ALTER VIEW 视图名称
+AS
+查询语句
+```
+
+### 删除视图
+
+```sql
+DROP VIEW IF EXISTS 视图名称;
+```
 
