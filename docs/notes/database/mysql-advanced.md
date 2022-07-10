@@ -84,3 +84,40 @@ REVOKE SELECT,INSERT,UPDATE,DELETE ON mysql.* FROM joe@localhost;
 
 ### 角色管理
 
+```sql
+CREATE ROLE 'role_name'[@'host_name'] [,'role_name'[@'host_name']]...
+
+
+CREATE ROLE 'manager'@'localhost';
+```
+
+```sql
+GRANT privileges ON table_name TO 'role_name'[@'host_name'];
+
+GRANT SELECT ON demo.settlement TO 'manager';
+```
+
+```sql
+SHOW GRANTS FOR 'manager';
+```
+
+```sql
+REVOKE privileges ON tablename FROM 'rolename';
+```
+
+```sql
+DROP ROLE 'school_read';
+```
+
+```sql
+GRANT role [,role2,...] TO user [,user2,...];
+
+GRANT 'school_read' TO 'kangshifu'@'localhost';
+# 要手动激活角色
+SET DEFAULT ROLE ALL TO 'kangshifu'@'localhost';
+SELECT CURRENT_ROLE();
+```
+
+```sql
+REVOKE role FROM user;
+```
