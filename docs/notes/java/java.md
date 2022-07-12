@@ -4,8 +4,8 @@
 
 - [2021 年度全网最全 Java 学习路线 - 哔哩哔哩](https://www.bilibili.com/read/cv5216534)
 - [尚硅谷 Java 零基础入门教程（含百道 Java 真题，2 万多行 Java 代码实战）_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1Kb411W75N)
-- [30 天搞定 Java 核心技术-程序员标配，人手一套尚硅谷教程](http://www.atguigu.com/download_detail.shtml?v=129)
-- [30 天搞定 Java 核心技术（上） - 谷粒学苑 - Java 培训|大数据培训|前端培训|HTML5 培训|Linux 运维培训_程序员一站式 IT 在线学习平台 - Powered By EduSoho](https://www.gulixueyuan.com/goods/show/203?targetId=309&preview=0)
+- [30 天搞定 Java 核心技术 - 程序员标配，人手一套尚硅谷教程](http://www.atguigu.com/download_detail.shtml?v=129)
+- [30 天搞定 Java 核心技术（上） - 谷粒学苑 - Java 培训 | 大数据培训 | 前端培训|HTML5 培训|Linux 运维培训_程序员一站式 IT 在线学习平台 - Powered By EduSoho](https://www.gulixueyuan.com/goods/show/203?targetId=309&preview=0)
 
 ## Java 语言概述
 
@@ -46,7 +46,7 @@ Java 语言是 SUN（**S**tanford **U**niversity **N**etwork）1995 年推出的
 
 #### Java 简史
 
-- 1991 年 Green 项目，开发语言最初命名为 Oak （橡树）
+- 1991 年 Green 项目，开发语言最初命名为 Oak（橡树）
 - 1996 年，发布 JDK 1.0
 - 1999 年，Java 分成 J2SE、J2EE 和 J2ME，JSP/Servlet 技术诞生
 - 2004 年，发布里程碑式版本 JDK 1.5，为突出此版本的重要性，更名为 JDK 5.0
@@ -59,7 +59,7 @@ Java 语言是 SUN（**S**tanford **U**niversity **N**etwork）1995 年推出的
 #### Java 技术体系平台
 
 - Java SE（Java Standard Edition）标准版，面向桌面级应用开发；
-- Java EE（Java Enterprise Edition）企业版，是为开发企业环境下的应用程序提供的一套解决方案。该技术体系中包含的技术如 Servlet 、JSP 等，主要针对于 Web 应用程序开发；
+- Java EE（Java Enterprise Edition）企业版，是为开发企业环境下的应用程序提供的一套解决方案。该技术体系中包含的技术如 Servlet、JSP 等，主要针对于 Web 应用程序开发；
 - ava ME（Java Micro Edition）小型版，支持 Java 程序运行在移动终端上的平台；
 - Java Card，支持一些 Java 小程序（Applets）运行在小内存设备（如智能卡）上的平台。
 
@@ -959,7 +959,7 @@ synchronized（锁对象）{}
 
 用`synchronized`修饰方法，同一时刻只能有一个线程执行此方法。
 
-同步方法无法自己选择锁对象。对于非静态方法，锁对象是`this`；对于静态方法，锁对象是当前类的`Class`对象。 使用的时候就要判断锁对象合不合适。
+同步方法无法自己选择锁对象。对于非静态方法，锁对象是`this`；对于静态方法，锁对象是当前类的`Class`对象。使用的时候就要判断锁对象合不合适。
 
 #### Lock
 
@@ -1325,7 +1325,7 @@ enum MyEnum implements MyInterface {
 - `hashCode`，默认根据内存地址计算对象的哈希值，如果重写了`equals`方法则原则上需要重写此方法；
 - `clone`，返回对象的复制，是一个`protected`方法，子类需要重写此方法并调用`super.clone()`，也可以自己实现克隆细节，并实现`Cloneable`接口；
 - `finalize`，在对象被回收之前垃圾回收器会调用此方法，子类可以重写此方法来在被回收之前做一些事情；可以通过`System.gc()`或`Runtime.getRuntime().gc()`来通知垃圾回收器进行回收，但是否会进行回收是不确定的；
-- `toString`，返回对象的字符串表示，建议所有子类重写。默认返回「类名@十六进制 hash」。
+- `toString`，返回对象的字符串表示，建议所有子类重写。默认返回「类名 @十六进制 hash」。
 - `getClass`，获取当前对象的**运行时**类名。
 
 ### 包装类
