@@ -127,7 +127,7 @@ REVOKE role FROM user;
 - InnoDB：具备外键支持功能的事务存储引擎；
 - MyISAM：主要的非事务处理存储引擎。
 
-## 索引
+## 索引结构
 
 ### InnoDB
 
@@ -225,6 +225,125 @@ InnoDB 将数据划分为页，页默认大小是 16KB。
 
 ![image-20220712054557569](mysql-advanced.assets/image-20220712054557569.png)
 
-
-
 ### 行格式
+
+## 使用索引
+
+### 索引分类
+
+1. 普通索引（`INDEX`）
+2. 唯一索引（`UNIQUE INDEX`）
+3. 主键索引（`PRIMARY KEY`）
+4. 单列索引（`INDEX`）
+5. 联合索引（`INDEX`）
+6. 全文索引（`FULLTEXT INDEX`）
+7. 空间索引（`SPATIAL INDEX`）
+
+### 查看索引
+
+```sql
+SHOW INDEX FROM test1;
+```
+
+### 创建索引
+
+```sql
+# 建表时一起创建索引
+# 1. 普通索引
+CREATE TABLE book(
+  book_id INT ,
+  book_name VARCHAR(100),
+  authors VARCHAR(100),
+  info VARCHAR(100) ,
+  comment VARCHAR(100),
+  year_publication YEAR,
+  INDEX(year_publication)
+);
+# 2. 唯一索引
+CREATE TABLE test1(
+  id INT NOT NULL,
+  name varchar(30) NOT NULL,
+  UNIQUE INDEX uk_idx_id(id)
+);
+# 3. 主键索引
+CREATE TABLE student (
+  id INT(10) UNSIGNED  AUTO_INCREMENT ,
+  student_no VARCHAR(200),
+  student_name VARCHAR(200),
+  PRIMARY KEY(id)
+);
+# 4. 单列索引
+CREATE TABLE test2(
+  id INT NOT NULL,
+  name CHAR(50) NULL,
+  INDEX single_idx_name(name(20))
+);
+# 5. 组合索引
+CREATE TABLE test3(
+  id INT(11) NOT NULL,
+  name CHAR(30) NOT NULL,
+  age INT(11) NOT NULL,
+  info VARCHAR(255),
+  INDEX multi_idx(id,name,age)
+);
+# 6. 全文索引
+CREATE TABLE test4(
+  id INT NOT NULL,
+  name CHAR(30) NOT NULL,
+  age INT NOT NULL,
+  info VARCHAR(255),
+  FULLTEXT INDEX futxt_idx_info(info)
+);
+SELECT * FROM papers WHERE MATCH(title,content) AGAINST (‘查询字符串’);
+# 7. 空间索引
+CREATE TABLE test5(
+  geo GEOMETRY NOT NULL,
+  SPATIAL INDEX spa_idx_geo(geo)
+);
+
+# 建表后创建索引
+ALTER TABLE table_name ADD [UNIQUE | FULLTEXT | SPATIAL] [INDEX | KEY] [index_name] (col_name[length],...) [ASC | DESC]
+
+CREATE [UNIQUE | FULLTEXT | SPATIAL] INDEX index_name ON table_name (col_name[length],...) [ASC | DESC]
+```
+
+### 删除索引
+
+```sql
+ALTER TABLE table_name DROP INDEX index_name;
+DROP INDEX index_name ON table_name;
+```
+
+### 降序索引
+
+MySQL 8.0 新特性。创建索引时使某个字段降序排序在 B+树中。
+
+在某些情况下可以提升效率，如查询时使用某个字段降序排列作为条件。
+
+```sql
+CREATE TABLE ts1(a int,b int,index idx_a_b(a,b desc));
+```
+
+### 隐藏索引
+
+MySQL 8.0 新特性。可以手动隐藏某个索引而不删除它，使查询优化器不使用它。
+
+当索引被隐藏时，它的内容仍然是和正常索引一样实时更新的。如果一个索引需要长期被隐藏，那么可以将其删除，因为索引的存在会影响插入、更新和删除的性能。
+
+```sql
+ CREATE TABLE tablename(
+    propname1 type1[CONSTRAINT1],
+    propname2 type2[CONSTRAINT2],
+    ......
+    propnamen typen,
+    INDEX [indexname](propname1 [(length)]) INVISIBLE
+);
+
+CREATE INDEX indexname ON tablename(propname[(length)]) INVISIBLE;
+ALTER TABLE tablename ADD INDEX indexname (propname [(length)]) INVISIBLE;
+# 切换成隐藏索引
+ALTER TABLE tablename ALTER INDEX index_name INVISIBLE;
+# 切换成非隐藏索引
+ALTER TABLE tablename ALTER INDEX index_name VISIBLE;
+```
+
