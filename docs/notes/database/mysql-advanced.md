@@ -372,3 +372,240 @@ ALTER TABLE tablename ALTER INDEX index_name VISIBLE;
 6. 删除不再使用或者很少使用的索引
 7. 不要定义冗余或重复的索引
 
+## 性能分析工具的使用
+
+### last_query_cost
+
+```sql
+SHOW STATUS LIKE 'last_query_cost';
+```
+
+```
++-----------------+----------+
+| Variable_name   | Value    |
++-----------------+----------+
+| Last_query_cost | 1.000000 |
++-----------------+----------+
+```
+
+可以查询到上一次查询使用了多少个页。
+
+### slow_query_log
+
+```sql
+# 开启慢查询记录
+set global slow_query_log='ON';
+# 设置慢查询的时间阈值
+set global long_query_time = 1;
+```
+
+开启慢查询日志之后，记录的查询语句默认保存在`/var/lib/mysql/<hostname>-slow.log`文件中。可以使用`mysqldumpslow`工具来分析这个日志文件。
+
+### SHOW PROFILE
+
+```sql
+set profiling = 'ON';
+# 查看当前会话下的 profiles
+show profiles;
+# 查看最近一次的 profile
+show profile;
+# 查看某个编号的 profile
+show profile cpu,block io for query 2;
+```
+
+1. ALL：显示所有的开销信息。
+2. BLOCK IO：显示块 IO 开销。
+3. CONTEXT SWITCHES：上下文切换开 销。
+4. CPU：显示 CPU 开销信息。
+5. IPC：显示发送和接收开销信息。
+6. MEMORY：显示内存开销信 息。
+7. PAGE FAULTS：显示页面错误开销信息。
+8. SOURCE：显示和 Source_function，Source_file，Source_line 相关的开销信息。
+9. SWAPS：显示交换次数开销信息。
+
+### EXPLAIN/DESCRIBE
+
+#### table
+
+EXPLAIN 语句输出的每条记录都对应着某个单表的访问方法。
+
+#### id
+
+- id 如果相同，可以认为是一组，从上往下顺序执行；
+- 在所有组中，id 值越大，优先级越高，越先执行；
+- 每个 id 表示一趟独立的查询，一个 sql 的查询趟数越少越好。
+
+#### select_type
+
+| 名称                 | 描述                                                         |
+| -------------------- | ------------------------------------------------------------ |
+| SIMPLE               | Simple SELECT (not using UNION or subqueries)                |
+| PRIMARY              | Outermost SELECT                                             |
+| UNION                | Second or later SELECT statement in a UNION                  |
+| UNION RESULT         | ResultofaUNION                                               |
+| SUBQUERY             | First SELECT in subquery                                     |
+| DEPENDENT SUBQUERY   | First SELECT in subquery, dependent on outer query           |
+| DEPENDENT UNION      | Second or later SELECT statement in a UNION, dependent on outer query |
+| DERIVED              | Derived table                                                |
+| MATERIALIZED         | Materialized subquery                                        |
+| UNCACHEABLE SUBQUERY | A subquery for which the result cannot be cached and must be re-evaluated for each row of the outer query |
+| UNCACHEABLE UNION    | The second or later select in a UNION that belongs to an uncacheable subquery (see UNCACHEABLE SUBQUERY) |
+
+#### partitions
+
+```sql
+-- 创建分区表，
+-- 按照 id 分区，id<100 p0 分区，其他 p1 分区
+CREATE TABLE user_partitions (id INT auto_increment,
+    NAME VARCHAR(12),PRIMARY KEY(id))
+    PARTITION BY RANGE(id)(
+        PARTITION p0 VALUES less than(100),
+        PARTITION p1 VALUES less than MAXVALUE
+);
+```
+
+```sql
+DESC SELECT * FROM user_partitions WHERE id>200;
+```
+
+#### type
+
+越靠前越好。SQL 性能优化的目标：至少要达到 range 级别，要求是 ref 级别，最好是 const 级别。
+
+- system
+- const
+- eq_ref
+- ref
+- fulltext
+- ref_or_null
+- index_merge
+- unique_subquery
+- index_subquery
+- range
+- index
+- ALL
+
+#### possible_keys
+
+可能会使用上的索引。
+
+#### key
+
+实际上用到的索引。
+
+#### key_len
+
+使用到的联合索引的长度，单位是字节。
+
+#### ref
+
+当使用索引列等值查询时，与索引列等值匹配的对象信息。
+
+#### rows
+
+预估需要读取的记录数。
+
+#### filtered
+
+经过搜索条件过滤后剩余记录数的百分比。
+
+#### Extra
+
+- `No tables used`，查询语句中没有使用到任何数据表
+- `Impossible WHERE`
+- `Using where`
+- `No matching min/max row`
+- `Using index`
+- `Using index condition`
+- `Using join buffer (Block Nested Loop)`
+- `Not exists`
+- `Using intersect(...)`
+- `Using union(...)`
+- `Using sort_union(...)`
+- `Zero limit`
+- `Using filesort`
+- `Using temporary`
+- `...`
+
+#### 输出格式
+
+1. 传统格式
+2. JSON 格式
+3. TREE 格式
+
+```sql
+EXPLAIN FORMAT=JSON SELECT ....
+EXPLAIN FORMAT=TREE SELECT ....
+```
+
+### SHOW WARNINGS
+
+使用`SHOW WARNINGS`来查看被优化过的 SQL 语句。
+
+### trace
+
+```sql
+SET optimizer_trace="enabled=on",end_markers_in_json=on;
+set optimizer_trace_max_mem_size=1000000;
+```
+
+```sql
+select * from student where id < 10;
+```
+
+```sql
+select * from information_schema.optimizer_trace;
+```
+
+### sys schema
+
+#### 索引情况
+
+```sql
+#1. 查询冗余索引
+select * from sys.schema_redundant_indexes;
+#2. 查询未使用过的索引
+select * from sys.schema_unused_indexes;
+#3. 查询索引的使用情况
+select index_name,rows_selected,rows_inserted,rows_updated,rows_deleted from sys.schema_index_statistics where table_schema='dbname' ;
+```
+
+#### 表相关
+
+```sql
+# 1. 查询表的访问量
+select table_schema,table_name,sum(io_read_requests+io_write_requests) as io from sys.schema_table_statistics group by table_schema,table_name order by io desc;
+# 2. 查询占用bufferpool较多的表
+select object_schema,object_name,allocated,data
+from sys.innodb_buffer_stats_by_table order by allocated limit 10;
+# 3. 查看表的全表扫描情况
+select * from sys.statements_with_full_table_scans where db='dbname';
+```
+
+#### 语句相关
+
+```sql
+#1. 监控SQL执行的频率
+select db,exec_count,query from sys.statement_analysis order by exec_count desc;
+#2. 监控使用了排序的SQL
+select db,exec_count,first_seen,last_seen,query from sys.statements_with_sorting limit 1;
+#3. 监控使用了临时表或者磁盘临时表的SQL
+select db,exec_count,tmp_tables,tmp_disk_tables,query
+from sys.statement_analysis where tmp_tables>0 or tmp_disk_tables >0 order by (tmp_tables+tmp_disk_tables) desc;
+```
+
+#### IO 相关
+
+```sql
+#1. 查看消耗磁盘IO的文件
+select file,avg_read,avg_write,avg_read+avg_write as avg_io
+from sys.io_global_by_file_by_bytes order by avg_read limit 10;
+```
+
+#### Innodb 相关
+
+```sql
+#1. 行锁阻塞情况
+select * from sys.innodb_lock_waits;
+```
+
