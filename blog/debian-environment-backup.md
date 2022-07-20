@@ -86,6 +86,7 @@ wget https://get.docker.com/ -O get-docker.sh
 # sh get-docker.sh --mirror Aliyun
 sh get-docker.sh
 systemctl enable docker
+docker run --rm hello-world
 ```
 
 ## *docker-compose[^3]*
