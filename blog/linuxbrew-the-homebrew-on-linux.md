@@ -58,7 +58,11 @@ su - linuxbrew -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/insta
 配置环境变量。创建文件`/etc/profile.d/homebrew.sh`，并把以下代码加入该文件中。
 
 ```bash
-HOMEBREW_PREFIX="/home/Homebrew/.Homebrew"
+nano /etc/profile.d/homebrew.sh
+```
+
+```bash
+HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
 eval $(${HOMEBREW_PREFIX}/bin/brew shellenv)
 if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]
 then
@@ -74,7 +78,7 @@ fi
 重启 Shell 后测试。运行下面的命令来测试 Homebrew 是否能正常工作，如果得到「Your system is ready to brew.」的提示则证明你的安装过程如期完成。如果你的 Homebrew 不能正常运行，它应该会给你提示。brew 要求用非 root 权限运行，所以你需要在使用 brew 命令的时候先切换到 Homebrew 用户。其安装的软件包可以在 root 用户下运行。
 
 ```bash
-su - linuxbrew -c brew doctor
+su - linuxbrew -c "brew doctor"
 ```
 
 ## 安装软件包
@@ -84,7 +88,7 @@ su - linuxbrew -c brew doctor
 下面的命令用于安装一个名为 hello 的软件包，其提供了一个名为`hello`的可执行文件，用于在控制台输出「Hello, world!」。
 
 ```bash
-su - linuxbrew -c brew install hello
+su - linuxbrew -c "brew install hello"
 ```
 
 你可以使用`brew search`命令来搜索软件包；或者在网页 *Homebrew Formulae* [^3] 中搜索软件包，但是并不是所有软件包都适用于 Linux。
