@@ -1,3 +1,7 @@
+---
+draft: true
+---
+
 # TypeScript
 
 ## 基本类型
