@@ -132,6 +132,34 @@ servletContext.setAttribute("a", "a");
 
 响应封装的对象，用于返回给客户端。
 
+### Cookie
+
+Cookie 是客户端会话技术。设置 Cookie 的时候服务器返回的响应头中包含有`set-cookie`信息，浏览器会根据此信息保存 Cookie，并且在之后的每次请求中带上此 Cookie。
+
+```java
+@WebServlet("/cookie")
+public class CookieServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Cookie[] cookies = req.getCookies();
+        PrintWriter writer = resp.getWriter();
+        for (Cookie cookie : cookies) {
+            writer.println(String.format("%s: %s", cookie.getName(), cookie.getValue()));
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        BufferedReader reader = req.getReader();
+        String s = reader.readLine();
+        Cookie cookie = new Cookie("hello", s);
+        resp.addCookie(cookie);
+    }
+
+}
+```
+
 ### Session
 
 Session 是服务端会话技术，依赖 Cookie 运行，在 Cookie 中的名字是`JSESSIONID`。使用下面的命令来获取或者创建一个 Session。
@@ -211,8 +239,6 @@ resp.sendRedirect("employee");
 </web-app>
 ```
 
-
-
 #### 注解配置 Filter
 
 1. Filter 的顺序按照全类名排序。
@@ -242,7 +268,18 @@ public class HelloFilter implements Filter {
 }
 ```
 
+## Listener
 
+### 监听器列表
+
+1. `ServletContextListener`，监听 ServletContext 对象的创建与销毁；
+2. `HttpSessionListener`，监听 HttpSession 对象的创建与销毁；
+3. `ServletRequestListener`，监听 ServletRequest 对象的创建与销毁；
+4. `ServletContextAttributeListener`，监听 ServletContext 中属性的创建、修改和销毁；
+5. `HttpSessionAttributeListener`，监听 HttpSession 中属性的创建、修改和销毁；
+6. `ServletRequestAttributeListener`，监听 ServletRequest 中属性的创建、修改和销毁；
+7. `HttpSessionBindingListener`，监听某个对象在 Session 域中的创建与移除；
+8. `HttpSessionActivationListener`，监听某个对象在 Session 中的序列化与反序列化。
 
 [^1]: [Apache Tomcat® - Which Version Do I Want?](https://tomcat.apache.org/whichversion.html)
 [^2]: [Jakarta Servlet - Wikipedia](https://en.wikipedia.org/wiki/Jakarta_Servlet#History)
