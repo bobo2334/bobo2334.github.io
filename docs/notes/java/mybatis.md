@@ -2,98 +2,95 @@
 
 ## 参考资料
 
+- [【尚硅谷】SSM 框架全套教程，MyBatis+Spring+SpringMVC+SSM 整合一套通关\_哔哩哔哩\_bilibili](https://www.bilibili.com/video/BV1Ya411S7aT)
 - [mybatis – MyBatis 3 | 简介](https://mybatis.org/mybatis-3/zh/index.html)
 - [mybatis 3.5.5 javadoc (org.mybatis)](https://javadoc.io/doc/org.mybatis/mybatis/latest/index.html)
-- [Maven Repository: org.mybatis » mybatis](https://mvnrepository.com/artifact/org.mybatis/mybatis)
-- [MyBatis Generator Core – Introduction to MyBatis Generator](http://mybatis.org/generator/)
 
 ## 简介
 
-是一个持久层框架，用于简化 JDBC 操作。
+Mybaitis 是一个持久层框架，用于简化 JDBC 操作。
 
 ## 开发步骤
 
 1. 导入 Mybatis 依赖；
 
-   ```xml
-   <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-   <dependency>
-       <groupId>mysql</groupId>
-       <artifactId>mysql-connector-java</artifactId>
-       <version>8.0.20</version>
-   </dependency>
+```xml
+<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.20</version>
+</dependency>
 
-   <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
-   <dependency>
-       <groupId>org.mybatis</groupId>
-       <artifactId>mybatis</artifactId>
-       <version>3.5.5</version>
-   </dependency>
-   ```
+<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+<dependency>
+    <groupId>org.mybatis</groupId>
+    <artifactId>mybatis</artifactId>
+    <version>3.5.5</version>
+</dependency>
+```
 
 2. 创建数据库和表；
-
 3. 编写实体类；
-
 4. 编写 XML 映射文件 UserMapper.xml；
 
-   ```xml
-   <?xml version="1.0" encoding="UTF-8" ?>
-   <!DOCTYPE mapper
-           PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-           "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-   <mapper namespace="userMapper">
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userMapper">
 
-       <select id="findAll" resultType="me.iuok.domain.User">
-           select * from user
-       </select>
+    <select id="findAll" resultType="me.iuok.domain.User">
+        select * from user
+    </select>
 
-   </mapper>
-   ```
+</mapper>
+```
 
 5. 编写 XML 配置文件 SqlMapConfig.xml；
 
-   ```xml
-   <?xml version="1.0" encoding="UTF-8" ?>
-   <!DOCTYPE configuration
-           PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-           "http://mybatis.org/dtd/mybatis-3-config.dtd">
-   <configuration>
-       <environments default="development">
-           <environment id="development">
-               <transactionManager type="JDBC"/>
-               <dataSource type="POOLED">
-                   <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                   <property name="url" value="jdbc:mysql:///blog"/>
-                   <property name="username" value="root"/>
-                   <property name="password" value="root"/>
-               </dataSource>
-           </environment>
-       </environments>
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql:///blog"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+    </environments>
 
-       <mappers>
-           <mapper resource="me/iuok/mapper/UserMapper.xml"/>
-       </mappers>
-   </configuration>
-   ```
+    <mappers>
+        <mapper resource="me/iuok/mapper/UserMapper.xml"/>
+    </mappers>
+</configuration>
+```
 
 6. 测试。
 
-   ```java
-   @Test
-   public void quickStart() throws IOException {
-       InputStream resource = Resources.getResourceAsStream("mybatis-config.xml");
-       SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(resource);
-       SqlSession sqlSession = sqlSessionFactory.openSession();
-       List<User> list = sqlSession.selectList("userMapper.findAll");
+```java
+@Test
+public void quickStart() throws IOException {
+    InputStream resource = Resources.getResourceAsStream("mybatis-config.xml");
+    SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(resource);
+    SqlSession sqlSession = sqlSessionFactory.openSession();
+    List<User> list = sqlSession.selectList("userMapper.findAll");
 
-       for (User user : list) {
-           log.info(user.toString());
-       }
+    for (User user : list) {
+        log.info(user.toString());
+    }
 
-       sqlSession.close();
-   }
-   ```
+    sqlSession.close();
+}
+```
 
 ## 传统 CRUD 案例
 
