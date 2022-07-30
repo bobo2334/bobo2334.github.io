@@ -1,5 +1,15 @@
 # RocketMQ
 
+## 参考资料
+
+1. [2021 年 B 站讲的最牛掰的 RocketMQ 分布式消息中间件：核心原理与最佳实践_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1h54y1H7YF)
+2. [Apache RocketMQ](http://rocketmq.apache.org/)
+3. [rocketmq/docs/cn at master · apache/rocketmq](https://github.com/apache/rocketmq/tree/master/docs/cn)
+4. [rocketmq-externals/rocketmq-console at master · apache/rocketmq-externals](https://github.com/apache/rocketmq-externals/tree/master/rocketmq-console)
+5. [基于 Docker 安装 RocketMQ - 简书](https://www.jianshu.com/p/706588323276)
+6. [rocketmq-docker/docker-compose.yml at master · apache/rocketmq-docker](https://github.com/apache/rocketmq-docker/blob/master/templates/docker-compose/docker-compose.yml)
+7. [用户手册 · apache/rocketmq-spring Wiki](https://github.com/apache/rocketmq-spring/wiki/%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C)
+
 ## MQ
 
 MQ（Message Queue，消息队列），是一种 FIFO 的队列。
@@ -599,16 +609,6 @@ public class Consumer {
 
 }
 ```
-
-## 参考资料
-
-1. [2021 年 B 站讲的最牛掰的 RocketMQ 分布式消息中间件：核心原理与最佳实践_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1h54y1H7YF)
-2. [Apache RocketMQ](http://rocketmq.apache.org/)
-3. [rocketmq/docs/cn at master · apache/rocketmq](https://github.com/apache/rocketmq/tree/master/docs/cn)
-4. [rocketmq-externals/rocketmq-console at master · apache/rocketmq-externals](https://github.com/apache/rocketmq-externals/tree/master/rocketmq-console)
-5. [基于 Docker 安装 RocketMQ - 简书](https://www.jianshu.com/p/706588323276)
-6. [rocketmq-docker/docker-compose.yml at master · apache/rocketmq-docker](https://github.com/apache/rocketmq-docker/blob/master/templates/docker-compose/docker-compose.yml)
-7. [用户手册 · apache/rocketmq-spring Wiki](https://github.com/apache/rocketmq-spring/wiki/%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C)
 
 [^1]: [apacherocketmq/rocketmq-nameserver - Docker Image | Docker Hub](https://hub.docker.com/r/apacherocketmq/rocketmq-nameserver)
 [^2]: [apacherocketmq/rocketmq-broker - Docker Image | Docker Hub](https://hub.docker.com/r/apacherocketmq/rocketmq-broker)
