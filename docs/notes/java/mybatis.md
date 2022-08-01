@@ -359,6 +359,8 @@ int delete(String statement, Object parameter)
 </typeAliases>
 ```
 
+Mybatis 默认定义了一些常用的类型别名，如`_int`对应`int`，`int`对应`Integer`。完整的默认别名列表可以参考 *[mybatis – MyBatis 3 | Configuration](https://mybatis.org/mybatis-3/configuration.html#typealiases)*。
+
 ### typeHandlers
 
 1. 新类，继承 `BaseTypeHandler<>`；
@@ -466,10 +468,6 @@ sqlSessionFactory = builder.build(config, "development");
 
 ## 映射文件.xml
 
-### parameterType
-
-可以不用写，Mybatis 会自动进行类型推断。
-
 ### 参数
 
 原始类型或简单数据类型（比如 `Integer` 和 `String`）因为没有其它属性，会用它们的值来作为参数。这个参数可以随意命名。
@@ -479,22 +477,44 @@ sqlSessionFactory = builder.build(config, "development");
 在有直接替换字符串需求的情况下，可以使用`${}`，该值不会被预编译。<del>使用该方法获取原始类型或简单数据类型参数时需要使用`value`或`_parameter`作为参数名，不能随意命名。不然会当做通用对象处理，通过对应的 getter 方法获取属性值。</del>Mybatis 3.5 版本之后使用`${}`获取字面量变量的时候可以随意命名。
 
 1. 当传入参数为单个原始类型或简单数据类型时，`#{}`可以随意命名；
-2. 当传入单个 JavaBean 时，`#{}`和`${}`都可以通过属性名获取属性；
+2. 当传入单个 JavaBean 时，`#{}`和`${}`都可以通过属性名获取属性，使用的是 getter 方法；
 3. 当传入多个参数时，`#{}`可以使用`arg0`、`arg1`或`param1`、`param2`这样的命名；`${}`只能使用`param1`、`param2`这样的命名；
 4. 可以手动传入`Map<String, Object>`，然后直接通过键名来获取参数值；
 5. 可以在参数上用`@Param`注解，手动指定该参数的名字，然后通过此名字获取对应值；
 6. 当传入的参数类型为 List 时，则它对应的键值就叫`list`，Array 对应`array`。
 
-### 自动生成主键
+### 获取自动生成的主键
+
+设置下面两个属性来获取自动生成的主键，在插入完成之后主键值会自动设置到实体类的对应属性上。
 
 - `useGeneratedKeys`
 - `keyProperty`
+
+```xml
+<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    insert
+    ignore into t_user (username, passcode, age, gender, email)
+    values (
+    #{username},
+    #{passcode},
+    #{age},
+    #{gender},
+    #{email}
+    );
+</insert>
+```
+
+### parameterType
+
+可以不用写，Mybatis 会自动进行类型推断。
 
 ### resultType
 
 期望从这条语句中返回结果的类全限定名或别名。如果返回的是集合，那应该设置为集合包含的类型，而不是集合本身的类型。
 
 ### resultMap
+
+处理实体类属性和数据库字段的映射关系。
 
 ### sql
 
@@ -504,9 +524,17 @@ sqlSessionFactory = builder.build(config, "development");
 
 ### 方法返回值
 
-1. `void`
-2. `Integer`
-3. `Boolean`
+1. 字面量类型
+2. Java Bean
+3. `List`、`Map`
+
+当查询多条结果放入 Map 时，可以使用 `List<Map<String, Object>>` 声明返回值类型；或者使用`Map<String, Object>`并配合`@MapKey("id")`注解。前者是 List 中放 Map，后者是 Map 中放 Map。
+
+### 模糊查询
+
+1. 使用`LIKE '%${param1}%'`，有 SQL 注入风险；
+2. 使用`LIKE CONCAT('%', '${param1}', '%')`，索引失效；
+3. 使用`LIKE #{param1}`，在传递参数的时候自己手动拼接通配符。
 
 ## 动态 SQL
 
