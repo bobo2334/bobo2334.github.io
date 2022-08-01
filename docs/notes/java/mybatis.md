@@ -182,7 +182,7 @@ public void delete() {
 1. `parameterType` 将会传入这条语句的参数的类全限定名或别名。这个属性是可选的，因为 MyBatis 可以通过类型处理器（TypeHandler）推断出具体传入语句的参数，默认值为未设置（unset）；
 2. 只有一个参数并且是基本数据类型时，占位符里面的属性名可以随便写。
 
-## 代理 Dao 案例
+## 代理 DAO 案例
 
 1. XML 映射文件中的 `namespace` 应该和接口的全限定类名相同；
 2. 接口中的方法名应该和映射文件中每一个 SQL 语句的 `id` 相同；
@@ -320,7 +320,7 @@ int update(String statement, Object parameter)
 int delete(String statement, Object parameter)
 ```
 
-## XML 配置
+## 核心配置文件.xml
 
 - configuration
   - properties
@@ -336,6 +336,29 @@ int delete(String statement, Object parameter)
   - databaseProvider
   - mappers
 
+### properties
+
+引入外部`properties`文件中的属性，或者自己在此区域中定义属性，可以在后文中使用`${name}`引用这些属性。
+
+```xml
+<properties resource="jdbc.properties">
+    <property name="a" value="b"/>
+</properties>
+```
+
+### typeAliases
+
+定义类型别名，为某个类型设置简短的名字，不需要写全类名了，`alias`可以省略，默认别名就是类名，不区分大小写。
+
+也可以设置扫描某个包路径，其下的所有类都设置别名，别名就是类名，不区分大小写。
+
+```xml
+<typeAliases>
+    <typeAlias type="o.e.entity.TUser" alias="User"/>
+    <package name="o.e.entity"/>
+</typeAliases>
+```
+
 ### typeHandlers
 
 1. 新类，继承 `BaseTypeHandler<>`；
@@ -348,66 +371,100 @@ int delete(String statement, Object parameter)
 
 1. 导入依赖；
 
-   ```xml
-   <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
-   <dependency>
-       <groupId>com.github.pagehelper</groupId>
-       <artifactId>pagehelper</artifactId>
-       <version>5.1.10</version>
-   </dependency>
-   ```
+```xml
+<!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
+<dependency>
+    <groupId>com.github.pagehelper</groupId>
+    <artifactId>pagehelper</artifactId>
+    <version>5.1.10</version>
+</dependency>
+```
 
 2. 在配置文件中配置；
 
-   ```xml
-   <plugins>
-       <plugin interceptor="com.github.pagehelper.PageInterceptor"/>
-   </plugins>
-   ```
+```xml
+<plugins>
+    <plugin interceptor="com.github.pagehelper.PageInterceptor"/>
+</plugins>
+```
 
 3. 在你需要进行分页的 MyBatis 查询方法前调用 `PageHelper.startPage` 静态方法即可，紧跟在这个方法后的第一个 MyBatis 查询方法会被进行分页。
 
-   ```java
-   @Test
-   public void pageHelper() {
-       PageHelper.startPage(1, 2);
+```java
+@Test
+public void pageHelper() {
+    PageHelper.startPage(1, 2);
 
-       List<User> users = userMapper.findAll();
-       Assert.assertNotEquals(0, users.size());
+    List<User> users = userMapper.findAll();
+    Assert.assertNotEquals(0, users.size());
 
-       for (User user : users) {
-           log.info(user.toString());
-       }
-   }
-   ```
+    for (User user : users) {
+        log.info(user.toString());
+    }
+}
+```
 
 4. 获取分页相关参数。
 
-   ```java
-   PageInfo<User> pageInfo = new PageInfo<>(users);
-   ```
+```java
+PageInfo<User> pageInfo = new PageInfo<>(users);
+```
+
+### environments
+
+可以配置多个环境，初始化时可以选择某个环境进行初始化。
+
+- `transactionManager.type`，设置事务管理器
+    - `JDBC`，原生事务管理方式，自己手动提交
+    - `MANAGEd`，被管理的，例如 Spring
+- `dataSource.type`，设置数据源
+    - `POOLED`，使用数据库连接池
+    - `UNPOOLED`，不适用数据库连接池
+    - `JNDI`，使用上下文的数据源
+
+```xml
+<environments default="development">
+    <environment id="development">
+        <transactionManager type="JDBC"/>
+        <dataSource type="POOLED">
+            <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="url" value="jdbc:mysql:///ssm"/>
+            <property name="username" value="root"/>
+            <property name="password" value="root"/>
+        </dataSource>
+    </environment>
+</environments>
+```
+
+```java
+Reader config = Resources.getResourceAsReader("mybatis-config.xml");
+SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
+sqlSessionFactory = builder.build(config, "development");
+```
 
 ### mappers
 
+引入 Mybatsi 映射文件。
+
 1. 使用相对于类路径的资源引用
 
-   ```xml
-   <mapper resource="org/mybatis/builder/AuthorMapper.xml"/>
-   ```
+```xml
+<mapper resource="org/mybatis/builder/AuthorMapper.xml"/>
+```
 
 2. 使用完全限定资源定位符（URL）
 
-   ```xml
-   <mapper url="file:///var/mappers/AuthorMapper.xml"/>
-   ```
+```xml
+<mapper url="file:///var/mappers/AuthorMapper.xml"/>
+```
 
 3. 将包内的映射器接口实现全部注册为映射器；要求 XML 文件和接口都在同一个包下，并且文件名也相同。
 
-   ```xml
-   <package name="org.mybatis.builder"/>
-   ```
+```xml
+<package name="org.mybatis.builder"/>
+```
 
-## XML 映射文件
+## 映射文件.xml
 
 ### parameterType
 
@@ -419,11 +476,11 @@ int delete(String statement, Object parameter)
 
 默认情况下，使用 `#{}` 参数语法时，MyBatis 会创建 `PreparedStatement` 参数占位符，并通过占位符安全地设置参数（就像使用 ? 一样）。
 
-在有直接替换字符串需求的情况下，可以使用`${}`，该值不会被预编译。使用该方法获取原始类型或简单数据类型参数时需要使用`value`或`_parameter`作为参数名，不能随意命名。不然会当做通用对象处理，通过对应的 getter 方法获取属性值。
+在有直接替换字符串需求的情况下，可以使用`${}`，该值不会被预编译。<del>使用该方法获取原始类型或简单数据类型参数时需要使用`value`或`_parameter`作为参数名，不能随意命名。不然会当做通用对象处理，通过对应的 getter 方法获取属性值。</del>Mybatis 3.5 版本之后使用`${}`获取字面量变量的时候可以随意命名。
 
 1. 当传入参数为单个原始类型或简单数据类型时，`#{}`可以随意命名；
 2. 当传入单个 JavaBean 时，`#{}`和`${}`都可以通过属性名获取属性；
-3. 当传入多个参数时，`#{}`可以使用`0`、`1`或`param1`、`param2`这样的命名；`${}`只能使用`param1`、`param2`这样的命名；
+3. 当传入多个参数时，`#{}`可以使用`arg0`、`arg1`或`param1`、`param2`这样的命名；`${}`只能使用`param1`、`param2`这样的命名；
 4. 可以手动传入`Map<String, Object>`，然后直接通过键名来获取参数值；
 5. 可以在参数上用`@Param`注解，手动指定该参数的名字，然后通过此名字获取对应值；
 6. 当传入的参数类型为 List 时，则它对应的键值就叫`list`，Array 对应`array`。
@@ -435,7 +492,9 @@ int delete(String statement, Object parameter)
 
 ### resultType
 
-### ResultMap
+期望从这条语句中返回结果的类全限定名或别名。如果返回的是集合，那应该设置为集合包含的类型，而不是集合本身的类型。
+
+### resultMap
 
 ### sql
 
@@ -776,7 +835,6 @@ public interface UserMapper {
     })
     List<User> findAll();
 }
-
 ```
 
 ## MyBatis Generator
