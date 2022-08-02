@@ -413,10 +413,10 @@ public void pageHelper() {
 }
 ```
 
-4. 获取分页相关参数。
+4. 获取分页相关参数，第二个参数是导航的页数，就是前端显示的时候上一页和下一页按钮中的页的数量，通过`getNavigatepageNums()`方法可以获取页码数组；这个参数是可选的，默认值是 8。
 
 ```java
-PageInfo<User> pageInfo = new PageInfo<>(users);
+PageInfo<User> pageInfo = new PageInfo<>(users, 5);
 ```
 
 ### environments
