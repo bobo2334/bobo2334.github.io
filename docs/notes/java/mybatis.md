@@ -5,6 +5,7 @@
 - [【尚硅谷】SSM 框架全套教程，MyBatis+Spring+SpringMVC+SSM 整合一套通关\_哔哩哔哩\_bilibili](https://www.bilibili.com/video/BV1Ya411S7aT)
 - [mybatis – MyBatis 3 | 简介](https://mybatis.org/mybatis-3/zh/index.html)
 - [mybatis 3.5.5 javadoc (org.mybatis)](https://javadoc.io/doc/org.mybatis/mybatis/latest/index.html)
+- [MyBatis Generator Core – Introduction to MyBatis Generator](https://mybatis.org/generator/index.html)
 
 ## 简介
 
@@ -934,3 +935,76 @@ public interface UserMapper {
 ```
 
 ## MyBatis Generator
+
+根据数据表结构自动生成实体类、接口和 Mapper 文件。
+
+`pom.xml`文件中加入`mybatis-generator-maven-plugin`插件。
+
+配置文件命名为`generatorConfig.xml`，放入资源文件夹。之后执行 Maven 插件的命令即可。
+
+```xml
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.4.1</version>
+                <dependencies>
+                    <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>8.0.29</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+```
+
+### MyBatis3Simple
+
+这个方案生成的 Mapper 中只有简单的增删改查功能。
+
+```xml
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="simple" targetRuntime="MyBatis3Simple">
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql:///ssm"
+                        userId="root"
+                        password="root"/>
+
+        <javaModelGenerator targetPackage="o.e.model" targetProject="src/main/java"/>
+
+        <sqlMapGenerator targetPackage="o.e.mapper"
+                         targetProject="src/main/resources">
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="o.e.mapper" targetProject="src/main/java"/>
+
+        <table tableName="t_user"/>
+    </context>
+</generatorConfiguration>
+```
+
+### MyBatis3
+
+这个方案生成的 Mapper 更复杂，除了实体类之外，还会生成 Example 类，可以完成几乎所有的单表操作。
+
+配置内容除了`targetRuntime`不一样之外，其它内容没变化。
+
+```xml
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="simple" targetRuntime="MyBatis3">
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql:///ssm"
+                        userId="root"
+                        password="root"/>
+</generatorConfiguration>
+```
