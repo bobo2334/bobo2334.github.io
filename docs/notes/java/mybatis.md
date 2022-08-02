@@ -800,27 +800,53 @@ public class User {
 
 ## 缓存
 
-Mybatis 中有两级缓存。默认情况下只有一级缓存开启（SqlSession 级别的缓存）。
+### 一级缓存
 
-二级缓存需要手动配置开启，是基于 namespace 级别的缓存。
-
-可以通过实现`Cache`接口来自定义缓存实现。
-
-### 一级缓存失效
-
-- 不同的 SqlSession 有不同缓存
-- 同一个 SqlSession 查询条件不同
-- 同一个 SqlSession 两次查询期间执行了增删改操作
-- 手动清空缓存
+- 一级缓存默认开启
+- 不同的`SqlSession`有不同缓存
+- 同一个`SqlSession`查询条件不同
+- 同一个`SqlSession`两次查询期间执行了增删改操作
+- `sqlSession.clearCache()`手动清空缓存
 
 ### 二级缓存
 
-- 二级缓存是全局作用域的，需要手动开启
+- 二级缓存是`SqlSessionFactory`级别的
 - 要求 POJO 实现`Serializable`接口
-- 二级缓存在 SqlSession 关闭或提交后才会生效
-- 在需要使用二级缓存的地方使用`<cache/>`配置
-- 映射语句文件中的所有 select 语句的结果将会被缓存
-- 映射语句文件中的所有 insert、update 和 delete 语句会刷新缓存
+- 二级缓存在`SqlSession`关闭或提交后才会生效
+- 在映射文件中使用`<cache />`配置
+- 映射文件中的所有 select 语句的结果将会被缓存
+- 映射文件中的所有 insert、update 和 delete 语句会刷新所有缓存，包括一级缓存和二级缓存
+
+```xml
+<cache />
+```
+
+```xml
+<cache
+  eviction="FIFO"
+  flushInterval="60000"
+  size="512"
+  readOnly="true"/>
+```
+
+- `eviction`，淘汰策略，默认是`LRU`；
+- `flushInterval`，刷新间隔，单位是毫秒，默认不自动刷新，只在执行增删改语句的时候刷新；
+- `size`，缓存引用数目，默认是 1024；
+- `readOnly`，`true`则在从缓存中获取对象的时候返回同一个对象的引用，`false`则每次都返回一个缓存对象的深拷贝。默认值是`false`。
+
+### 缓存查询顺序
+
+1. 先查询二级缓存
+2. 如果二级缓存中没有，则查询一级缓存
+
+
+### 自定义缓存实现
+
+可以通过实现`org.apache.ibatis.cache.Cache`接口来自定义二级缓存实现。
+
+```xml
+<cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+```
 
 ## 注解开发
 
