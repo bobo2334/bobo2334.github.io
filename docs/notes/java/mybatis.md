@@ -346,6 +346,12 @@ int delete(String statement, Object parameter)
 </properties>
 ```
 
+### settings
+
+#### mapUnderscoreToCamelCase
+
+映射字段`column_name`为属性`columnName`。
+
 ### typeAliases
 
 定义类型别名，为某个类型设置简短的名字，不需要写全类名了，`alias`可以省略，默认别名就是类名，不区分大小写。
@@ -535,6 +541,42 @@ sqlSessionFactory = builder.build(config, "development");
 1. 使用`LIKE '%${param1}%'`，有 SQL 注入风险；
 2. 使用`LIKE CONCAT('%', '${param1}', '%')`，索引失效；
 3. 使用`LIKE #{param1}`，在传递参数的时候自己手动拼接通配符。
+
+### 字段和属性映射
+
+1. 在 SQL 语句中使用`as`来给字段起别名；
+2. 配置`mapUnderscoreToCamelCase`为`true`；
+3. 使用`resultMap`手动声明映射关系。
+
+### 延迟加载
+
+在处理一对一、一对多关系映射时，可以延迟加载数据。
+
+- `lazyLoadingEnabled`，是否开启延迟加载。
+- `aggressiveLazyLoading`，是否开启侵略性的延迟加载，如果`true`则任意方法的调用都会触发延迟加载；如果`false`则参考`lazyLoadTriggerMethods`。
+- `lazyLoadTriggerMethods`，可以控制哪些方法被调用可以触发延迟加载，默认有`equals,clone,hashCode,toString`。
+
+在配置文件中配置即可全局开机延迟加载。
+
+```xml
+<settings>
+    <setting name="lazyLoadingEnabled" value="true"/>
+    <setting name="aggressiveLazyLoading" value="false"/>
+</settings>
+```
+
+在映射文件中可以通过`fetchType`属性单独配置某条 SQL 语句是否开启延迟加载。
+
+- `lazy`，延迟加载
+- `eager`，立即加载
+
+```xml
+<resultMap id="" type="">
+    <association property="" select="" fetchType="eager">
+
+    </association>
+</resultMap>
+```
 
 ## 动态 SQL
 
