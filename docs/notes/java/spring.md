@@ -395,69 +395,75 @@ Aspect Oriented Programming，面向切面编程。减少重复代码，降低�
 
 1. 导入依赖
 
-    [Maven Repository: org.aspectj » aspectjweaver](https://mvnrepository.com/artifact/org.aspectj/aspectjweaver)
+```xml
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-aspects -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-aspects</artifactId>
+    <version>5.3.22</version>
+</dependency>
+```
+
 2. 目标对象要实现接口
 
-    ```java
-    public interface UserService {
+```java
+public interface UserService {
 
-        void hello();
+    void hello();
 
+}
+```
+
+```java
+@Slf4j
+public class UserServiceImpl implements UserService {
+    public void hello() {
+        log.info("UserServiceImpl.hello()");
     }
-    ```
-
-    ```java
-    @Slf4j
-    public class UserServiceImpl implements UserService {
-        public void hello() {
-            log.info("UserServiceImpl.hello()");
-        }
-    }
-    ```
+}
+```
 
 3. 把目标对象和通知类交由容器管理
 
-    ```xml
-    <bean id="userService" class="me.iuok.service.impl.UserServiceImpl"/>
-    <bean id="logger" class="me.iuok.util.Logger"/>
-    ```
+```xml
+<bean id="userService" class="me.iuok.service.impl.UserServiceImpl"/>
+<bean id="logger" class="me.iuok.util.Logger"/>
+```
 
 4. 开始织入
 
-    ```xml
-    <aop:config>
-        <!-- 可以配置切面表达式引用 -->
-        <aop:pointcut id="serviceImpl" expression="execution(* me.iuok.service.impl.*.*(..))"/>
+```xml
+<aop:config>
+    <!-- 可以配置切面表达式引用 -->
+    <aop:pointcut id="serviceImpl" expression="execution(* me.iuok.service.impl.*.*(..))"/>
 
-        <!-- id 可以随便, ref 引用通知类 -->
-        <aop:aspect id="logAdvice" ref="logger">
-            <!-- 配置前置通知，method 设置调用方法，pointcut 是切入点表达式 -->
-            <aop:before method="before" pointcut="execution(public void me.iuok.service.impl.UserServiceImpl.hello())"/>
-            <!-- 后置通知-->
-            <aop:after-returning method="afterReturning" pointcut="execution(* me.iuok.service.impl.*.*(..))"/>
-            <!-- 异常通知-->
-            <aop:after-throwing method="afterThrowing" pointcut-ref="serviceImpl"/>
-            <!-- 最终通知-->
-            <aop:after method="after" pointcut-ref="serviceImpl"/>
-        </aop:aspect>
-    </aop:config>
-    ```
+    <!-- id 可以随便, ref 引用通知类 -->
+    <aop:aspect id="logAdvice" ref="logger">
+        <!-- 配置前置通知，method 设置调用方法，pointcut 是切入点表达式 -->
+        <aop:before method="before" pointcut="execution(public void me.iuok.service.impl.UserServiceImpl.hello())"/>
+        <!-- 后置通知-->
+        <aop:after-returning method="afterReturning" pointcut="execution(* me.iuok.service.impl.*.*(..))"/>
+        <!-- 异常通知-->
+        <aop:after-throwing method="afterThrowing" pointcut-ref="serviceImpl"/>
+        <!-- 最终通知-->
+        <aop:after method="after" pointcut-ref="serviceImpl"/>
+    </aop:aspect>
+</aop:config>
+```
 
 5. 测试
 
-    ```java
-    // 注意这里要使用目标对象的接口类型
-    UserService userService = ac.getBean("userService", UserService.class);
-    userService.hello();
-    ```
+```java
+// 注意这里要使用目标对象的接口类型
+UserService userService = ac.getBean("userService", UserService.class);
+userService.hello();
+```
 
 #### 切入点表达式
 
-`execution(<exp>)`
-
-`execution(public void me.iuok.service.impl.UserServiceImpl.hello())`
-
-格式：访问修饰符 返回值类型 包名。类名。方法名 (参数类型列表)
+- `execution(<exp>)`
+- `execution(public void me.iuok.service.impl.UserServiceImpl.hello())`
+- 格式：访问修饰符 返回值类型 包名。类名。方法名 (参数类型列表)
 
 1. 访问修饰符
     1. 可以省略，表示任意
@@ -479,7 +485,7 @@ Aspect Oriented Programming，面向切面编程。减少重复代码，降低�
 
 环绕通知就是整个增强后的方法，在 Spring 中它可以通过代码配置其它各种通知在何时何处如何实现。
 
-配置方式实现的通知执行顺序不太可靠，如果对执行顺序有很高要求的话可以使用代码配置环绕通知。
+配置方式实现的通知执行顺序不太可靠，如果对执行顺序有很高要求的话可以使用代码配置环绕通知，使用`@Order`注解来决定顺序。
 
 ```xml
 <aop:config>
@@ -517,71 +523,72 @@ public Object around(ProceedingJoinPoint pjp) {
 
 1. 开启包扫描和自动代理，可以使用 XML 开启也可以使用注解开启
 
-    ```xml
-    <context:component-scan base-package="me.iuok"/>
-    <aop:aspectj-autoproxy/>
-    ```
+```xml
+<context:component-scan base-package="me.iuok"/>
+<aop:aspectj-autoproxy/>
+```
 
-    ```java
-    @Configuration
-    @ComponentScan(basePackages = "me.iuok")
-    @EnableAspectJAutoProxy
-    public class AppConfig {
+```java
+@Configuration
+@ComponentScan(basePackages = "me.iuok")
+@EnableAspectJAutoProxy
+public class AppConfig {
 
-    }
-    ```
+}
+```
 
 2. 把目标类和通知类都交由容器管理
 
-    ```java
-    @Slf4j
-    @Service
-    public class UserService {
-        public Integer sayHello() {
-            log.info("UserService.sayHello");
-            return 1;
-        }
+```java
+@Slf4j
+@Service
+public class UserService {
+    public Integer sayHello() {
+        log.info("UserService.sayHello");
+        return 1;
     }
-    ```
-
-    ```java
-    @Slf4j
-    @Aspect
-    @Component
-    public class LogAspect { ... }
-    ```
+}
+```
 
 3. 在通知类上标注 `@Aspect` 注解，表明这是一个通知类
+
+```java
+@Slf4j
+@Aspect
+@Component
+public class LogAspect { ... }
+```
+
 4. 在方法上加入通知注解
 
-    ```java
-    @Before("pt()")
-    public void before(JoinPoint joinPoint) {
-        log.info("Aspect: before，{}", joinPoint.toLongString());
-    }
+```java
+@Before("pt()")
+public void before(JoinPoint joinPoint) {
+    log.info("Aspect: before，{}", joinPoint.toLongString());
+}
 
-    @After("pt()")
-    public void after(JoinPoint joinPoint) {
-        log.info("Aspect: after，{}", joinPoint.toLongString());
-    }
+@After("pt()")
+public void after(JoinPoint joinPoint) {
+    log.info("Aspect: after，{}", joinPoint.toLongString());
+}
 
-    @AfterThrowing(value = "pt()", throwing = "e")
-    public void afterThrowing(JoinPoint joinPoint, Exception e) {
-        log.info("Aspect: afterThrowing，{}, {}", joinPoint.toLongString(), e);
-    }
+@AfterThrowing(value = "pt()", throwing = "e")
+public void afterThrowing(JoinPoint joinPoint, Exception e) {
+    log.info("Aspect: afterThrowing，{}, {}", joinPoint.toLongString(), e);
+}
 
-    @AfterReturning(value = "pt()", returning = "returning")
-    public void afterReturning(JoinPoint joinPoint, Object returning) {
-        log.info("Aspect: afterReturning，{}, {}", joinPoint.toLongString(), returning);
-    }
-    ```
+@AfterReturning(value = "pt()", returning = "returning")
+public void afterReturning(JoinPoint joinPoint, Object returning) {
+    log.info("Aspect: afterReturning，{}, {}", joinPoint.toLongString(), returning);
+}
+```
 
 5. 同时也可以引用切入点表达式，注意引用的时候要用方法名加括号
 
-    ```java
-    @Pointcut("execution(* me.iuok.service.impl.*.*(..))")
-    private void pt(){}
-    ```
+```java
+@Pointcut("execution(* me.iuok.service.impl.*.*(..))")
+private void pt(){}
+```
 
 ### 声明式事务
 
