@@ -2,7 +2,7 @@
 
 ## 参考资料
 
-- [尚硅谷 Spring 注解驱动教程 (雷丰阳源码级讲解)_哔哩哔哩 (゜-゜) つロ 干杯~-bilibili](https://www.bilibili.com/video/BV1gW411W7wy)
+- [【尚硅谷】SSM 框架全套教程，MyBatis+Spring+SpringMVC+SSM 整合一套通关\_哔哩哔哩\_bilibili](https://www.bilibili.com/video/BV1Ya411S7aT)
 
 ## 概述
 
@@ -48,22 +48,22 @@ UserDao userDao = ac.getBean("userDao", UserDao.class);
 
 1. 使用默认构造函数创建。在 xml 中配置了 Bean 的 id 和 class，并且没有配置其它配置项就会使用对象的默认空参构造器来实例化对象，如果该对象没有空参构造器就会抛出异常；
 
-    ```xml
-    <bean id="userDao" class="me.iuok.dao.UserDao"/>
-    ```
+```xml
+<bean id="userDao" class="me.iuok.dao.UserDao"/>
+```
 
 2. 使用工厂类中的方法创建对象，获取其返回值，并存入容器。先创建工厂实例，再调用工厂方法；
 
-    ```xml
-    <bean id="factory" class="me.iuok.dao.UserDao"/>
-    <bean id="userDao" factory-bean="factory" factory-method="getInstance"/>
-    ```
+```xml
+<bean id="factory" class="me.iuok.dao.UserDao"/>
+<bean id="userDao" factory-bean="factory" factory-method="getInstance"/>
+```
 
 3. 使用工厂类中的静态方法创建对象，获取其返回值，并存入容器。因为是静态方法所以不用事先创建工厂类的实例。
 
-    ```xml
-    <bean id="userDao" class="me.iuok.dao.UserDao" factory-method="getInstance"/>
-    ```
+```xml
+<bean id="userDao" class="me.iuok.dao.UserDao" factory-method="getInstance"/>
+```
 
 #### Bean 对象的作用范围
 
@@ -152,7 +152,7 @@ public class User {
 ```xml
 <bean id="userDao" class="me.iuok.dao.UserDao" init-method="init" destroy-method="destroy"/>
 
-<bean id="user" class="me.iuok.domaim.User">
+<bean id="user" class="me.iuok.domain.User">
     <constructor-arg name="userDao" ref="userDao"/>
 </bean>
 ```
@@ -169,6 +169,10 @@ public class User {
 
 通过 set 方法注入属性。set 方法名去掉 set 之后剩下的部分首字母小写就称为属性（Property）。
 
+- `name`，属性名
+- `value`，属性值
+- `ref`，Bean 引用
+
 ```java
 public class User {
 
@@ -180,21 +184,35 @@ public class User {
 }
 ```
 
+引用其他 Bean 注入。
+
 ```xml
-<bean id="user" class="me.iuok.domaim.User">
+<bean id="userDao" class="me.iuok.domain.UserDao">
+    <!-- ... -->
+</bean>
+
+<bean id="user" class="me.iuok.domain.User">
     <property name="userDao" ref="userDao"/>
 </bean>
 ```
 
-| 属性名 | 说明   |
-| ------ | ------ |
-| name   | 属性名 |
-| value  |        |
-| ref    |        |
+直接定义一个内部 Bean 供自己使用，这个 Bean 没有 ID。
+
+```xml
+<bean id="user" class="me.iuok.domain.User">
+    <property name="userDao">
+        <bean class="me.iuok.domain.UserDao">
+            <!-- ... -->
+        </bean>
+    </property>
+</bean>
+```
 
 #### p 名称空间
 
-为了简化 XML 配置，采用属性配置信息而非子元素配置信息。
+为了简化 XML 配置，采用属性配置信息而非子元素配置信息，就是`property`标签的简便写法。
+
+使用`p:fieldName-ref="BeanId"`语法还可以引用其他 Bean。
 
 ```xml
 <bean
@@ -208,7 +226,7 @@ public class User {
 还可以注入诸如 List、Map 之类的复杂类型，通过构造方法和属性都可以注入。
 
 ```xml
-<bean id="user" class="me.iuok.domaim.User" init-method="init">
+<bean id="user" class="me.iuok.domain.User" init-method="init">
     <constructor-arg name="list">
         <array>
             <value>aaa</value>
@@ -232,23 +250,50 @@ public class User {
 
 | 标签名 | 注入类型  | 备注                           |
 | ------ | --------- | ------------------------------ |
-| array  | List 结构 | `<value>value</value>`         |
-| list   | List 结构 | 同上                           |
-| set    | List 结构 | 同上                           |
-| props  | Map 结构  | `<prop key="key">value</prop>` |
-| map    | Map 结构  | `<entry key="" value=""/>`     |
+| array  | List 或数组  | `<value>value</value>`         |
+| list   | List  | 同上                           |
+| set    | List  | 同上                           |
+| props  | Map   | `<prop key="key">value</prop>` |
+| map    | Map   | `<entry key="" value=""/>`     |
 
 只需要记住两组就可以了，标签可以混用。
+
+- `util:list`标签可以定义一个数组，供其它地方引用；
+- `util:map`标签可以定义一个 Map，供其它地方引用。
+
+#### 特殊值注入
+
+使用`null`标签来表示 null 值。
+
+```xml
+<bean id="user" class="me.iuok.domain.User">
+    <property name="userDao">
+        <null />
+    </property>
+</bean>
+```
+
+在`CDATA`标签内的内容可以不用转义，这是一个特殊的标签，所以只能放在标签的内容部分，不能放入属性部分。下面的例子中小于号`<`就不用转义。
+
+```xml
+<property name="expression">
+    <value><![CDATA[a < b]]></value>
+</property>
+```
 
 ### 引入外部配置文件
 
 `context:property-placeholder`来引入外部配置文件，使用 SpEL 表达式`${prop.userName}`来引用值。
 
+```xml
+<context:property-placeholder location="classpath:jdbc.properties"/>
+```
+
 ### FactoryBean
 
 实现`org.springframework.beans.factory.FactoryBean`接口，并且将该类注册到容器中后，配置的 Bean 不是该类本身，而是`getObject()`返回的那个实例。
 
-如果想获取 FactoryBean 类本身的话，需要在 ID 前面加上「&」字符。定义在`BeanFactory`工厂接口中。
+如果想获取 FactoryBean 类本身的话，需要在 ID 前面加上「&」字符。此机制的实现细节在`BeanFactory`工厂接口中。
 
 ### 基于注解的配置
 
@@ -290,7 +335,7 @@ public class User {
 
 起多个名字的原因是为了方便在不同场景使用，让业务更清晰。
 
-属性 `value`用于指定 Bean 的 id，默认为首字母小写的当前类名。
+属性`value`用于指定 Bean 的 id，默认为首字母小写的当前类名。
 
 ```java
 @Component
@@ -308,44 +353,26 @@ public class UserDao {
 
 - `@Scope(value)`，设置作用范围，和 bean 标签中的 scope 属性达到的效果是一样的，取值也一样。
 - `@PostConstruct`，用于标注初始化方法。
-
 - `@PreDestroy`，用于标注销毁方法。
 
 #### 依赖注入注解
 
-`@Autowired`
+- `@Autowired`：可以标注在成员变量上，也可以标注在方法参数上。只要容器中只有唯一一个对应该类型的对象，就可以直接注入。如果有多个匹配就会注入 id 与该变量名称相同的 Bean。使用注解注入时就不需要 setter 了。可以使用在数组和集合类型上，会自动装配所有满足要求的 Bean。如果使用在`Map<String, Xxx>`上，会自动装配所有满足要求的 Bean，并且把 id 作为 key。
+- `@Primary`：在自动装配的时候作为首选候选者。
+- `@Order`：以数值指定候选 Bean 的优先级排序。
+- `@Qualifier(value)`：搭配上一个注解使用，在匹配类型的情况下再指定 Bean 的 id。在给方法参数标注的时候可以单独使用。
+- `@Resource(name)`：JSR-250，直接指定 Bean 的 id 进行注入，单独使用。
+- `@Inject`：JSR-330，需要导入`javax.inject`相关包，和`@AutoWired`类似，但是没有`required`属性。
+- `@Value(value)`：用于注入基本类型和 String 类型的数据，可以使用 SpEL 表达式来注入环境变量中的值，写法为 `${exp}`。还可以搭配`@PropertySource`来引用配置文件。
 
-可以标注在成员变量上，也可以标注在方法参数上。只要容器中只有唯一一个对应该类型的对象，就可以直接注入。如果有多个匹配就会注入 id 与该变量名称相同的 Bean。
+### `Aware`接口
 
-使用注解注入时就不需要 setter 了。
+如果想使用 Spring 底层的组件如`ApplicationContext`、`BeanFactory`、`Environment`等，可以实现`org.springframework.beans.factory.Aware`接口的子接口。这些依赖（大部分）都会在`ApplicationContextAwareProcessor`中被注入，该类是`BeanPostProcessor`的实现类。
 
-可以使用在数组和集合类型上，会自动装配所有满足要求的 Bean。
-
-如果使用在`Map<String, Xxx>`上，会自动装配所有满足要求的 Bean，并且把 id 作为 key。
-
-`@Primary`在自动装配的时候作为首选候选者。
-
-`@Order`以数值指定候选 Bean 的优先级排序。
-
-`@Qualifier(value)`
-
-搭配上一个注解使用，在匹配类型的情况下再指定 Bean 的 id。在给方法参数标注的时候可以单独使用。
-
-`@Resource(name)`
-
-JSR-250，直接指定 Bean 的 id 进行注入，单独使用。
-
-`@Inject`
-
-JSR-330，需要导入`javax.inject`相关包，和`@AutoWired`类似，但是没有`required`属性。
-
-`@Value(value)`
-
-用于注入基本类型和 String 类型的数据，可以使用 SpEL 表达式来注入环境变量中的值，写法为 `${exp}`。还可以搭配`@PropertySource`来引用配置文件。
-
-`Aware`
-
-如果想使用 Spring 底层的组件如`ApplicationContext`、`BeanFactory`、`Environment`等，可以实现`XxxAware`接口。这些依赖（大部分）都会在`ApplicationContextAwareProcessor`中被注入，该类是`BeanPostProcessor`的实现类。
+- `ApplicationContextAware`
+- `EnvironmentAware`
+- `BeanFactoryAware`
+- `...`
 
 ## AOP
 
