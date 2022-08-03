@@ -596,125 +596,127 @@ private void pt(){}
 
 1. 配置数据库信息
 
-    ```xml
-    <context:property-placeholder location="classpath:jdbc.properties"/>
+```xml
+<context:property-placeholder location="classpath:jdbc.properties"/>
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <constructor-arg name="username" value="${jdbc.username}"/>
-        <constructor-arg name="password" value="${jdbc.password}"/>
-        <constructor-arg name="url" value="${jdbc.url}"/>
-    </bean>
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <constructor-arg name="username" value="${jdbc.username}"/>
+    <constructor-arg name="password" value="${jdbc.password}"/>
+    <constructor-arg name="url" value="${jdbc.url}"/>
+</bean>
 
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <constructor-arg name="dataSource" ref="dataSource"/>
-    </bean>
-    ```
+<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    <constructor-arg name="dataSource" ref="dataSource"/>
+</bean>
+```
 
 2. 把 DAO 和 Service 交由容器管理
 
-    ```xml
-    <bean id="mockDao" class="me.iuok.dao.impl.MockDaoImpl">
-        <constructor-arg name="jdbcTemplate" ref="jdbcTemplate"/>
-    </bean>
+```xml
+<bean id="mockDao" class="me.iuok.dao.impl.MockDaoImpl">
+    <constructor-arg name="jdbcTemplate" ref="jdbcTemplate"/>
+</bean>
 
-    <bean id="mockService" class="me.iuok.service.impl.MockServiceImpl">
-        <constructor-arg name="mockDao" ref="mockDao"/>
-    </bean>
-    ```
+<bean id="mockService" class="me.iuok.service.impl.MockServiceImpl">
+    <constructor-arg name="mockDao" ref="mockDao"/>
+</bean>
+```
 
 3. 配置事务管理器
 
-    ```xml
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <constructor-arg name="dataSource" ref="dataSource"/>
-    </bean>
-    ```
+```xml
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <constructor-arg name="dataSource" ref="dataSource"/>
+</bean>
+```
 
 4. 配置事务的通知，与事务管理器关联；并为事务配置规则，这里为 login 方法配置了规则。其中 name 属性可以用通配符 `*`
 
-    ```xml
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="login" read-only="true"/>
-        </tx:attributes>
-    </tx:advice>
-    ```
+```xml
+<tx:advice id="txAdvice" transaction-manager="transactionManager">
+    <tx:attributes>
+        <tx:method name="login" read-only="true"/>
+    </tx:attributes>
+</tx:advice>
+```
 
 5. 配置切入点表达式，并与通知关联
 
-    ```xml
-    <aop:config>
-        <aop:pointcut id="pt" expression="execution(* me.iuok.service.impl.*.*(..))"/>
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="pt"/>
-    </aop:config>
-    ```
+```xml
+<aop:config>
+    <aop:pointcut id="pt" expression="execution(* me.iuok.service.impl.*.*(..))"/>
+    <aop:advisor advice-ref="txAdvice" pointcut-ref="pt"/>
+</aop:config>
+```
 
 6. 完成，根据配置，在执行 login 方法的时候会开启只读事务。
 
 #### 注解配置声明式事务
 
-1. `@EnableTransactionManagement`
+1. `@EnableTransactionManagement`开启事务支持
 
-    开启事务支持
-
-    ```java
-    @Configuration
-    @ComponentScan(basePackages = "me.iuok")
-    @PropertySource("classpath:jdbc.properties")
-    @EnableTransactionManagement
-    public class AppConfig {}
-    ```
+```java
+@Configuration
+@ComponentScan(basePackages = "me.iuok")
+@PropertySource("classpath:jdbc.properties")
+@EnableTransactionManagement
+public class AppConfig {}
+```
 
 2. 把数据库连接相关的对象仍到容器里
 
-    ```java
-    @Bean
-    public DriverManagerDataSource driverManagerDataSource(@Value("${jdbc.url}") String url,
-                                                           @Value("${jdbc.username}") String username,
-                                                           @Value("${jdbc.password}") String password) {
-        return new DriverManagerDataSource(url, username, password);
-    }
+```java
+@Bean
+public DriverManagerDataSource driverManagerDataSource(@Value("${jdbc.url}") String url,
+                                                        @Value("${jdbc.username}") String username,
+                                                        @Value("${jdbc.password}") String password) {
+    return new DriverManagerDataSource(url, username, password);
+}
 
-    @Bean
-    public JdbcTemplate jdbcTemplate(DriverManagerDataSource driverManagerDataSource) {
-        return new JdbcTemplate(driverManagerDataSource);
-    }
-    ```
+@Bean
+public JdbcTemplate jdbcTemplate(DriverManagerDataSource driverManagerDataSource) {
+    return new JdbcTemplate(driverManagerDataSource);
+}
+```
 
 3. 把 TransactionManager 也仍到容器里
 
-    ```java
-    @Bean("transactionManager")
-    public DataSourceTransactionManager dataSourceTransactionManager(DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
-    }
-    ```
+```java
+@Bean("transactionManager")
+public DataSourceTransactionManager dataSourceTransactionManager(DataSource dataSource) {
+    return new DataSourceTransactionManager(dataSource);
+}
+```
 
 4. `@Transactional` 在需要使用事务的服务类上标注注解，可以标注在类上，也可以标注在方法上，用于设置类全局规则和针对于方法的自定义规则。
 
-    ```java
-    @Service
-    @Transactional
-    public class MockServiceImpl implements MockService {
+```java
+@Service
+@Transactional
+public class MockServiceImpl implements MockService {
 
-        private MockDao mockDao;
+    private MockDao mockDao;
 
-        @Autowired
-        public MockServiceImpl(MockDao mockDao) {
-            this.mockDao = mockDao;
-        }
-
-        @Transactional(readOnly = true)
-        public Mock login(String username, String password) {
-            List<Mock> mocks = mockDao.findByEmail(username);
-
-            return mocks.isEmpty() ? null : mocks.get(0);
-        }
-
+    @Autowired
+    public MockServiceImpl(MockDao mockDao) {
+        this.mockDao = mockDao;
     }
-    ```
+
+    @Transactional(readOnly = true)
+    public Mock login(String username, String password) {
+        List<Mock> mocks = mockDao.findByEmail(username);
+
+        return mocks.isEmpty() ? null : mocks.get(0);
+    }
+
+}
+```
 
 5. 完成，相对于 xml 配置方式来说，注解配置在一定程度上更简单，但是它不支持切入点表达式，所以不能用通配符配置。
+
+#### 说明
+
+声明式事务在默认情况下只针对运行时异常回滚，编译时异常不回滚。
 
 #### 事务的传播行为
 
@@ -771,6 +773,14 @@ private void pt(){}
 ```
 
 ### JdbcTemplate
+
+```xml
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-jdbc</artifactId>
+    <version>5.3.22</version>
+```
 
 ```java
 @Configuration
