@@ -9,10 +9,7 @@
 ## 快速开始
 
 1. 创建 Maven 工程，导入依赖
-
-2. 配置 web.xml，在 Tomcat 容器开始运行时加载 SpringMVC 的 Servlet。并且给了初始化参数，告知 Spring 配置文件的位置。之后再把 SpringMVC 的 Servlet 映射到所有请求上，所有请求都经过此 Servlet 处理。
-
-    如果不告知配置文件路径，则默认为`/WEB-INF/springMVC-{servlet-name}.xml`，其中`servlet-name`是在`web.xml`中配置的`<servlet-name>`的值。
+2. 配置`web.xml`，在 Tomcat 容器开始运行时加载 SpringMVC 的 Servlet。并且使用初始化参数设置 Spring 配置文件的位置。之后再把`DispatcherServlet`映射到所有请求上，所有请求都经过此 Servlet 处理。如果没有设置配置文件路径，则默认路径为`/WEB-INF/springMVC-{servlet-name}.xml`，其中`servlet-name`是在`web.xml`中配置的`<servlet-name>`的值。
 
     ```xml
     <servlet>
@@ -66,17 +63,8 @@
 
 ## 配置文件配置项
 
-- `<mvc:default-servlet-handler/>`
-
-会在 web.xml 中定义一个`DefaultServletHttpRequestHandler`，路径是`/`。
-
-用户配置的`DispatcherServlet`的优先级更高，当收到请求时首先交给用户配置的 Servlet 进行处理，如果处理不了再交给默认的。
-
-所以这个 Servlet 能处理静态资源。
-
-- `<mvc:annotation-driven/>`
-
-开启注解扫描。不然注解不生效。
+- `<mvc:default-servlet-handler/>`会在`web.xml`中定义一个`DefaultServletHttpRequestHandler`，路径是`/`。用户配置的`DispatcherServlet`的优先级更高，当收到请求时首先交给用户配置的 Servlet 进行处理，如果处理不了再交给默认的。所以这个 Servlet 能处理静态资源。
+- `<mvc:annotation-driven/>`开启注解扫描。不然注解不生效。
 
 ## 注解
 
@@ -86,17 +74,17 @@
 
 | 属性名    | 说明                                | 示例                                                         |
 | --------- | ----------------------------------- | ------------------------------------------------------------ |
-| `value`   | =`path`                             |                                                              |
+| `value`   | `path`的别名                        |                                                              |
 | `path`    | 用于建立请求 URL 和方法之间的关系。 |                                                              |
-| `method`  | 限制请求方式                        | `username`必须出现参数；`!username`不能出现此参数；`username=who`限制参数取值 |
-| `params`  | 限制参数                            |                                                              |
+| `method`  | 限制请求方式                        |                                                              |
+| `params`  | 限制参数                            | `username`必须出现参数；`!username`不能出现此参数；`username=who`限制参数取值 |
 | `headers` | 限制请求头，和 params 类似          |                                                              |
 
-#### Ant 风格资源地址匹配
+Ant 风格资源地址匹配：
 
-1. `?`匹配任意一个字符
-2. `*`匹配单层路径
-3. `**`匹配多层路径
+1. `?`匹配任意一个字符；
+2. `*`匹配单层路径；
+3. `**`匹配多层路径。
 
 ### @RequestParam
 
@@ -104,7 +92,7 @@
 
 | 属性名         | 说明                                    |
 | -------------- | --------------------------------------- |
-| `value`        | =`name`                                 |
+| `value`        | `name`的别名                            |
 | `name`         | 参数名                                  |
 | `required`     | 是否必须有，默认为 true，不提供就会异常 |
 | `defaultValue` | 默认值                                  |
@@ -196,6 +184,17 @@ public String map(String username, String password, Model model) {
 }
 ```
 
+### ModelMap
+
+```java
+@RequestMapping("/model")
+public String map(String username, String password, ModelMap model) {
+    model.addAttribute("username", username);
+    model.addAttribute("password", password);
+    return "charset";
+}
+```
+
 ## 转发与重定向
 
 ```java
@@ -204,6 +203,15 @@ return "forward:/hello"
 
 ```java
 return "redirect:/index.jsp";
+```
+
+## 视图控制器
+
+```xml
+<mvc:annotation-driven />
+
+<!-- 只设置下面这一行的话，通过注解设置的路由都会失效 -->
+<mvc:view-controller path="/testView" view-name="success" />
 ```
 
 ## HttpMessageConveter
@@ -277,6 +285,53 @@ public String upload(String desc, @RequestParam("file") MultipartFile[] files) t
     }
     return "test";
 }
+```
+
+## RESTful
+
+## 过滤器
+
+### CharacterEncodingFilter
+
+这个过滤器用于设置 request 和 response 的字符编码。必须防止在所有其它过滤器之前。不然在 request 被访问之后再设置就没意义了。
+
+- `forceEncoding`设置为`false`的时候，如果 request 未设置字符集才会对 request 设置字符集，不会对 response 设置字符集；
+- `forceEncoding`设置为`true`的时候，任何时候都会对 request 和 response 设置字符集。
+
+```xml
+<filter>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <filter-
+class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+        <param-name>encoding</param-name>
+        <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+        <param-name>forceEncoding</param-name>
+        <param-value>true</param-value>
+    </init-param>
+</filter>
+<filter-mapping>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+```
+
+### HiddenHttpMethodFilter
+
+这个过滤器处理请求参数中的`_method`字段。有些客户端只能发送 GET 和 POST 请求，不能发送 DELETE 或 PUT 请求，这个字段用于告知 Spring MVC 模拟请求方法。
+
+```xml
+<filter>
+    <filter-name>HiddenHttpMethodFilter</filter-name>
+    <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-
+class>
+</filter>
+<filter-mapping>
+    <filter-name>HiddenHttpMethodFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
 ```
 
 ## 拦截器
