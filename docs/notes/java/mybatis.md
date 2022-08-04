@@ -15,83 +15,83 @@ Mybaitis 是一个持久层框架，用于简化 JDBC 操作。
 
 1. 导入 Mybatis 依赖；
 
-```xml
-<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.20</version>
-</dependency>
+    ```xml
+    <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.20</version>
+    </dependency>
 
-<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
-<dependency>
-    <groupId>org.mybatis</groupId>
-    <artifactId>mybatis</artifactId>
-    <version>3.5.5</version>
-</dependency>
-```
+    <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+    <dependency>
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis</artifactId>
+        <version>3.5.5</version>
+    </dependency>
+    ```
 
 2. 创建数据库和表；
 3. 编写实体类；
 4. 编写 XML 映射文件 UserMapper.xml；
 
-```xml
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="userMapper">
+    ```xml
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <!DOCTYPE mapper
+            PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+            "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="userMapper">
 
-    <select id="findAll" resultType="me.iuok.domain.User">
-        select * from user
-    </select>
+        <select id="findAll" resultType="me.iuok.domain.User">
+            select * from user
+        </select>
 
-</mapper>
-```
+    </mapper>
+    ```
 
 5. 编写 XML 配置文件 SqlMapConfig.xml；
 
-```xml
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE configuration
-        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-config.dtd">
-<configuration>
-    <environments default="development">
-        <environment id="development">
-            <transactionManager type="JDBC"/>
-            <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql:///blog"/>
-                <property name="username" value="root"/>
-                <property name="password" value="root"/>
-            </dataSource>
-        </environment>
-    </environments>
+    ```xml
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <!DOCTYPE configuration
+            PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+            "http://mybatis.org/dtd/mybatis-3-config.dtd">
+    <configuration>
+        <environments default="development">
+            <environment id="development">
+                <transactionManager type="JDBC"/>
+                <dataSource type="POOLED">
+                    <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                    <property name="url" value="jdbc:mysql:///blog"/>
+                    <property name="username" value="root"/>
+                    <property name="password" value="root"/>
+                </dataSource>
+            </environment>
+        </environments>
 
-    <mappers>
-        <mapper resource="me/iuok/mapper/UserMapper.xml"/>
-    </mappers>
-</configuration>
-```
+        <mappers>
+            <mapper resource="me/iuok/mapper/UserMapper.xml"/>
+        </mappers>
+    </configuration>
+    ```
 
 6. 测试。
 
-```java
-@Test
-public void quickStart() throws IOException {
-    InputStream resource = Resources.getResourceAsStream("mybatis-config.xml");
-    SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(resource);
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    List<User> list = sqlSession.selectList("userMapper.findAll");
+    ```java
+    @Test
+    public void quickStart() throws IOException {
+        InputStream resource = Resources.getResourceAsStream("mybatis-config.xml");
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(resource);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<User> list = sqlSession.selectList("userMapper.findAll");
 
-    for (User user : list) {
-        log.info(user.toString());
+        for (User user : list) {
+            log.info(user.toString());
+        }
+
+        sqlSession.close();
     }
-
-    sqlSession.close();
-}
-```
+    ```
 
 ## 传统 CRUD 案例
 
@@ -380,44 +380,44 @@ Mybatis 默认定义了一些常用的类型别名，如`_int`对应`int`，`int
 
 1. 导入依赖；
 
-```xml
-<!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
-<dependency>
-    <groupId>com.github.pagehelper</groupId>
-    <artifactId>pagehelper</artifactId>
-    <version>5.1.10</version>
-</dependency>
-```
+    ```xml
+    <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
+    <dependency>
+        <groupId>com.github.pagehelper</groupId>
+        <artifactId>pagehelper</artifactId>
+        <version>5.1.10</version>
+    </dependency>
+    ```
 
 2. 在配置文件中配置；
 
-```xml
-<plugins>
-    <plugin interceptor="com.github.pagehelper.PageInterceptor"/>
-</plugins>
-```
+    ```xml
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"/>
+    </plugins>
+    ```
 
 3. 在你需要进行分页的 MyBatis 查询方法前调用 `PageHelper.startPage` 静态方法即可，紧跟在这个方法后的第一个 MyBatis 查询方法会被进行分页。
 
-```java
-@Test
-public void pageHelper() {
-    PageHelper.startPage(1, 2);
+    ```java
+    @Test
+    public void pageHelper() {
+        PageHelper.startPage(1, 2);
 
-    List<User> users = userMapper.findAll();
-    Assert.assertNotEquals(0, users.size());
+        List<User> users = userMapper.findAll();
+        Assert.assertNotEquals(0, users.size());
 
-    for (User user : users) {
-        log.info(user.toString());
+        for (User user : users) {
+            log.info(user.toString());
+        }
     }
-}
-```
+    ```
 
 4. 获取分页相关参数，第二个参数是导航的页数，就是前端显示的时候上一页和下一页按钮中的页的数量，通过`getNavigatepageNums()`方法可以获取页码数组；这个参数是可选的，默认值是 8。
 
-```java
-PageInfo<User> pageInfo = new PageInfo<>(users, 5);
-```
+    ```java
+    PageInfo<User> pageInfo = new PageInfo<>(users, 5);
+    ```
 
 ### environments
 
@@ -457,21 +457,21 @@ sqlSessionFactory = builder.build(config, "development");
 
 1. 使用相对于类路径的资源引用
 
-```xml
-<mapper resource="org/mybatis/builder/AuthorMapper.xml"/>
-```
+    ```xml
+    <mapper resource="org/mybatis/builder/AuthorMapper.xml"/>
+    ```
 
 2. 使用完全限定资源定位符（URL）
 
-```xml
-<mapper url="file:///var/mappers/AuthorMapper.xml"/>
-```
+    ```xml
+    <mapper url="file:///var/mappers/AuthorMapper.xml"/>
+    ```
 
 3. 将包内的映射器接口实现全部注册为映射器；要求 XML 文件和接口都在同一个包下，并且文件名也相同。
 
-```xml
-<package name="org.mybatis.builder"/>
-```
+    ```xml
+    <package name="org.mybatis.builder"/>
+    ```
 
 ## 映射文件.xml
 
