@@ -29,41 +29,41 @@ Servlet、Tomcat 和 Java 版本选择请参考 *Tomcat 网站* [^1]。关于 Se
 
 ### 引入
 
-4.0.1 及之前使用此 Maven 坐标，搭配 Tomcat 9 及之前版本。
+- 4.0.1 及之前使用此 Maven 坐标，搭配 Tomcat 9 及之前版本。
 
-```xml
-<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
-<dependency>
-    <groupId>javax.servlet</groupId>
-    <artifactId>javax.servlet-api</artifactId>
-    <version>4.0.1</version>
-    <scope>provided</scope>
-</dependency>
-```
+    ```xml
+    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+    <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>4.0.1</version>
+        <scope>provided</scope>
+    </dependency>
+    ```
 
-4.0.2 及之后使用此坐标。
+- 4.0.2 及之后使用此坐标。
 
-```xml
-<!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
-<dependency>
-    <groupId>jakarta.servlet</groupId>
-    <artifactId>jakarta.servlet-api</artifactId>
-    <version>4.0.4</version>
-    <scope>provided</scope>
-</dependency>
-```
+    ```xml
+    <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+    <dependency>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>4.0.4</version>
+        <scope>provided</scope>
+    </dependency>
+    ```
 
-5.0 之后使用此坐标，搭配 Tomcat 10 使用。从 5 开始后包名改变了。
+- 5.0 之后使用此坐标，搭配 Tomcat 10 使用。从 5 开始后包名改变了。
 
-```xml
-<!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
-<dependency>
-    <groupId>jakarta.servlet</groupId>
-    <artifactId>jakarta.servlet-api</artifactId>
-    <version>6.0.0</version>
-    <scope>provided</scope>
-</dependency>
-```
+    ```xml
+    <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+    <dependency>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>6.0.0</version>
+        <scope>provided</scope>
+    </dependency>
+    ```
 
 ### 快速入门
 
@@ -73,18 +73,18 @@ Servlet、Tomcat 和 Java 版本选择请参考 *Tomcat 网站* [^1]。关于 Se
 4. 配置 Servlet
 5. 改 `web.xml` 文件
 
-```xml
-<!--    配置 Servlet-->
-<servlet>
-    <servlet-name>demo</servlet-name>
-    <servlet-class>me.iuok.web.Demo</servlet-class>
-</servlet>
+    ```xml
+    <!--    配置 Servlet-->
+    <servlet>
+        <servlet-name>demo</servlet-name>
+        <servlet-class>me.iuok.web.Demo</servlet-class>
+    </servlet>
 
-<servlet-mapping>
-    <servlet-name>demo</servlet-name>
-    <url-pattern>/</url-pattern>
-</servlet-mapping>
-```
+    <servlet-mapping>
+        <servlet-name>demo</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    ```
 
 ### 生命周期
 
@@ -103,25 +103,25 @@ Servlet、Tomcat 和 Java 版本选择请参考 *Tomcat 网站* [^1]。关于 Se
 
 - `String getInitParameter(String name)`可以从配置文件中读取`init-param`中的内容。
 
-```xml
-<servlet>
-   <servlet-name>exampleServlet</servlet-name>
-   <servlet-class>me.iuok.servlet.ExampleServlet</servlet-class>
-   <init-param>
-         <param-name>encode</param-name>
-         <param-value>UTF-8</param-value>
-   </init-param>
-</servlet>
-```
+    ```xml
+    <servlet>
+    <servlet-name>exampleServlet</servlet-name>
+    <servlet-class>me.iuok.servlet.ExampleServlet</servlet-class>
+    <init-param>
+            <param-name>encode</param-name>
+            <param-value>UTF-8</param-value>
+    </init-param>
+    </servlet>
+    ```
 
-```java
-Enumeration<String> parameterNames = config.getInitParameterNames();
-while (parameterNames.hasMoreElements()) {
-   String parameterName = parameterNames.nextElement();
-   String value = config.getInitParameter(parameterName);
-   log.info("{}: {}", parameterName, value);
-}
-```
+    ```java
+    Enumeration<String> parameterNames = config.getInitParameterNames();
+    while (parameterNames.hasMoreElements()) {
+    String parameterName = parameterNames.nextElement();
+    String value = config.getInitParameter(parameterName);
+    log.info("{}: {}", parameterName, value);
+    }
+    ```
 
 - `Enumeration<String> getInitParameterNames()`
 - `ServletContext getServletContext()`
@@ -133,12 +133,12 @@ while (parameterNames.hasMoreElements()) {
 
 - `Enumeration<String> getInitParameterNames()`获取`context-param`配置，这是所有 Servlet 都可以读取的。
 
-```xml
-<context-param>
-   <param-name>encoding</param-name>
-   <param-value>UTF-8</param-value>
-</context-param>
-```
+    ```xml
+    <context-param>
+    <param-name>encoding</param-name>
+    <param-value>UTF-8</param-value>
+    </context-param>
+    ```
 
 - `String getInitParameter(String name)`
 - `String getContextPath()`获取项目路径，在前面会有一个`/`
