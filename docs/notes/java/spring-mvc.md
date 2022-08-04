@@ -242,52 +242,50 @@ public ResponseEntity<byte[]> testResponseEntity(HttpSession session) throws IOE
 
 ## 文件上传
 
-- 上传表单要求`method="post"`，`enctype="multipart/form-data"`
+1. 上传表单要求`method="post"`，`enctype="multipart/form-data"`
 
-```html
-<form action="testUpload" method="post" enctype="multipart/form-data">
-    文件：<input type="file" name="file"/><br><br>
-    描述：<input type="text" name="desc"/><br><br>
-    <input type="submit" value="提交"/>
-</form>
-```
+    ```html
+    <form action="testUpload" method="post" enctype="multipart/form-data">
+        文件：<input type="file" name="file"/><br><br>
+        描述：<input type="text" name="desc"/><br><br>
+        <input type="submit" value="提交"/>
+    </form>
+    ```
 
-- 导入依赖
+2. 导入依赖
 
-[Maven Repository: commons-fileupload » commons-fileupload](https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload)
+    [Maven Repository: commons-fileupload » commons-fileupload](https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload)
 
-- 配置`multipartResolver`，id 必须是这个
+3. 配置`multipartResolver`，id 必须是这个
 
-```xml
-<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-    <property name="defaultEncoding" value="utf-8"/>
-    <property name="maxUploadSize" value="8888"/>
-</bean>
-```
+    ```xml
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"/>
+        <property name="maxUploadSize" value="8888"/>
+    </bean>
+    ```
 
-- 处理
+4. 处理
 
-```java
-@RequestMapping(value = "/upload", method = RequestMethod.POST)
-public String upload(String desc, MultipartFile file) throws IOException {
-    file.transferTo(Paths.get(""));
-    return "test";
-}
-```
-
-- 多文件上传，表单改成多个同名的上传域
-
-```java
-@RequestMapping(value = "/upload", method = RequestMethod.POST)
-public String upload(String desc, @RequestParam("file") MultipartFile[] files) throws IOException {
-    for (MultipartFile file : files) {
+    ```java
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public String upload(String desc, MultipartFile file) throws IOException {
         file.transferTo(Paths.get(""));
+        return "test";
     }
-    return "test";
-}
-```
+    ```
 
-## RESTful
+5. 多文件上传，表单改成多个同名的上传域
+
+    ```java
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public String upload(String desc, @RequestParam("file") MultipartFile[] files) throws IOException {
+        for (MultipartFile file : files) {
+            file.transferTo(Paths.get(""));
+        }
+        return "test";
+    }
+    ```
 
 ## 过滤器
 
@@ -338,24 +336,24 @@ class>
 
 类似于 Servlet 中的过滤器，对处理进行预处理和后处理。
 
-1. 新类，实现`HandlerIntercepter`接口，或者继承`HandlerInterceptorAdapter`，重写方法
-2. 配置文件
+1. 新类，实现`HandlerIntercepter`接口，或者继承`HandlerInterceptorAdapter`，重写方法；
+2. 配置文件；
 
     ```xml
     <!--    拦截器-->
     <mvc:interceptors>
         <mvc:interceptor>
-            <!--        要拦截的方法-->
+            <!--        要拦截的路径-->
             <mvc:mapping path=""/>
-            <!--        不拦截的方法-->
+            <!--        不拦截的路径-->
             <mvc:exclude-mapping path=""/>
-            <!--            拦截器-->
-            <bean class="" id=""/>
+            <!--            拦截器 Bean-->
+            <bean class="" />
         </mvc:interceptor>
     </mvc:interceptors>
     ```
 
-### 执行顺序
+拦截器的执行顺序。
 
 ![img](spring-mvc.assets/wpsCwUu8t.jpg)
 
@@ -373,15 +371,53 @@ class>
 
 ## 异常处理
 
+### HandlerExceptionResolver
+
 Controller 调用 Service，Service 调用 DAO，异常都是向上抛出的，最终交由 DispatcherServlet 进行处理。
 
 1. 新类，实现 HandlerExceptionResolver；
 2. 重写方法
 3. 在配置文件里配置 bean
 
+### SimpleMappingExceptionResolver
+
 或者有个更简单的办法，自带的有个`SimpleMappingExceptionResolver`。可以快捷地将异常与视图名对应，发生异常时自动跳转到对应视图，带上异常信息，key 是`exception`。可以把所有异常作一个通用处理。
 
-## 整体运行流程
+
+```xml
+<bean
+class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+    <property name="exceptionMappings">
+        <props>
+<!-- properties 的键表示处理器方法执行过程中出现的异常 properties 的值表示若出现指定异常时，设置一个新的视图名称，跳转到指定页面 -->
+            <prop key="java.lang.ArithmeticException">error</prop>
+        </props>
+</property>
+<!-- exceptionAttribute 属性设置一个属性名，将出现的异常信息在请求域中进行共享 -->
+    <property name="exceptionAttribute" value="ex"></property>
+</bean>
+```
+
+### @ControllerAdvice
+
+```java
+@ControllerAdvice
+public class ExceptionController {
+//@ExceptionHandler 用于设置所标识方法处理的异常
+@ExceptionHandler(ArithmeticException.class)
+//ex 表示当前请求处理中出现的异常对象
+public String handleArithmeticException(Exception ex, Model model){
+        model.addAttribute("ex", ex);
+        return "error";
+    }
+}
+```
+
+## 注解配置 Spring MVC
+
+在 Servlet 3.0 环境中，容器会在类路径中查找实现`javax.servlet.ServletContainerInitializer`接口的类，如果找到的话就用它来配置 Servlet 容器。Spring 提供了这个接口的实现，名为`SpringServletContainerInitializer`，这个类反过来又会查找实现`WebApplicationInitializer`的类并将配置的任务交给它们来完成。Spring 3.2 引入了一个便利的`WebApplicationInitializer`基础实现，名为`AbstractAnnotationConfigDispatcherServletInitializer`，当我们的类扩展了`AbstractAnnotationConfigDispatcherServletInitializer`并将其部署到 Servlet 3.0 容器的时候，容器会自动发现它，并用它来配置 Servlet 上下文。
+
+## Spring MVC 运行流程
 
 ![image-20200712161734488](spring-mvc.assets/image-20200712161734488.png)
 
