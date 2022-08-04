@@ -614,4 +614,4 @@ public class Consumer {
 [^2]: [apacherocketmq/rocketmq-broker - Docker Image | Docker Hub](https://hub.docker.com/r/apacherocketmq/rocketmq-broker)
 [^3]: [apacherocketmq/rocketmq-console - Docker Image | Docker Hub](https://hub.docker.com/r/apacherocketmq/rocketmq-console)
 [^4]: [rocketmq-externals/rocketmq-console at master · apache/rocketmq-externals](https://github.com/apache/rocketmq-externals/tree/master/rocketmq-console)
-[^5]:[常见问题 · apache/rocketmq-spring Wiki](https://github.com/apache/rocketmq-spring/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
+[^5]: [常见问题 · apache/rocketmq-spring Wiki](https://github.com/apache/rocketmq-spring/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
