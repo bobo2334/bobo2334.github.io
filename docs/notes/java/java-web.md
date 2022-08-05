@@ -31,7 +31,7 @@ Servlet、Tomcat 和 Java 版本选择请参考 *Tomcat 网站* [^1]。关于 Se
 
 - 4.0.1 及之前使用此 Maven 坐标，搭配 Tomcat 9 及之前版本。
 
-    ```xml
+    ```xml title="pom.xml"
     <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
     <dependency>
         <groupId>javax.servlet</groupId>
@@ -43,7 +43,7 @@ Servlet、Tomcat 和 Java 版本选择请参考 *Tomcat 网站* [^1]。关于 Se
 
 - 4.0.2 及之后使用此坐标。
 
-    ```xml
+    ```xml title="pom.xml"
     <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
     <dependency>
         <groupId>jakarta.servlet</groupId>
@@ -55,7 +55,7 @@ Servlet、Tomcat 和 Java 版本选择请参考 *Tomcat 网站* [^1]。关于 Se
 
 - 5.0 之后使用此坐标，搭配 Tomcat 10 使用。从 5 开始后包名改变了。
 
-    ```xml
+    ```xml title="pom.xml"
     <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
     <dependency>
         <groupId>jakarta.servlet</groupId>
@@ -73,7 +73,7 @@ Servlet、Tomcat 和 Java 版本选择请参考 *Tomcat 网站* [^1]。关于 Se
 4. 配置 Servlet
 5. 改 `web.xml` 文件
 
-    ```xml
+    ```xml title="web.xml"
     <!--    配置 Servlet-->
     <servlet>
         <servlet-name>demo</servlet-name>
@@ -103,23 +103,23 @@ Servlet、Tomcat 和 Java 版本选择请参考 *Tomcat 网站* [^1]。关于 Se
 
 - `String getInitParameter(String name)`可以从配置文件中读取`init-param`中的内容。
 
-    ```xml
+    ```xml title="web.xml"
     <servlet>
-    <servlet-name>exampleServlet</servlet-name>
-    <servlet-class>me.iuok.servlet.ExampleServlet</servlet-class>
-    <init-param>
-            <param-name>encode</param-name>
-            <param-value>UTF-8</param-value>
-    </init-param>
+        <servlet-name>exampleServlet</servlet-name>
+        <servlet-class>me.iuok.servlet.ExampleServlet</servlet-class>
+        <init-param>
+                <param-name>encode</param-name>
+                <param-value>UTF-8</param-value>
+        </init-param>
     </servlet>
     ```
 
     ```java
     Enumeration<String> parameterNames = config.getInitParameterNames();
     while (parameterNames.hasMoreElements()) {
-    String parameterName = parameterNames.nextElement();
-    String value = config.getInitParameter(parameterName);
-    log.info("{}: {}", parameterName, value);
+        String parameterName = parameterNames.nextElement();
+        String value = config.getInitParameter(parameterName);
+        log.info("{}: {}", parameterName, value);
     }
     ```
 
@@ -131,12 +131,12 @@ Servlet、Tomcat 和 Java 版本选择请参考 *Tomcat 网站* [^1]。关于 Se
 
 当前 Servlet 类的实例，可以和容器通讯。
 
-- `Enumeration<String> getInitParameterNames()`获取`context-param`配置，这是所有 Servlet 都可以读取的。
+- `Enumeration<String> getInitParameterNames()`获取`context-param`配置，这是所有 Servlet 都可以读取的。这里的`context-param`没有写在`servlet`标签之内。
 
-    ```xml
+    ```xml title="web.xml"
     <context-param>
-    <param-name>encoding</param-name>
-    <param-value>UTF-8</param-value>
+        <param-name>encoding</param-name>
+        <param-value>UTF-8</param-value>
     </context-param>
     ```
 
@@ -359,9 +359,8 @@ Expression Language，可以简化 JSP 页面上 Java 代码的书写。
 
 #### Map
 
-`${域 .键名.key}`
-
-`${域 .键名.["key"]}`
+- `${域 .键名.key}`
+- `${域 .键名.["key"]}`
 
 ### JSTL
 
@@ -397,7 +396,7 @@ JSP Standard Tag Library，JSP 标准标签库。用于简化和替换 JSP 页�
 1. Filter 配置要写在 Servlet 配置之前；
 2. Filter 的顺序按照在配置文件中书写的顺序执行。
 
-```xml
+```xml title="web.xml"
 <web-app>
     <filter>
         <filter-name>XmlFilter</filter-name>
@@ -424,7 +423,7 @@ JSP Standard Tag Library，JSP 标准标签库。用于简化和替换 JSP 页�
 
 1. Filter 的顺序按照全类名排序。
 
-```java
+```java title="HelloFilter.java"
 @Slf4j
 @WebFilter("*")
 public class HelloFilter implements Filter {
@@ -510,7 +509,7 @@ Servlet 3.0 之后提供了 Servlet 注解支持，可以不用`web.xml`就能�
 
 ### ServletContentInitializer
 
-在类路径下的「META-INF/services/」下创建一个名为「javax.servlet.ServletContainerInitializer」的文本文件，其中为一个全限定类名，该类为`ServletContentInitializer`的实现类。在Servlet容器启动的时候会调用类中的回调方法完成初始化，可以注册Servlet、Listener和Filter，替代`web.xml`。
+在类路径下的「META-INF/services/」下创建一个名为「javax.servlet.ServletContainerInitializer」的文本文件，其中为一个全限定类名，该类为`ServletContentInitializer`的实现类。在Servlet容器启动的时候会调用类中的回调方法完成初始化，可以注册Servlet、Listener 和 Filter，替代`web.xml`。
 
 ### 异步请求
 
