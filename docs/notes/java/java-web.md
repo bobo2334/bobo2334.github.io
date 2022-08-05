@@ -507,9 +507,9 @@ Servlet 3.0 之后提供了 Servlet 注解支持，可以不用`web.xml`就能�
 - `@WebListener`
 - `@WebInitParam`，当需要初始化参数的时候可以配合此注解使用
 
-### ServletContentInitializer
+### ServletContainerInitializer
 
-在类路径下的「META-INF/services/」下创建一个名为「javax.servlet.ServletContainerInitializer」的文本文件，其中为一个全限定类名，该类为`ServletContentInitializer`的实现类。在Servlet容器启动的时候会调用类中的回调方法完成初始化，可以注册Servlet、Listener 和 Filter，替代`web.xml`。
+在类路径下的「META-INF/services/」下创建一个名为`javax.servlet.ServletContainerInitializer`的文本文件，其中为一个全限定类名，该类为`ServletContainerInitializer`的实现类。在Servlet容器启动的时候会调用类中的回调方法完成初始化，可以注册Servlet、Listener 和 Filter，替代`web.xml`。
 
 ### 异步请求
 
