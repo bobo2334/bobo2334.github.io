@@ -11,7 +11,7 @@
 1. 创建 Maven 工程，导入依赖
 2. 配置`web.xml`，在 Tomcat 容器开始运行时加载 SpringMVC 的 Servlet。并且使用初始化参数设置 Spring 配置文件的位置。之后再把`DispatcherServlet`映射到所有请求上，所有请求都经过此 Servlet 处理。如果没有设置配置文件路径，则默认路径为`/WEB-INF/springMVC-{servlet-name}.xml`，其中`servlet-name`是在`web.xml`中配置的`<servlet-name>`的值。
 
-    ```xml
+    ```xml title="web.xml"
     <servlet>
         <servlet-name>dispatcherServlet</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -19,7 +19,7 @@
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath:mvc.xml</param-value>
         </init-param>
-        <load-on-startup>1</load-on-startup>
+        <load-on-startup>0</load-on-startup>
     </servlet>
 
     <servlet-mapping>
@@ -30,7 +30,7 @@
 
 3. 配置 Spring，开启包扫描，开启注解支持，并配置一个视图解析器，注入参数
 
-    ```xml
+    ```xml title="applicationContext.xml"
     <context:component-scan base-package="me.iuok"/>
 
     <!--    注解支持-->
@@ -45,7 +45,7 @@
 
 4. 编写 Controller，处理业务逻辑
 
-    ```java
+    ```java title="HelloController.java"
     @Slf4j
     @Controller
     public class HelloController {
@@ -207,7 +207,7 @@ return "redirect:/index.jsp";
 
 ## 视图控制器
 
-```xml
+```xml title="applicationContext.xml"
 <mvc:annotation-driven />
 
 <!-- 只设置下面这一行的话，通过注解设置的路由都会失效 -->
@@ -258,7 +258,7 @@ public ResponseEntity<byte[]> testResponseEntity(HttpSession session) throws IOE
 
 3. 配置`multipartResolver`，id 必须是这个
 
-    ```xml
+    ```xml title="applicationContext.xml"
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="defaultEncoding" value="utf-8"/>
         <property name="maxUploadSize" value="8888"/>
@@ -296,7 +296,7 @@ public ResponseEntity<byte[]> testResponseEntity(HttpSession session) throws IOE
 - `forceEncoding`设置为`false`的时候，如果 request 未设置字符集才会对 request 设置字符集，不会对 response 设置字符集；
 - `forceEncoding`设置为`true`的时候，任何时候都会对 request 和 response 设置字符集。
 
-```xml
+```xml title="web.xml"
 <filter>
     <filter-name>CharacterEncodingFilter</filter-name>
     <filter-
@@ -320,7 +320,7 @@ class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
 
 这个过滤器处理请求参数中的`_method`字段。有些客户端只能发送 GET 和 POST 请求，不能发送 DELETE 或 PUT 请求，这个字段用于告知 Spring MVC 模拟请求方法。
 
-```xml
+```xml title="web.xml"
 <filter>
     <filter-name>HiddenHttpMethodFilter</filter-name>
     <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-
@@ -339,7 +339,7 @@ class>
 1. 新类，实现`HandlerIntercepter`接口，或者继承`HandlerInterceptorAdapter`，重写方法；
 2. 配置文件；
 
-    ```xml
+    ```xml title="applicationContext.xml"
     <!--    拦截器-->
     <mvc:interceptors>
         <mvc:interceptor>
@@ -383,8 +383,7 @@ Controller 调用 Service，Service 调用 DAO，异常都是向上抛出的，�
 
 或者有个更简单的办法，自带的有个`SimpleMappingExceptionResolver`。可以快捷地将异常与视图名对应，发生异常时自动跳转到对应视图，带上异常信息，key 是`exception`。可以把所有异常作一个通用处理。
 
-
-```xml
+```xml title="applicationContext.xml"
 <bean
 class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
     <property name="exceptionMappings">
@@ -400,7 +399,7 @@ class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 
 ### @ControllerAdvice
 
-```java
+```java title="ExceptionController.java"
 @ControllerAdvice
 public class ExceptionController {
 //@ExceptionHandler 用于设置所标识方法处理的异常
@@ -428,9 +427,7 @@ public String handleArithmeticException(Exception ex, Model model){
 
 SpringMVC 与 Spring 整合是为了**分工明确**。
 
-- web.xml
-
-```xml
+```xml title="web.xml"
 <servlet>
 <servlet-name>springDispatcherServlet</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -438,7 +435,7 @@ SpringMVC 与 Spring 整合是为了**分工明确**。
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:springmvc.xml</param-value>
     </init-param>
-    <load-on-startup>1</load-on-startup>
+    <load-on-startup>0</load-on-startup>
 </servlet>
 <servlet-mapping>
     <servlet-name>springDispatcherServlet</servlet-name>
@@ -454,17 +451,13 @@ SpringMVC 与 Spring 整合是为了**分工明确**。
 </listener>
 ```
 
-- mvc.xml
-
-```xml
+```xml title="mvc.xml"
 <context:component-scan base-package="com.gql" use-default-filters="false">
     <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 </context:component-scan>
 ```
 
-- spring.xml
-
-```xml
+```xml title="spring.xml"
 <context:component-scan base-package="com.gql">
     <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 </context:component-scan>
