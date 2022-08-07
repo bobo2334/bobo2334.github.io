@@ -420,52 +420,25 @@ public String handleArithmeticException(Exception ex, Model model){
 
 ![image-20200712161734488](spring-mvc.assets/image-20200712161734488.png)
 
-## 与 Spring 整合
-
-- [SpringMVC 与 Spring 整合_Hudie.的博客-CSDN 博客_springmvc+spring 整合](https://blog.csdn.net/weixin_43691058/article/details/105453601)
-- [Spring 整合 SpringMVC | 码农家园](https://www.codenong.com/cs106050175/)
-
-SpringMVC 与 Spring 整合是为了**分工明确**。
-
-```xml title="web.xml"
-<servlet>
-<servlet-name>springDispatcherServlet</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:springmvc.xml</param-value>
-    </init-param>
-    <load-on-startup>0</load-on-startup>
-</servlet>
-<servlet-mapping>
-    <servlet-name>springDispatcherServlet</servlet-name>
-    <url-pattern>/</url-pattern>
-</servlet-mapping>
-
-<context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>classpath:spring.xml</param-value>
-</context-param>
-<listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-</listener>
-```
-
-```xml title="mvc.xml"
-<context:component-scan base-package="com.gql" use-default-filters="false">
-    <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-</context:component-scan>
-```
-
-```xml title="spring.xml"
-<context:component-scan base-package="com.gql">
-    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-</context:component-scan>
-```
-
-两个容器同时存在情况下，Spring 容器作为父容器，SpringMVC 容器作为子容器。
-
-SpringMVC 容器中的 Bean 可以引用 Spring 容器中的 Bean，反过来则不行。
+1. 用户向服务器发送请求，请求被 SpringMVC 前端控制器 DispatcherServlet 捕获。
+2. DispatcherServlet 对请求 URL 进行解析，得到请求资源标识符 (URI)，判断请求 URI 对应的映射：
+    1. 不存在
+        1. 再判断是否配置了 mvc:default-servlet-handler
+        2. 如果没配置，则控制台报映射查找不到，客户端展示 404 错误
+        3. 如果有配置，则访问目标资源 (一般为静态资源，如:JS、CSS、HTML)，找不到客户端也会展示 404 错误
+    2. 存在则执行下面的流程
+3. 根据该 URI，调用 HandlerMapping 获得该 Handler 配置的所有相关的对象 (包括 Handler 对象以及 Handler 对象对应的拦截器)，最后以 HandlerExecutionChain 执行链对象的形式返回。
+4. DispatcherServlet 根据获得的 Handler，选择一个合适的 HandlerAdapter。
+5. 如果成功获得 HandlerAdapter，此时将开始执行拦截器的 preHandler(...) 方法【正向】
+6. 提取 Request 中的模型数据，填充 Handler 入参，开始执行 Handler(Controller) 方法，处理请求。在填充 Handler 的入参过程中，根据你的配置，Spring 将帮你做一些额外的工作：
+    1. HttpMessageConveter: 将请求消息 (如 Json、xml 等数据) 转换成一个对象，将对象转换为指定 的响应信息
+    2. 数据转换：对请求消息进行数据转换。如 String 转换成 Integer、Double 等
+    3. 数据格式化：对请求消息进行数据格式化。如将字符串转换成格式化数字或格式化日期等 d) 数据验证：验证数据的有效性 (长度、格式等)，验证结果存储到 BindingResult 或 Error 中
+7. Handler 执行完成后，向 DispatcherServlet 返回一个 ModelAndView 对象。
+8. 此时将开始执行拦截器的 postHandle(...) 方法【逆向】。
+9. 根据返回的 ModelAndView(此时会判断是否存在异常：如果存在异常，则执行 HandlerExceptionResolver 进行异常处理) 选择一个适合的 ViewResolver 进行视图解析，根据 Model 和 View，来渲染视图。
+10. 渲染视图完毕执行拦截器的 afterCompletion(...) 方法【逆向】。
+11. 将渲染结果返回给客户端。
 
 ## 异步请求
 
