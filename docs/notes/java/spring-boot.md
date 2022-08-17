@@ -1,13 +1,16 @@
 ---
 draft: true
 ---
+
 # Spring Boot
 
 ## 参考资料
 
-1. [Spring Boot](https://spring.io/projects/spring-boot#learn)
-2. [Spring Boot 中文文档 参考手册 中文版](https://www.springcloud.cc/spring-boot.html)
-3. [What are microservices?](https://microservices.io/)
+- [【尚硅谷】SpringBoot2 零基础入门教程（spring boot2 干货满满）\_哔哩哔哩\_bilibili](https://www.bilibili.com/video/BV19K4y1L7MT)
+- [SpringBoot2 核心技术与响应式编程 · 语雀](https://www.yuque.com/atguigu/springboot)
+- [Spring Boot](https://spring.io/projects/spring-boot#learn)
+- [Spring Boot 中文文档 参考手册 中文版](https://www.springcloud.cc/spring-boot.html)
+- [What are microservices?](https://microservices.io/)
 
 ## 概述
 
@@ -39,9 +42,7 @@ Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门�
 #### 指定配置文件
 
 1. 对于多文件方式，在主配置文件中设置 `spring.profiles.active={profile}` ，来指定使用的文件；
-
 2. 对于 YAML 多文档块方式，在第一个文档快里设置 `spring.profiles.active` 来选择使用对应的文档；
-
 3. 启动命令行参数指定配置文件；
 
    ```bash
@@ -69,15 +70,15 @@ Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门�
 
 ## 自动配置
 
-- @SpringBootApplication
-  - @SpringBootConfiguration：Spring Boot 配置类
-    - @Configuration：用在 Spring 中的注解配置
-      - @Component：配置类也是一个组件
-  - @EnableAutoConfiguration
-    - @AutoConfigurationPackage
-      - @Import(AutoConfigurationPackages.Registrar.class)：将主配置类（@SpringBootApplication 标注的类）的所在包及下面所有子包里面的所有组件扫描到 Spring 容器；
-    - @Import(AutoConfigurationImportSelector.class)：导入哪些组件的选择器，会给容器中导入非常多的自动配置类（xxxAutoConfiguration）；就是给容器中导入这个场景需要的所有组件，并配置好这些组件；Spring Boot 在启动的时候从类路径下的 `META-INF/spring.factories` 中获取 EnableAutoConfiguration 指定的值，将 这些值作为自动配置类导入到容器中，自动配置类就生效，帮我们进行自动配置工作
-  - @ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),      @Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
+- `@SpringBootApplication`
+  - `@SpringBootConfiguration`：Spring Boot 配置类
+    - `@Configuration`：用在 Spring 中的注解配置
+      - `@Component`：配置类也是一个组件
+  - `@EnableAutoConfiguration`
+    - `@AutoConfigurationPackage`
+      - `@Import(AutoConfigurationPackages.Registrar.class)`：将主配置类（@SpringBootApplication 标注的类）的所在包及下面所有子包里面的所有组件扫描到 Spring 容器；
+    - `@Import(AutoConfigurationImportSelector.class)`：导入哪些组件的选择器，会给容器中导入非常多的自动配置类（xxxAutoConfiguration）；就是给容器中导入这个场景需要的所有组件，并配置好这些组件；Spring Boot 在启动的时候从类路径下的 `META-INF/spring.factories` 中获取 EnableAutoConfiguration 指定的值，将 这些值作为自动配置类导入到容器中，自动配置类就生效，帮我们进行自动配置工作
+  - `@ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),      @Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })`
 
 ### 自定义自动配置类
 
