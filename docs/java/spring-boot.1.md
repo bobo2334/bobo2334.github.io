@@ -14,7 +14,7 @@ Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门�
 
 ## Spring Initializer
 
-快速生成工程。
+用于快速生成工程结构。
 
 - [Spring Initializr](https://start.spring.io/)
 - [Aliyun Java Initializr](https://start.aliyun.com/)
@@ -69,20 +69,6 @@ Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门�
 
 ## 自动配置
 
-### 自动配置原理
-
-主配置类上标注了`@SpringBootApplication`注解，这是个复合注解。
-
-- `@SpringBootApplication`
-  - `@SpringBootConfiguration`：Spring Boot 配置类
-    - `@Configuration`：用在 Spring 中的注解配置
-      - `@Component`：配置类也是一个组件
-  - `@EnableAutoConfiguration`
-    - `@AutoConfigurationPackage`
-      - `@Import(AutoConfigurationPackages.Registrar.class)`：将主配置类（@SpringBootApplication 标注的类）的所在包及下面所有子包里面的所有组件扫描到 Spring 容器；
-    - `@Import(AutoConfigurationImportSelector.class)`：导入哪些组件的选择器，会给容器中导入非常多的自动配置类（xxxAutoConfiguration）；就是给容器中导入这个场景需要的所有组件，并配置好这些组件；Spring Boot 在启动的时候从类路径下的 `META-INF/spring.factories` 中获取 EnableAutoConfiguration 指定的值，将这些值作为自动配置类导入到容器中，自动配置类就生效，帮我们进行自动配置工作
-  - `@ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),      @Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })`
-
 ### 配置文件绑定
 
 在类上加注解`@ConfigurationProperties`，Spring Boot 会把对应的配置文件内容和类中的属性映射。
@@ -102,9 +88,9 @@ Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门�
 
 ```xml
 <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring‐boot‐configuration‐processor</artifactId>
-        <optional>true</optional>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring‐boot‐configuration‐processor</artifactId>
+    <optional>true</optional>
 </dependency>
 ```
 
@@ -130,13 +116,15 @@ Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门�
 - `@ConditionalOnSingleCandidate`
 - `@ConditionalOnWarDeployment`
 
-### 自定义 starter
-
 ## 使用传统配置文件
 
 使用`@ImportResource`注解，标注在配置类上，导入 Spring 配置文件，让配置文件里的内容生效。
 
 ## Web 开发
+
+### Web 环境自动配置
+
+`org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration`是自动配置类。
 
 ### 静态资源访问
 
@@ -146,10 +134,6 @@ starter 自动配置了`ResourceHttpRequestHandler`。默认配置下，以下�
 - `/public/`
 - `/resources/`
 - `/META-INF/resources/`
-
-### 自动配置
-
-`org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration`是自动配置类。
 
 ### HiddenHttpMethodFilter
 
@@ -199,6 +183,12 @@ starter 自动配置了`ResourceHttpRequestHandler`。默认配置下，以下�
     - `UriComponentsBuilder`
     - `ServletUriComponentsBuilder`
 4. pojo：`ServletModelAttributeMethodProcessor`
+
+### Converter
+
+用于控制器方法参数注入，客户端提交的数据都是文本类型，需要通过 Converter 转换到对应类型。
+
+如果需要自定义 Converter，在`WebMvcConfigurer`的子类中重写`addFormatters`方法即可。
 
 ### 数据验证
 
