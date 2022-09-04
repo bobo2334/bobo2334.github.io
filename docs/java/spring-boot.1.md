@@ -42,7 +42,7 @@ Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门�
 - `#`表示注释；
 - 字符串无需加引号，也可以加。单引号中的内容会被转义；双引号中的内容不会被转义。
 
-### Profile
+### Profile 多环境配置
 
 #### 多文件
 
@@ -58,9 +58,10 @@ Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门�
 2. 对于 YAML 多文档块方式，在第一个文档快里设置 `spring.profiles.active` 来选择使用对应的文档；
 3. 启动命令行参数指定配置文件：`--spring.profiles.active=dev`；
 4. 虚拟机参数指定配置文件：`-Dspring.profiles.active=dev`；
-5. 使用命令行参数指定外部配置文件：`--spring.config.location=`。
+5. 使用命令行参数指定外部配置文件：`--spring.config.location=`；
+6. 使用`@Profile`注解来条件加载 Bean。
 
-### 加载顺序
+### 配置文件加载顺序
 
 1. `flie: ./config/`
 2. `file: ./`
@@ -73,11 +74,12 @@ Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门�
 
 在类上加注解`@ConfigurationProperties`，Spring Boot 会把对应的配置文件内容和类中的属性映射。
 
-仅仅使用`@ConfigurationProperties`是不生效的，只有在该类被加载进入 Spring 容器中才生效。
+仅仅使用`@ConfigurationProperties`是不生效的，只有在该类被加载进入 Spring 容器中才生效，所以还需要配合其它注解使用。
 
 1. 可以使用`@Component`注解将配置类加入容器；
 2. 或者在其它需要使用配置类的类上使用`@EnableConfigurationProperties(*.class)`来把对应的配置类加入容器，此注解的作用类似于`@Import`；
-3. 或者使用`@ConfigurationPropertiesScan`配置扫描包路径下的所有配置类，并将其加入应用容器中。
+3. 或者使用`@ConfigurationPropertiesScan`配置扫描包路径下的所有配置类，并将其加入应用容器中；
+4. 或者使用`@Import(*.class)`注解加载配置类。
 
 ```java
 @Component
@@ -192,7 +194,9 @@ starter 自动配置了`ResourceHttpRequestHandler`。默认配置下，以下�
 
 ### 数据验证
 
-## 测试
+## 单元测试
+
+---
 
 ## 注解
 
