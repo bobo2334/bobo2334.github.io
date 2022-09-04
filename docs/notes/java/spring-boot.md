@@ -1,7 +1,3 @@
----
-draft: true
----
-
 # Spring Boot
 
 ## 参考资料
@@ -16,6 +12,13 @@ draft: true
 
 Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门容易，精通难。是 J2EE 的一站式解决方案。
 
+## Spring Initializer
+
+快速生成工程。
+
+- [Spring Initializr](https://start.spring.io/)
+- [Aliyun Java Initializr](https://start.aliyun.com/)
+
 ## 配置文件
 
 ### 文件格式
@@ -25,9 +28,19 @@ Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门�
 
 ### 占位符
 
-- `${random.uuid}` 生成一些随机值
-- `${person.name}` 引用其他值
-- `${person.name:default}` 冒号后面可以跟默认值
+- `${random.uuid}`，生成一些随机值
+- `${person.name}`，引用其他值
+- `${person.name:default}`，冒号后面可以跟默认值
+
+### YAML 语法
+
+- `key: value`，冒号之后有空格。
+- 大小写敏感；
+- 使用缩进表示层级关系；
+- 缩进不允许使用 tab，只允许空格；
+- 缩进的空格数不重要，只要相同层级的元素左对齐即可；
+- `#`表示注释；
+- 字符串无需加引号，也可以加。单引号中的内容会被转义；双引号中的内容不会被转义。
 
 ### Profile
 
@@ -43,23 +56,9 @@ Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门�
 
 1. 对于多文件方式，在主配置文件中设置 `spring.profiles.active={profile}` ，来指定使用的文件；
 2. 对于 YAML 多文档块方式，在第一个文档快里设置 `spring.profiles.active` 来选择使用对应的文档；
-3. 启动命令行参数指定配置文件；
-
-   ```bash
-   --spring.profiles.active=dev
-   ```
-
-4. 虚拟机参数指定配置文件；
-
-   ```bash
-   -Dspring.profiles.active=dev
-   ```
-
-5. 使用命令行参数指定外部配置文件。
-
-   ```bash
-   --spring.config.location=
-   ```
+3. 启动命令行参数指定配置文件：`--spring.profiles.active=dev`；
+4. 虚拟机参数指定配置文件：`-Dspring.profiles.active=dev`；
+5. 使用命令行参数指定外部配置文件：`--spring.config.location=`。
 
 ### 加载顺序
 
@@ -70,6 +69,10 @@ Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门�
 
 ## 自动配置
 
+### 自动配置原理
+
+主配置类上标注了`@SpringBootApplication`注解，这是个复合注解。
+
 - `@SpringBootApplication`
   - `@SpringBootConfiguration`：Spring Boot 配置类
     - `@Configuration`：用在 Spring 中的注解配置
@@ -77,22 +80,27 @@ Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门�
   - `@EnableAutoConfiguration`
     - `@AutoConfigurationPackage`
       - `@Import(AutoConfigurationPackages.Registrar.class)`：将主配置类（@SpringBootApplication 标注的类）的所在包及下面所有子包里面的所有组件扫描到 Spring 容器；
-    - `@Import(AutoConfigurationImportSelector.class)`：导入哪些组件的选择器，会给容器中导入非常多的自动配置类（xxxAutoConfiguration）；就是给容器中导入这个场景需要的所有组件，并配置好这些组件；Spring Boot 在启动的时候从类路径下的 `META-INF/spring.factories` 中获取 EnableAutoConfiguration 指定的值，将 这些值作为自动配置类导入到容器中，自动配置类就生效，帮我们进行自动配置工作
+    - `@Import(AutoConfigurationImportSelector.class)`：导入哪些组件的选择器，会给容器中导入非常多的自动配置类（xxxAutoConfiguration）；就是给容器中导入这个场景需要的所有组件，并配置好这些组件；Spring Boot 在启动的时候从类路径下的 `META-INF/spring.factories` 中获取 EnableAutoConfiguration 指定的值，将这些值作为自动配置类导入到容器中，自动配置类就生效，帮我们进行自动配置工作
   - `@ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),      @Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })`
 
-### 自定义自动配置类
+### 配置文件绑定
 
-在类上加注解，Spring Boot 会把对应的配置文件内容和类中的属性映射。在容器中才生效，默认的 `org.springframework.boot.autoconfigure` 下的所有自动配置类都在容器中，如果需要自定义的话需要加上 `@Component`
+在类上加注解`@ConfigurationProperties`，Spring Boot 会把对应的配置文件内容和类中的属性映射。
+
+仅仅使用`@ConfigurationProperties`是不生效的，只有在该类被加载进入 Spring 容器中才生效。
+
+1. 可以使用`@Component`注解将配置类加入容器；
+2. 或者在其它需要使用配置类的类上使用`@EnableConfigurationProperties(*.class)`来把对应的配置类加入容器，此注解的作用类似于`@Import`；
+3. 或者使用`@ConfigurationPropertiesScan`配置扫描包路径下的所有配置类，并将其加入应用容器中。
 
 ```java
 @Component
 @ConfigurationProperties(prefix = "spring.datasource")
 ```
 
-再导入依赖，IDE 就能自动提示自定义的配置属性。
+`spring‐boot‐configuration‐processor`可以自动生成配置类的元信息，存储在`META-INF/spring-configuration-metadata.json`中，用于给 IDE 配置文件的语法提示功能提供支持。导入依赖，运行一次程序，IDE 就能自动提示自定义的配置属性。
 
 ```xml
-<!‐‐导入配置文件处理器，配置文件进行绑定就会有提示‐‐>
 <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring‐boot‐configuration‐processor</artifactId>
@@ -100,22 +108,39 @@ Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门�
 </dependency>
 ```
 
+### 条件加载
+
+使用`@Conditional`注解，参数是一个`org.springframework.context.annotation.Condition`实现类，通过该接口中的`match`方法判断是否满足条件，从而是否加载`@Conditional`注解标注的类或者方法。
+
+`@Conditional`有许多现成的子注解可以使用，Spring Boot 给你写好了`Condition`实现类。
+
+- `@Profile`
+- `@ConditionalOnBean`
+- `@ConditionalOnMissingBean`
+- `@ConditionalOnClass`
+- `@ConditionalOnMissingClass`
+- `@ConditionalOnWebApplication`
+- `@ConditionalOnNotWebApplication`
+- `@ConditionalOnCloudPlatform`
+- `@ConditionalOnExpression`
+- `@ConditionalOnJava`
+- `@ConditionalOnJndi`
+- `@ConditionalOnProperty`
+- `@ConditionalOnResource`
+- `@ConditionalOnSingleCandidate`
+- `@ConditionalOnWarDeployment`
+
+### 自定义 starter
+
+## 使用传统配置文件
+
+使用`@ImportResource`注解，标注在配置类上，导入 Spring 配置文件，让配置文件里的内容生效。
+
+## 数据验证
+
+## 测试
+
 ## 注解
-
-### @RestController
-
-```java
-@Controller
-@ResponseBody
-```
-
-### @ConfigurationProperties
-
-注入配置文件中的配置项到类中。
-
-### @Value
-
-来自 Spring，注入基本数据类型和 String，支持 SpEL 表达式。
 
 ### @Validated
 
@@ -124,10 +149,6 @@ Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门�
 ### @PropertySource
 
 配合 `@ConfigurationProperties` ，指定配置文件获取属性值。
-
-### @ImportResource
-
-标注在配置类上，导入 Spring 配置文件，让配置文件里的内容生效。
 
 ## 整合
 
@@ -259,6 +280,3 @@ public void addInterceptors(InterceptorRegistry registry) {
 
 // TODO
 
-## 自定义 starter
-
-// TODO
