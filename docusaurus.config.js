@@ -106,10 +106,10 @@ const config = {
                     src: 'android-chrome-512x512.png',
                 },
                 items: [
-                    { to: '/docs/bookmarks/interesting-projects', label: '笔记', position: 'left' },
-                    { to: '/blog/', label: '文章', position: 'left' },
-                    { to: '/blog/archive', label: '文章归档', position: 'left' },
-                    { to: '/blog/tags', label: '文章标签', position: 'left' },
+                    { to: '/docs/c/', label: '学习笔记', position: 'left' },
+                    { to: '/blog/', label: '最近文章', position: 'left' },
+                    { to: '/blog/archive/', label: '文章归档', position: 'left' },
+                    { to: '/blog/tags/', label: '文章标签', position: 'left' },
                     {
                         href: 'https://github.com/bobo2334/bobo2334.github.io',
                         label: 'GitHub',

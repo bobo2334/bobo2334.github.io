@@ -1,4 +1,4 @@
-# Spring Boot
+# Spring Boot 基础
 
 ## 参考资料
 
@@ -136,7 +136,71 @@ Spring Boot 是 Spring 框架的再封装，简化 Spring 应用开发。入门�
 
 使用`@ImportResource`注解，标注在配置类上，导入 Spring 配置文件，让配置文件里的内容生效。
 
-## 数据验证
+## Web 开发
+
+### 静态资源访问
+
+starter 自动配置了`ResourceHttpRequestHandler`。默认配置下，以下这些文件夹中的静态资源都能被访问到。
+
+- `/static/`
+- `/public/`
+- `/resources/`
+- `/META-INF/resources/`
+
+### 自动配置
+
+`org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration`是自动配置类。
+
+### HiddenHttpMethodFilter
+
+默认不配置，需要设置`spring.mvc.hiddenmethod.filter.enabled`才会开启。
+
+### RequestMappingHandlerMapping
+
+- HandlerMapping
+  - RequestMappingHandlerMapping
+- HandlerAdapter
+- HandlerExecutionChain
+
+### 控制器方法参数注入
+
+各种类型的参数是通过`org.springframework.web.method.support.HandlerMethodArgumentResolver`实现类完成封装的。
+
+1. 注解
+    - `@Value`
+    - `@PathVariable`
+    - `@RequestParam`
+    - `@RequestHeader`
+    - `@CookieValue`
+    - `@RequestBody`
+    - `@ModelAttribute`
+    - `@MatrixVariable`
+2. Servlet API：`ServletRequestMethodArgumentResolver`
+    - `WebRequest`
+    - `ServletRequest`
+    - `MultipartRequest`
+    - `HttpSession`
+    - `javax.servlet.http.PushBuilder`
+    - `Principal`
+    - `InputStream`
+    - `Reader`
+    - `HttpMethod`
+    - `Locale`
+    - `TimeZone`
+    - `ZoneId`
+3. 复杂参数
+    - `Map`
+    - `Model`
+    - `Errors`
+    - `BindingResult`
+    - `RedirectAttributes`
+    - `ServletResponse`
+    - `SessionStatus`
+    - `UriComponentsBuilder`
+    - `ServletUriComponentsBuilder`
+4. pojo：`ServletModelAttributeMethodProcessor`
+
+### 数据验证
 
 ## 测试
 
