@@ -70,7 +70,7 @@ const config = {
             type: "image/png"
         },
         {
-            href: "/manifest.json",
+            href: "/site.webmanifest",
             rel: "manifest",
         },
         {
@@ -96,14 +96,14 @@ const config = {
         ({
             metadata: [
                 { name: 'msapplication-TileColor', contnet: '#da532c' },
-                { name: 'theme-color', contnet: '#25c2a0' },
+                { name: 'theme-color', contnet: '#ffffff' },
             ],
 
             navbar: {
                 title: '我的学习笔记',
                 logo: {
                     alt: 'Logo',
-                    src: 'android-chrome-512x512.png',
+                    src: 'android-chrome-192x192.png',
                 },
                 items: [
                     { to: '/docs/c/', label: '学习笔记', position: 'left' },
