@@ -38,6 +38,9 @@ const config = {
                     blogSidebarTitle: '最新文章',
                     truncateMarker: /<!--\s*more\s*-->/,
                     feedOptions: { type: ['rss', 'atom'] }
+                },
+                theme: {
+                    customCss: require.resolve('./src/css/custom.css'),
                 }
             }),
         ],
