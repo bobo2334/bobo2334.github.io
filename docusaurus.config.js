@@ -81,14 +81,8 @@ const config = {
     ],
 
     i18n: {
-        defaultLocale: 'zh-cn',
-        locales: ['zh-cn'],
-        localeConfigs: {
-            'zh-cn': {
-                label: '中文（中国）',
-                direction: 'ltr',
-            }
-        },
+        defaultLocale: 'zh-Hans',
+        locales: ['zh-Hans'],
     },
 
     themeConfig:
@@ -132,24 +126,16 @@ const config = {
                 maxHeadingLevel: 5
             }
         }),
-    plugins: [
+    themes: [
         [
-            '@docusaurus/plugin-pwa',
+            "@easyops-cn/docusaurus-search-local",
             {
-                offlineModeActivationStrategies: [
-                    'appInstalled',
-                    'standalone',
-                    'queryString',
-                ],
+                hashed: true,
+                language: ["en", "zh"],
+                highlightSearchTermsOnTargetPage: true,
+                explicitSearchResultPath: true,
             },
         ],
-        [
-            require.resolve('docusaurus-lunr-search'),
-            {
-                languages: ["en", "zh"],
-                indexBaseUrl: true
-            }
-        ]
     ],
 };
 
