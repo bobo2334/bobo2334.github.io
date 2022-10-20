@@ -303,7 +303,8 @@ DSM 启动过程中 noVNC 控制台中也会打印出 IP 信息，但是不一�
 
 1. 「Proxy SwitchyOmega」这款浏览器插件可能会影响访问 DSM 安装向导，导致网页一直加载中，不显示内容。当你访问不了安装向导网页时可以尝试关闭此浏览器插件和其他代理软件；
 2. 如果 DSM 系统安装过程中遇到其它错误，可以尝试先在 Windows PE 系统中删除数据硬盘的所有分区，再尝试安装 DSM 系统；
-3. 系统初始化设置完成之前可以通过`root`账户和空密码在串口控制台登录；初始化完成之后就只能通过创建的用户的用户名和密码登录了；不过都可以通过`ifconfig`命令看网络配置信息；
+3. 安装系统的过程中记得要断开 NAS 的外网，不然会一直循环安装系统的过程；
+4. 系统初始化设置完成之前可以通过`root`账户和空密码在串口控制台登录；初始化完成之后就只能通过创建的用户的用户名和密码登录了；不过都可以通过`ifconfig`命令看网络配置信息。
 
 ## 参考资料
 
@@ -311,7 +312,7 @@ DSM 启动过程中 noVNC 控制台中也会打印出 IP 信息，但是不一�
 
 - [【授人鱼不如授人以渔】史上最简单的黑群晖 DSM7.X 引导编译方法，小学生都能操作！（黑群晖 DSM7.X 引导编译教程） - GXNAS 博客](https://wp.gxnas.com/12245.html)
 
-分隔线之后是脚注部分。
+分隔线之后是文章的脚注部分。
 
 [^1]: [ZFile | install-synology-dsm-7-in-proxmox-ve](https://zfile.iuok.me/1/articles/install-synology-dsm-7-in-proxmox-ve)
 [^2]: [fbelavenuto/arpl: Automated Redpill Loader](https://github.com/fbelavenuto/arpl)
