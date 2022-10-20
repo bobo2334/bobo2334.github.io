@@ -12,7 +12,7 @@ tags:
 
 动态的喷漆也是这个游戏的乐趣之一，尝试自己制作一下动态喷漆，将 GIF 图片转换为可以在游戏中使用的动态喷涂文件。
 
-文中使用的工具和成品可以从 [这里](https://zfile.iuok.me/directlink/1/articles/making-dynamic-spray-paint-for-left-4-dead-2/tools.zip) 下载。
+文中使用的工具和成品可以从 [这里](https://zfile.iuok.me/1/articles/making-dynamic-spray-paint-for-left-4-dead-2) 下载。
 
 <!-- more -->
 

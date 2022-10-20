@@ -15,7 +15,7 @@ tags:
 
 ## 文中从互联网上下载的文件备份
 
-文中有一些文件是从互联网上下载的，为了防止其中的某些资源在某些时刻时效，这里做一个[备份](https://zfile.iuok.me/1/main/articles/install-synology-dsm-in-proxmox-ve)。
+文中有一些文件是从互联网上下载的，为了防止其中的某些资源在某些时刻时效，这里做一个[备份](https://zfile.iuok.me/1/articles/install-synology-dsm-in-proxmox-ve)。
 
 ## 下载引导
 
