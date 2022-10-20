@@ -5,11 +5,11 @@ tags:
     - synology
 ---
 
-# 在 Proxmox VE 中安装群晖 DSM
+# 在 Proxmox VE 中安装群晖 DSM 6
 
 ## 前言
 
-感觉比在 ESXi 中安装要简单不少。本文中使用 DS918+ 型号引导和系统。
+感觉比在 ESXi 中安装要简单不少。本文中使用 DS918+ 型号对应的引导和系统。
 
 <!-- more -->
 
@@ -59,7 +59,7 @@ v1.04b 支持 DSM 6.2 或 6.2.1 系统，去 *群晖网站 [^2]* 下载系统；
 
 ![screenshot-192.168.10.200_8006-2022.06.18-11_48_22](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_48_22.png)
 
-7. 网络。网卡模型选择 E1000，取消勾选防火墙；
+7. 网络。网卡模型选择 Intel E1000，取消勾选防火墙；
 
 ![screenshot-192.168.10.200_8006-2022.06.18-11_48_37](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_48_37.png)
 
