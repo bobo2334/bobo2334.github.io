@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[5444],{41718:function(e){e.exports=JSON.parse('{"label":"gitea","permalink":"/blog/tags/gitea","allTagsPath":"/blog/tags","count":1}')}}]);
