@@ -31,7 +31,7 @@ const config = {
                     rehypePlugins: [katex],
                 },
                 blog: {
-                    showReadingTime: false,
+                    showReadingTime: true,
                     editUrl: 'https://github.com/bobo2334/bobo2334.github.io/edit/master/',
                     remarkPlugins: [math, mermaid],
                     rehypePlugins: [katex],
