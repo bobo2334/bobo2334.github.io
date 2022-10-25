@@ -4,7 +4,7 @@ tags:
     - ssh
 ---
 
-# SSH 密钥登录
+# 使用 SSH 密钥认证方式登录服务器
 
 ## 前言
 
@@ -14,21 +14,19 @@ tags:
 
 ## 生成秘钥
 
-可以用 OpenSSH 中的`ssh-keygen`命令行工具来生成秘钥。`-t`参数指定了加密方式，通常为`rsa`或`dsa`。
+可以用 OpenSSH 中的`ssh-keygen`命令行工具来生成秘钥。`-t`参数指定了加密方式，`rsa`加密已经不安全，在较新版本的 OpenSSH 中默认已被关闭，推荐使用`ed25519`加密。
+
+使用下面的命令来生成 SSH 密钥对，请把下面的`your_email@example.com`替换为你的邮箱。
 
 ```bash
-ssh-keygen -t rsa
+ssh-keygen -t ed25519 -C "your_email@example.com"
 ```
 
-生成的密钥文件默认就会是`~/.ssh/id_rsa`（私钥）和`~/.ssh/id_rsa.pub`（公钥）。
-
-也可以用 PuTTY 中提供的 PuTTY Key Generator（puttygen.exe）[^2] 来用可视化用户界面来生成秘钥文件。
-
-![image-20210816230720070](./ssh-certificate-authentication.assets/image-20210816230720070.png)
+生成的密钥文件默认位于`~/.ssh/id_ed25519`（私钥）和`~/.ssh/id_ed25519.pub`（公钥）。
 
 ## 把公钥放在服务器上
 
-用户公钥保存在`~/.ssh/authorized_keys`文件中，如果该文件不存在，你可以手动创建一个。
+用户公钥保存在服务器的`~/.ssh/authorized_keys`文件中，如果该文件不存在，你可以手动创建一个。
 
 然后将公钥的文本内容放入其中，每行一个。
 
@@ -69,4 +67,3 @@ ssh -i .\centos7\.vagrant\machines\default\virtualbox\private_key vagrant@192.16
 - [14.3. Using OpenSSH Certificate Authentication Red Hat Enterprise Linux 6 | Red Hat Customer Portal](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/sec-using_openssh_certificate_authentication)
 
 [^1]: [SSH 密钥登录 - SSH 教程 - 网道](https://wangdoc.com/ssh/key.html)
-[^2]: [Download PuTTY: latest release (0.76)](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
