@@ -4,8 +4,6 @@
 
 - [开始学习 HTML - 学习 Web 开发 | MDN](https://developer.mozilla.org/zh-CN/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
 - [尚硅谷 Web 前端零基础入门 HTML5+CSS3 基础教程丨初学者从入门到精通\_哔哩哔哩\_bilibili](https://www.bilibili.com/video/BV1XJ411X7Ud/)
-- [Entity - 术语表 | MDN](https://developer.mozilla.org/zh-CN/docs/Glossary/Entity)
-- [HTML Standard](https://html.spec.whatwg.org/multipage/named-characters.html#named-character-references)
 
 ## 简介
 
@@ -16,6 +14,12 @@ HTML 是一种基础技术，常与 CSS、JavaScript 一起被众多网站用于
 - HTML 用于描述页面的结构；
 - CSS 用于控制页面中元素的样式；
 - JavaScript 用于响应用户操作。
+
+## 注释
+
+```html
+<!-- 注释文字 -->
+```
 
 ## 标签
 
@@ -54,4 +58,72 @@ HTML 是一种基础技术，常与 CSS、JavaScript 一起被众多网站用于
 
 ## HTML 实体
 
+- [Entity - 术语表 | MDN](https://developer.mozilla.org/zh-CN/docs/Glossary/Entity)
+- [HTML Standard](https://html.spec.whatwg.org/multipage/named-characters.html#named-character-references)
+
 HTML 实体（Entity）是一段以连字号（`&`）开头、以分号（`;`）结尾的文本。实体常常用于显示保留字符（这些字符会被解析为 HTML 代码）和不可见的字符（如「不换行空格」）。你也可以用实体来代替其他难以用标准键盘键入的字符。
+
+## HTML5 新元素
+
+### 语义化标签
+
+- `<header>`
+- `<nav>`
+- `<article>`
+- `<section>`
+- `<aside>`
+- `<footer>`
+
+### 多媒体标签
+
+- `<video>`
+- `<audio>`
+
+### 表单类型
+
+- `email`
+- `url`
+- `date`
+- `time`
+- `month`
+- `week`
+- `number`
+- `tel`
+- `search`
+- `color`
+
+### canvas
+
+- [HTML 画布 | 菜鸟教程](https://www.runoob.com/tags/ref-canvas.html)
+
+```html
+<canvas id="myCanvas">
+    An alternative text describing what your canvas displays.
+</canvas>
+
+<script type="text/javascript">
+    var canvas=document.getElementById('myCanvas');
+    var ctx=canvas.getContext('2d');
+    ctx.fillStyle='#FF0000';
+    ctx.fillRect(0,0,80,100);
+</script>
+```
+
+## Emmet
+
+- [Emmet — the essential toolkit for web-developers](https://emmet.io/)
+
+Emmet 是一个快速生成 HTML 标签的工具，可以在许多编辑器中集成。以下是 Emmet 的语法。
+
+- `*`控制数量
+- `>`子节点
+- `+`兄弟结点
+- `^`父节点
+- `.`控制类名
+- `#`控制 id
+- `[]`其它属性，例如 `a[href="#"]`
+- `()`分组
+- `$`自动编号
+  - 一个`$`代表一位数
+  - `@`可以指定起始编号
+- `{}`控制标签内部文字
