@@ -7,6 +7,7 @@
 - [2019 年黑马程序员前端入门视频教程 HTML5+CSS3-简单有趣好玩-pink 老师_哔哩哔哩 (゜-゜) つロ 干杯~-bilibili](https://www.bilibili.com/video/BV14J4114768)
 - [CSS 看这个就够了，全面打通 CSS3 知识点，前端程序员必学（更新到第 15 章）_哔哩哔哩 (゜-゜) つロ 干杯~-bilibili](https://www.bilibili.com/video/BV1tJ411Y7fB)
 - [27\_尚硅谷\_CSS 简介\_哔哩哔哩\_bilibili](https://www.bilibili.com/video/BV1XJ411X7Ud?p=27)
+- [CSS Diner - Where we feast on CSS Selectors!](https://flukeout.github.io/)
 
 ### 手册
 
@@ -44,6 +45,12 @@
 <link rel="stylesheet" href="css/style.css">
 ```
 
+## 注释
+
+```css
+/* CSS 注释 */
+```
+
 ## 选择器
 
 ### 基础选择器
@@ -60,6 +67,8 @@
 - `空格`后代选择器
 - `>`子元素选择器，只会选择直接后代
 - `,`并集选择器
+- `+`兄弟选择器，选择之后紧接着的；`div + a` selects every `a` element that directly follows a `div`
+- `~`兄弟选择器，选择之后所有；`A ~ B` selects all `B` that follow a `A`
 
 ### 属性选择器
 
@@ -83,9 +92,9 @@
 
 根据文档结构的伪类选择器。
 
-- `E:first-child`匹配第一个`E`元素
-- `E:last-child`
-- `E:nth-child(n)`
+- `first-child`选择元素，这些元素是其他元素的第一个子元素
+- `last-child`选择元素，这些元素是其他元素的最后一个子元素
+- `nth-child(n)`选择元素，这些元素是其他元素的第 n 个子元素
   - 可以写数字
   - 也可以写关键字
     - `even`
@@ -97,11 +106,17 @@
     - `5n`5、10、15
     - `n+5`从第 5 个开始
     - `-n+5`只包含前 5 个
-- `E:first-of-type`
-- `E:last-of-type`
-- `E:nth-of-type(n)`
+- `:nth-last-child`跟上个差不多，倒着数
+- `first-of-type`
+- `last-of-type`
+- `nth-of-type(n)`
+- `:only-child`选择元素，这些元素是其它元素内的唯一子元素
+- `:only-of-type`选择元素，这些元素是其它元素内的唯一同类型子元素
+- `:last-of-type`
+- `:empty`选择没有子元素的元素
+- `:not()`选择不满足其中条件的元素，参数内可以写其它 CSS 选择器
 
-`*-child`和`*-of-child`的用法类似。不同的是，前者会把所有的子元素都排号，先验证序号是否被选中，再验证是否是希望的标签，如果不是则不选择；后者只会将希望类型的标签排号，然后再从中选。
+`nth-child`和`nth-of-type`的用法类似。不同的是，前者会把所有的子元素都排号，先验证序号是否被选中，再验证是否是希望的标签，如果不是则不选择；后者只会将希望类型的标签排号，然后再从中选。
 
 ### 伪元素选择器
 
@@ -113,6 +128,9 @@ CSS2 是用单冒号，CSS3 是用双冒号，标准写法是用双冒号，但�
 
 - `::before`
 - `::after`
+- `::first-letter`
+- `::first-line`
+- `::selection`
 
 `before`和`after`必须有`content`属性。生成的是行内元素。
 
