@@ -21,11 +21,6 @@
 - [Iconfont-阿里巴巴矢量图标库](https://www.iconfont.cn/)
 - [Font Awesome](https://fontawesome.com/icons?d=gallery&m=free)
 
-### CSS Reset
-
-- [CSS Tools: Reset CSS](https://meyerweb.com/eric/tools/css/reset/)
-- [Normalize.css: Make browsers render all elements more consistently.](https://necolas.github.io/normalize.css/)
-
 ## Emmet
 
 在 CSS 编写区域，可以只输入属性的首字母然后接值就能自动生成对应的 CSS 规则了。
@@ -196,58 +191,83 @@ HSL 分别为色相、饱和度和亮度。形如`hsl(0, 100%, 100%)`或`hsla(0,
 
 ## 文档流
 
+默认的文档流（Normal flow）是从左至右，从上至下。
+
+元素在文档流中有一些特性。
+
+- 块元素
+  - 自上向下垂直排列
+  - 独占一行
+  - 默认宽度是父容器的宽度
+  - 默认高度是内容的高度
+- 行内元素
+  - 设置`width`和`height`没用
+  - 自左向右水平排列
+  - 如果一行中不能容纳所有的行内元素，则会换行接着显示
+  - 默认宽度是内容宽度
+  - 默认高度是内容高度
+  - 垂直 margin 不生效
+  - 垂直 padding 不会挤走其它元素，但是会覆盖其它元素的背景
+
 ## 盒子模型
 
 外边距、边框、内边距、实际内容。
 
 ![image-20200719101933853](css.assets/image-20200719101933853.png)
 
+### 内容区域
+
+盒子的`width`和`height`是设置的内容区域的大小。`padding`和`border`都会撑大盒子的可见大小。`margin`会影响盒子的实际占地面积。
+
 ### border 边框
 
 - `border: width style color`一次性设置 3 个属性值，顺序不作要求
-- `border-style`设置上右下左四个边框的样式
+- `border-style`设置「上右下左」四个边框的样式，从上边框开始顺时针应用
+- `border-radius`设置四个角的圆角，从左上角顺时针。可以写单位数值也可以写百分数
 
 边框会影响盒子的实际大小，实际大小为内容大小加上两侧边框的宽度。
 
-#### 表格边框
-
-- `border-collapse`合并相邻边框，不会让两个边框变得更粗
-
-#### 圆角边框
-
-- `border-radius`设置四个角的圆角，从左上角顺时针
-
-可以写单位数值也可以写百分数。
-
-#### CSS 三角
+每个边框并不是一个矩形，而是一个梯形。所以可以用 CSS 画三角形。
 
 1. 可以用一个没有大小的盒子，加上粗边框制作三角形；
 2. 用两个相邻细边框配合旋转制作出不闭合的三角。
+
+下面的属性针对表格边框：
+
+- `border-collapse`合并相邻边框，不会让两个边框变得更粗
 
 ### padding 内边距
 
 - `padding`设置上右下左四个方向的内边距
 
-也会影响盒子的实际大小，会把盒子撑大。
+`padding`也会影响盒子的实际大小，会把盒子撑大。内容区的背景颜色会延伸到内边距区域。
 
 如果盒子本身没有指定`height`或`width`属性，则`padding`属性不会撑开盒子大小。
 
 ### margin 外边距
 
-- `margin`设置边距，允许使用负值
+- `margin`设置外边距，允许使用负值
 
-#### 盒子水平居中
+### 盒子水平居中
 
-对于块元素：
+对于块元素，子元素的`margin-left`+`border-left`+`padding-left`+`width`+`padding-right`+`border-right`+`margin-right`必须等于父元素的内容区宽度`width`，如果等式不成立就会触发过渡约束机制，浏览器会自动纠正等式，修改子元素的`margin-right`属性使等式成立；如果子元素的`margin-left`或`margin-right`或`width`设置了`auto`属性，则调整设置了`auto`属性的字段。如果三个字段都是`auto`，则宽度最大，外边距没有；如果宽度固定，两个边距为`auto`，则两个边距会自动设置为相同的值，且满足等式，就做到了盒子水平居中。一定要指定`width`的值，因为该值默认是`auto`。
 
 1. 盒子指定了宽度
 2. 把左右的外边距设置为`auto`
 
 对于行内元素和行内块元素来说，你可以把它视为文字，在父元素上设置`text-align`就可以居中了。
 
-#### 嵌套块元素垂直外边距的塌陷
+### 兄弟元素垂直外边距的重叠
 
-对于连个嵌套关系的块元素，父元素有上外边距的同时子元素也有上外边距，此时父元素的外边距会变为较大的外边距值，子元素也不会在父元素中下移。
+两个兄弟元素垂直方向的相邻的外边距会重叠，边距会取两者之间的绝对值的较大值。如果两个边距一正一负，则会取两者之和。
+
+这是正常情况。
+
+### 嵌套块元素垂直外边距的塌陷
+
+对于两个嵌套关系的块元素，父元素有上外边距的同时子元素也有上外边距，此时父元素的外边距会变为较大的外边距值，子元素也不会在父元素中下移。
+
+这个情况会影响网页布局，所以需要处理。
 
 浮动盒子不会有外边距塌陷的问题。
 
@@ -267,6 +287,11 @@ HSL 分别为色相、饱和度和亮度。形如`hsl(0, 100%, 100%)`或`hsla(0,
     margin: 0;
 }
 ```
+
+上面的做法比较粗暴，实际上生产环境中会引入专门的 CSS 库来覆盖浏览器默认的样式表。
+
+- [CSS Tools: Reset CSS](https://meyerweb.com/eric/tools/css/reset/)
+- [Normalize.css: Make browsers render all elements more consistently.](https://necolas.github.io/normalize.css/)
 
 行内元素为了照顾兼容性，尽量只设置左右内外边距，不要设置上下内外边距。转为行内块元素和块级元素不受限制。
 
@@ -382,6 +407,8 @@ font: 12px/1.5 'Microsoft YaHei';
 - `inline`
 - `block`
 - `inline-block`
+- `flex`
+- `grid`
 
 ### block 块元素
 
