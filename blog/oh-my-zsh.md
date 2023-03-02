@@ -13,8 +13,6 @@ oh-my-zsh[^1] 是 zsh[^2] 的一款插件管理器，提供了很多 zsh 的插�
 
 zsh 的优点是兼容 bash 语法，可以在日常工作中替换掉 bash，并且可以享受 zsh 的很多特性。
 
-<!-- more -->
-
 ## 安装
 
 安装 oh-my-zsh 之前需要先安装 zsh 和 git，oh-my-zsh 依赖它们在能正常工作。

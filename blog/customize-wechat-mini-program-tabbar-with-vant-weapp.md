@@ -12,8 +12,6 @@ tags:
 
 Vant WeApp[^1] 是有赞出品的针对微信小程序的一套开源组件库，结合 van-tabbar[^2] 和微信的自定义 TabBar 机制 [^3] 可以实现一套比较好看的 TabBar。
 
-<!-- more -->
-
 ## 新建 custom-tab-bar 组件
 
 如图所示，在微信小程序工程文件夹根目录下新建一个名为 `custom-tab-bar` 的组件。

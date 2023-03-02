@@ -14,8 +14,6 @@ Nodebrew 是 Node.js 版本管理器，用 Perl 编写，可以简化你关于 N
 
 Nodebrew 没有为 Windows 而设计，不支持在 Windows 使用。
 
-<!-- more -->
-
 ## 安装
 
 *Nodebrew* [^1] 的安装过程就是把 Perl 脚本下载到本地，然后将其所在的目录加入`PATH`环境变量中。

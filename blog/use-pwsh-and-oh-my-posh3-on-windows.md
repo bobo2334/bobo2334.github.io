@@ -22,8 +22,6 @@ oh-my-posh3 现在已基于 Go 语言重构，是一个跨平台的命令行工�
 
 历史命令提示是通过 PowerShell 的 PSReadLine[^4] 模组实现的。
 
-<!-- more -->
-
 ## 前置条件
 
 Scoop[^5] 是 Windows 上的一款基于 PowerShell 的包管理器，接下来的软件都是用 Scoop 安装的，因为它能很方便地管理软件和配置环境变量。Scoop 的安装及使用不在本文的讨论范围内。

@@ -10,8 +10,6 @@ tags:
 
 SSH 除了能连接远程服务器外，还可以做端口转发的工作，并且利用安全隧道来保障通信安全。
 
-<!-- more -->
-
 ## 动态转发
 
 动态转发指的是 SSH 在本机暴露一个 SOCKS5 端口，通过此端口进行的所有通信都转发到远程服务器，通过远程服务器访问外网。通过这种方式可以实现一个简易代理。
@@ -31,7 +29,7 @@ ssh -D 2121 tunnel-host -N
 
 可以写在 ssh_config（`~/.ssh/config`）中。
 
-```
+```txt
 DynamicForward <tunnel-host>:<local-port>
 ```
 
@@ -51,7 +49,7 @@ ssh -L 2121:www.example.com:80 tunnel-host -N
 
 可以写在 ssh_config（`~/.ssh/config`）中。
 
-```
+```txt
 Host test.example.com
 LocalForward client-IP:client-port server-IP:server-port
 ```
@@ -72,7 +70,7 @@ ssh -R 8080:localhost:80 -N my.public.server
 
 可以写在 ssh_config（`~/.ssh/config`）中。
 
-```
+```txt
 Host remote-forward
   HostName test.example.com
   RemoteForward remote-port target-host:target-port

@@ -11,8 +11,6 @@ tags:
 
 这个和我之前在 Github 中遇到的问题不一样，在通过`ssh -T -v`命令排查错误时输出「no mutual signature algorithm」。
 
-<!-- more -->
-
 ## 问题原因
 
 有了错误日志就好解决了，这个是服务器不支持密钥的加密方式，当时我使用的 rsa 格式的密钥。可能是由于 Gitea 更新，其中的 OpenSSH 也更新了，在新版本的 OpenSSH 中，rsa 加密格式被默认关闭了。
@@ -39,7 +37,7 @@ ssh -T -v git@<host> -p <port>
 
 如果得到如下的欢迎信息则证明成功，如果没有则你需要根据输出的日志排查错误。
 
-```
+```txt
 Hi there, <...>! You've successfully authenticated with the key named <...>, but Gitea does not provide shell access.
 ```
 

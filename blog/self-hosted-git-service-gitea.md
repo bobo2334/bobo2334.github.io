@@ -14,8 +14,6 @@ tags:
 
 这些大平台提供的服务看起来也不是那么可靠。这时候你可以自建一个 Git 服务平台自用，自己保管数据。
 
-<!-- more -->
-
 ## 为什么选择 Gitea
 
 下面列出了 Gitea[^1] 的优点。
@@ -65,19 +63,19 @@ volumes:
 
 ```caddyfile
 *.iuok.me {
-	tls {
-		dns cloudflare xxxxxx
-	}
+  tls {
+    dns cloudflare xxxxxx
+  }
 
-	@gitea host gitea.iuok.me
-	handle @gitea {
-		reverse_proxy localhost:13000
-		import hsts
-	}
+  @gitea host gitea.iuok.me
+  handle @gitea {
+    reverse_proxy localhost:13000
+    import hsts
+  }
 
-	handle {
-		abort
-	}
+  handle {
+    abort
+  }
 }
 ```
 
@@ -125,7 +123,6 @@ Gitea 的数据文件结构比较简单，直接备份 Docker Volume 对应的�
 可以使用 restic 备份到其它服务商提供的对象存储中；注意要异地备份，备份在本机无意义。
 
 恢复数据的时候手动创建 Volume，把备份内容还原，然后再启动 Gitea 容器即可。
-
 
 [^1]: [Gitea](https://gitea.io/en-us/)
 [^2]: [Documentation - Docs](https://docs.gitea.io/en-us/)

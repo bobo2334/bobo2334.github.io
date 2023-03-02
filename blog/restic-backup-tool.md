@@ -15,8 +15,6 @@ restic 可以使用本地位置或网络位置作为存储库。
 
 有很多情况会导致数据丢失，比如 VPS 提供商跑路、机房失火、设备丢失以及人员误操作等，所以数据备份是一项很重要的工作。重要数据必须要备份。
 
-<!-- more -->
-
 ## 概念介绍
 
 restic 不直接备份文件，它会把文件分为固定大小的块，把这些文件块存入存储库。
@@ -33,7 +31,7 @@ restic 是一个单文件的可执行程序，没有其它依赖。你可以手�
 
 在 restic 正确安装后，你可以得到一个`restic`命令。
 
-```
+```txt
 ➜ ~ restic
 
 restic is a backup program which allows saving multiple revisions of files and

@@ -19,8 +19,6 @@ tags:
 
 但是至今不知道为啥会这样。
 
-<!-- more -->
-
 ## 前提
 
 - 你需要了解`~/.ssh/config`的用处和用法；
@@ -36,7 +34,7 @@ ssh -T -v git@ssh.github.com -p 443
 
 如果出现如下的欢迎消息则证明可以使用，如果没有则你需要根据输出的日志信息排查错误。
 
-```
+```txt
 Hi <username>! You've successfully authenticated, but GitHub does not provide shell access.
 ```
 
@@ -44,7 +42,7 @@ Hi <username>! You've successfully authenticated, but GitHub does not provide sh
 
 修改`~/.ssh/config`，加入如下内容。
 
-```
+```txt
 Host github.com
     Hostname ssh.github.com
     Port 443

@@ -12,8 +12,6 @@ tags:
 
 Scoop[^1] 是 Windows 上的一款包管理器，它是用 PowerShell 编写的，它可以帮助使用者特别是开发人员管理软件环境，快速构建开发环境。常用的开发工具都可以通过 Scoop 安装和管理。
 
-<!-- more -->
-
 Scoop 的本质是一系列 PowerShell 脚本的集合，所以运行 Scoop 需要 PowerShell 环境。并且它是针对 Windows 系统设计的，不具有跨平台性。
 
 Scoop 对软件的管理功能依赖于提前定义好的针对每个软件包的配置文件，这些文件为 JSON 格式，称为 **Manifest**，由众多开发者维护，并托管在 Github。一个 Manifest 对应一个软件，其中包含了该软件的下载地址、安装/卸载脚本和其它必要信息。存放 Manifest 的仓库被称为 **Bucket**，对应一个 Git 仓库。Manifest 和 Bucket 是 Scoop 中的核心概念。

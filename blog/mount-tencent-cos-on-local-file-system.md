@@ -16,8 +16,6 @@ tags:
 
 文中所涉及的操作系统是 Debian，应该也适用于其他 Debian 系的操作系统。
 
-<!-- more -->
-
 ## 安装软件
 
 *cosfs[^1]* 依赖于 fuse，首先安装 fuse。
@@ -38,13 +36,13 @@ dpkg -i cosfs_1.0.19-ubuntu20.04_amd64.deb
 
 配置文件应该存放在`/etc/passwd-cosfs`中。其中可以有多行，每行的格式如下。
 
-```
+```txt
 <BucketName-APPID>:<SecretId>:<SecretKey>
 ```
 
 例如你可以这样写。
 
-```
+```txt
 examplebucket-1250000000:AKIDHTVVaVR6e3****:PdkhT9e2rZCfy6****
 ```
 
