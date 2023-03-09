@@ -30,7 +30,7 @@ scoop install aria2
 | `aria2-enabled`                   | `true` | 是否启用 aria2                                                |
 | `aria2-warning-enabled`           | `true` | 是否在每次下载之前输出提示信息，内容为 aria2 下载的说明        |
 | `aria2-retry-wait`                | `2`    | aria2 重试等待时间，单位为秒                                  |
-| `aria2-split`                     | `5`    | 下载时使用的链接数                                           |
+| `aria2-split`                     | `5`    | 下载时使用的连接数                                           |
 | `aria2-max-connection-per-server` | `5`    | 每个服务器的最大连接数                                       |
 | `aria2-min-split-size`            | `5M`   | 最小分段大小，如果将要下载的文件大小小于该参数的 2 倍，则下载的过程中不会对文件进行分段 |
 | `aria2-options`                   |        | 其它需要传递给 aria2 的参数，可以参考 aria2 的文档 [^3]           |
