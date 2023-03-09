@@ -8,7 +8,7 @@ tags:
 
 ## 前言
 
-通过 libpam-google-authenticator 为 SSH 启用多重要素验证，在使用密码或者秘钥登录之后还要输入一个基于时间变化的密码才能登录，增加服务器安全性。
+通过 libpam-google-authenticator 为 SSH 启用多重要素验证，在使用密码或者密钥登录之后还要输入一个基于时间变化的密码才能登录，增加服务器安全性。
 
 本文中使用 Debian 11 系统作为例子。
 
@@ -103,7 +103,7 @@ auth required pam_google_authenticator.so
 nano /etc/ssh/sshd_config
 ```
 
-修改以下几项。其中`AuthenticationMethods`指定了先使用秘钥方式登录，再要求验证额外密码。
+修改以下几项。其中`AuthenticationMethods`指定了先使用密钥方式登录，再要求验证额外密码。
 
 ```txt
 ChallengeResponseAuthentication yes

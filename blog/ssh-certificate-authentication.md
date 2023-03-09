@@ -10,9 +10,9 @@ tags:
 
 > SSH 默认采用密码登录，这种方法有很多缺点，简单的密码不安全，复杂的密码不容易记忆，每次手动输入也很麻烦。密钥登录是比密码登录更好的解决方案。[^1]
 
-## 生成秘钥
+## 生成密钥
 
-可以用 OpenSSH 中的`ssh-keygen`命令行工具来生成秘钥。`-t`参数指定了加密方式，`rsa`加密已经不安全，在较新版本的 OpenSSH 中默认已被关闭，推荐使用`ed25519`加密。
+可以用 OpenSSH 中的`ssh-keygen`命令行工具来生成密钥。`-t`参数指定了加密方式，`rsa`加密已经不安全，在较新版本的 OpenSSH 中默认已被关闭，推荐使用`ed25519`加密。
 
 使用下面的命令来生成 SSH 密钥对，请把下面的`your_email@example.com`替换为你的邮箱。
 
@@ -41,7 +41,7 @@ PermitEmptyPasswords no
 ChallengeResponseAuthentication no
 # 不允许 root 用户使用密码登录
 PermitRootLogin prohibit-password
-# 使用秘钥登录
+# 使用密钥登录
 PubkeyAuthentication yes
 ```
 
