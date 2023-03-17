@@ -10,8 +10,6 @@ tags:
 
 > GNU Privacy Guard（GnuPG 或 GPG）是一个密码学软件，用于加密、签名通信内容及管理非对称密码学的密钥。GnuPG 是自由软件，遵循 IETF 订定的 OpenPGP 技术标准设计，并与 PGP 保持兼容。
 
-<!-- more -->
-
 ## 安装
 
 在 macOS 上可以使用 Homebrew 安装。
@@ -93,7 +91,7 @@ uid                              Bug-Proof (for test only) <bug-proof@example.or
 - `-K`，`--list-secret-keys`：列出私钥
 - `--keyid-format long`：显示完整的 keyid
 
-```
+```bash
 # 列出公钥
 gpg --keyid-format long -k
 
@@ -104,7 +102,7 @@ pub   rsa4096/7DCE475DEA06B272 2022-07-04 [SC]
 uid                 [ultimate] Bug-Proof (for test only) <bug-proof@example.org>
 ```
 
-```
+```bash
 # 列出私钥
 gpg --keyid-format long -K
 
@@ -144,10 +142,10 @@ gpg --edit-key 8A8FB3D3C4C81471E7D0DBA77DCE475DEA06B272
 
 - `addkey`，增加子密钥
 - `key <n>`，后跟密钥 ID，有些单体命令需要提前选择要操作的 key，使用`key 0`取消选择，`key *`选择所有
-    - `expire`，更改子密钥的过期时间
-    - `delkey`，删除子密钥
-    - `revkey`，吊销子密钥
-    - `change-usage`，更改子密钥用户
+  - `expire`，更改子密钥的过期时间
+  - `delkey`，删除子密钥
+  - `revkey`，吊销子密钥
+  - `change-usage`，更改子密钥用户
 - `expire`，如果没有选择子密钥，此命令更改主密钥的过期时间
 - `trust`，更改此密钥的信任级别
 - `passwd`，更改主密钥密码
@@ -277,7 +275,7 @@ gpg> save
 
 准备一个文件`message.txt`作为测试文件，其内容如下。
 
-```
+```txt
 Hello
 ```
 

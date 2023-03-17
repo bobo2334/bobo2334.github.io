@@ -13,8 +13,6 @@ SDKMAN 是一系列 Bash 脚本，可以用来管理各个版本的 JDK。在 M1
 
 SDKMAN 也可以用来安装其他工具，如 Maven、Gradle 等，但是目前我用不上，我只用它来管理 JDK。
 
-<!-- more -->
-
 ## 安装
 
 *SDKMAN* [^1] 是一系列 Bash 脚本，所以有 Bash 环境的系统就能运行 SDKMAN，比如 Linux、macOS。
@@ -40,7 +38,7 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk ls java
 ```
 
-```
+```txt
 ================================================================================
 Available Java Versions for macOS ARM 64bit
 ================================================================================

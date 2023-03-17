@@ -101,7 +101,6 @@ const config = {
                 },
                 items: [
                     { to: '/docs/c/', label: '学习笔记', position: 'left' },
-                    { to: '/blog/', label: '最近文章', position: 'left' },
                     { to: '/blog/archive/', label: '文章归档', position: 'left' },
                     { to: '/blog/tags/', label: '文章标签', position: 'left' },
                     {

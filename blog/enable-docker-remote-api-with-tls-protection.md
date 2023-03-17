@@ -14,8 +14,6 @@ Docker 的官方文档提供了详细的开启 Docker Remote API 和开启 TLS �
 
 本文中的操作都在 CentOS 7 中完成。
 
-<!-- more -->
-
 ## 签发证书
 
 将脚本命名为`auto-tls-certs.sh`。其中需要配置的内容有：

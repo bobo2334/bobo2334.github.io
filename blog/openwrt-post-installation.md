@@ -10,8 +10,6 @@ tags:
 
 OpenWrt 是一个用于嵌入式设备的 Linux 发行版，通常作为路由器的操作系统。
 
-<!-- more -->
-
 ## OpenWrt_CN
 
 *OpenWrt_CN* [^1] 中收录了一些适合国内用户的发行版。

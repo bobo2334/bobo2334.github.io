@@ -12,8 +12,6 @@ tags:
 
 restic 不会在后台运行，没有定时备份的功能。如果你有定时备份文件的需求，你可以使用 lobaro/restic-backup-docker 项目，这个项目提供了一个 Docker 镜像，可以很方便地使用 restic 定时进行文件备份。
 
-<!-- more -->
-
 ## 项目介绍
 
 *lobaro/restic-backup-docker[^1]* 是一个 Docker 镜像，镜像中包含 *restic[^2]* 和 cron，可以通过 cron 来定时执行 restic 的备份任务。容器的配置都可以通过设置环境变量来完成。你需要进行如下配置，正确配置后就可以定期执行 restic 的备份任务了。

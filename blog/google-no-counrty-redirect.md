@@ -12,13 +12,11 @@ tags:
 
 你可以在搜索参数中加上`gws_rd=cr`来组织这样的默认行为，并且加上`gl=cn`来强制使用中文。
 
-<!-- more -->
-
 ## 使用
 
 搜索时使用如下请求，`%s`替换为搜索词。`gl`参数可以改为任意国家代码。
 
-```
+```txt
 https://www.google.com/search?q=%s&pws=0&gl=cn&gws_rd=cr
 ```
 

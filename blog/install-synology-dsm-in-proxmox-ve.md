@@ -11,8 +11,6 @@ tags:
 
 感觉比在 ESXi 中安装要简单不少。本文中使用 DS918+ 型号对应的引导和系统。
 
-<!-- more -->
-
 ## 文中从互联网上下载的文件备份
 
 文中有一些文件是从互联网上下载的，为了防止其中的某些资源在某些时刻时效，这里做一个[备份](https://zfile.iuok.me/1/articles/install-synology-dsm-in-proxmox-ve)。
@@ -36,44 +34,25 @@ v1.04b 支持 DSM 6.2 或 6.2.1 系统，去 *群晖网站 [^2]* 下载系统；
 在 PVE 的 Web 控制台中创建虚拟机。
 
 1. 常规。需要注意一下 VM ID，后面导入引导磁盘的时候用的到；
-
-![screenshot-192.168.10.200_8006-2022.06.18-11_45_57](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_45_57.png)
-
+  ![screenshot-192.168.10.200_8006-2022.06.18-11_45_57](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_45_57.png)
 2. 操作系统。不使用任何介质；
-
-![screenshot-192.168.10.200_8006-2022.06.18-11_46_38](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_46_38.png)
-
+  ![screenshot-192.168.10.200_8006-2022.06.18-11_46_38](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_46_38.png)
 3. 系统。没什么需要更改的，保持默认设置即可；
-
-![screenshot-192.168.10.200_8006-2022.06.18-11_47_25](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_47_25.png)
-
+  ![screenshot-192.168.10.200_8006-2022.06.18-11_47_25](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_47_25.png)
 4. 磁盘。删除默认的磁盘；
-
-![screenshot-192.168.10.200_8006-2022.06.18-11_47_47](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_47_47.png)
-
+  ![screenshot-192.168.10.200_8006-2022.06.18-11_47_47](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_47_47.png)
 5. CPU。根据需要设置；
-
-![screenshot-192.168.10.200_8006-2022.06.18-11_48_11](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_48_11.png)
-
+  ![screenshot-192.168.10.200_8006-2022.06.18-11_48_11](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_48_11.png)
 6. 内存。根据需要设置；
-
-![screenshot-192.168.10.200_8006-2022.06.18-11_48_22](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_48_22.png)
-
+  ![screenshot-192.168.10.200_8006-2022.06.18-11_48_22](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_48_22.png)
 7. 网络。网卡模型选择 Intel E1000，取消勾选防火墙；
-
-![screenshot-192.168.10.200_8006-2022.06.18-11_48_37](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_48_37.png)
-
+  ![screenshot-192.168.10.200_8006-2022.06.18-11_48_37](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_48_37.png)
 8. 确认；
-
-![screenshot-192.168.10.200_8006-2022.06.18-11_48_56](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_48_56.png)
-
+  ![screenshot-192.168.10.200_8006-2022.06.18-11_48_56](install-synology-dsm-in-proxmox-ve.assets/screenshot-192.168.10.200_8006-2022.06.18-11_48_56.png)
 9. 删除 CD/DVD 驱动器；
-
-![image-20220618182642048](install-synology-dsm-in-proxmox-ve.assets/image-20220618182642048.png)
-
+  ![image-20220618182642048](install-synology-dsm-in-proxmox-ve.assets/image-20220618182642048.png)
 10. 添加一个串行端口，可以在控制台上看到引导日志，对于排查错误很有帮助。
-
-![image-20220618194623034](install-synology-dsm-in-proxmox-ve.assets/image-20220618194623034.png)
+  ![image-20220618194623034](install-synology-dsm-in-proxmox-ve.assets/image-20220618194623034.png)
 
 ## 导入引导磁盘
 

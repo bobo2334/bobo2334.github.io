@@ -8,11 +8,9 @@ tags:
 
 ## 前言
 
-通过 libpam-google-authenticator 为 SSH 启用多重要素验证，在使用密码或者秘钥登录之后还要输入一个基于时间变化的密码才能登录，增加服务器安全性。
+通过 libpam-google-authenticator 为 SSH 启用多重要素验证，在使用密码或者密钥登录之后还要输入一个基于时间变化的密码才能登录，增加服务器安全性。
 
 本文中使用 Debian 11 系统作为例子。
-
-<!-- more -->
 
 ## 安装 libpam-google-authenticator
 
@@ -31,20 +29,20 @@ google-authenticator
 
 记住 secret key，导入到支持 TOTP 的软件里生成密码。
 
-```
+```txt
 Do you want authentication tokens to be time-based (y/n) y
 Your new secret key is: ****************
 ```
 
 在下一步中验证密码，密码是从密码生成器中得到的。
 
-```
+```txt
 Enter code from app (-1 to skip): *******
 ```
 
 下面有备用密码，记录下来，当你的密码生成器丢失的时候有用，每个密码可以用一次。
 
-```
+```txt
 Your emergency scratch codes are:
   ********
   ********
@@ -55,13 +53,13 @@ Your emergency scratch codes are:
 
 更新配置文件。
 
-```
+```txt
 Do you want me to update your "/root/.google_authenticator" file? (y/n) y
 ```
 
 设置最大时间误差 30 秒，默认可以使用前一个、现在的和后一个验证码通过认证。
 
-```
+```txt
 By default, a new token is generated every 30 seconds by the mobile app.
 In order to compensate for possible time-skew between the client and the server,
 we allow an extra token before and after the current time. This allows for a
@@ -76,7 +74,7 @@ Do you want to do so? (y/n) y
 
 设置每 30 秒最多重试 3 次。
 
-```
+```txt
 If the computer that you are logging into isn't hardened against brute-force
 login attempts, you can enable rate-limiting for the authentication module.
 By default, this limits attackers to no more than 3 login attempts every 30s.
@@ -105,9 +103,9 @@ auth required pam_google_authenticator.so
 nano /etc/ssh/sshd_config
 ```
 
-修改以下几项。其中`AuthenticationMethods`指定了先使用秘钥方式登录，再要求验证额外密码。
+修改以下几项。其中`AuthenticationMethods`指定了先使用密钥方式登录，再要求验证额外密码。
 
-```
+```txt
 ChallengeResponseAuthentication yes
 PasswordAuthentication no
 AuthenticationMethods publickey,keyboard-interactive

@@ -10,8 +10,6 @@ tags:
 
 Node.js 版本管理器有很多。
 
-<!-- more -->
-
 下表列出我体验过的 Node.js 版本管理器。
 
 | Node.js 版本管理器 | 开发语言   | 运行平台              |
@@ -75,6 +73,7 @@ eval $(fnm env)
 scoop install fnm
 # choco install fnm
 ```
+
 安装完成之后在 Shell 启动文件里加入初始化命令。
 
 以下命令用于创建并用记事本打开 Shell 启动文件。

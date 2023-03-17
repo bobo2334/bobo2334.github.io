@@ -11,8 +11,6 @@ tags:
 
 UFW 是一款在 Debian 系系统中可用的防火墙规则管理工具，可以帮助你快速配置各种服务的端口访问权限，而不用书写冗长的 iptables 规则命令。
 
-<!-- more -->
-
 ## 安装
 
 可以使用`apt`快速安装。
@@ -129,8 +127,8 @@ ufw delete deny ssh
 
 服务名和端口号定义在`/etc/services`文件中。在其中有关`ssh`服务的部分是这样写的。
 
-```
-ssh		22/tcp				# SSH Remote Login Protocol
+```txt
+ssh   22/tcp        # SSH Remote Login Protocol
 ```
 
 UFW 会根据此文件内容管理端口。

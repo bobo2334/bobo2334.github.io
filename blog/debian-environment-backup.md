@@ -7,8 +7,6 @@ tags:
 
 # Debian 配置备份
 
-<!-- more -->
-
 ## 软件源
 
 执行命令。
@@ -19,7 +17,7 @@ apt edit-sources
 
 替换内容，这里使用了 *清华大学开源软件镜像站 [^1]*。
 
-```
+```txt
 # 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
 deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye main contrib non-free
 # deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye main contrib non-free
@@ -36,7 +34,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main 
 
 或者使用 *阿里巴巴开源镜像站点 [^2]*
 
-```
+```txt
 deb http://mirrors.aliyun.com/debian/ bullseye main non-free contrib
 # deb-src http://mirrors.aliyun.com/debian/ bullseye main non-free contrib
 deb http://mirrors.aliyun.com/debian-security/ bullseye-security main
@@ -64,7 +62,7 @@ apt install curl wget tmux bat htop btop exa neofetch trash-cli croc
 
 执行命令。
 
-```
+```bash
 nano .profile
 ```
 

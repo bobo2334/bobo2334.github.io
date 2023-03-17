@@ -10,15 +10,13 @@ tags:
 
 最近发现 zsh 启动速度慢，每次启动后要过 2 秒左右才完全启动。虽然在完全启动之前也可以输入命令，但是还是让人不爽。
 
-<!-- more -->
-
 ## 使用`time`命令
 
 ```bash
 time zsh -i -c exit
 ```
 
-```
+```bash
 zsh -i -c exit  0.36s user 0.25s system 88% cpu 0.688 total
 ```
 
@@ -39,7 +37,7 @@ zmodload zsh/zprof
 zprof
 ```
 
-```
+```txt
 num  calls                time                       self            name
 -----------------------------------------------------------------------------------
  1)    1          91.87    91.87   38.76%     78.87    78.87   33.28%  nvm_auto

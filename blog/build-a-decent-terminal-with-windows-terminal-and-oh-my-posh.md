@@ -20,8 +20,6 @@ oh-my-posh3 的安装请参考 [Windows Terminal + PWSH + oh my posh3 + PSReadLi
 
 Windows 中自带的终端使用体验确实说不上好，尝试了许多组合也感觉都不顺手。这次试试微软亲自出的 Windows Terminal[^1]，再加上 oh-my-posh[^2] 插件。
 
-<!-- more -->
-
 ## 正文
 
 ### 安装 Windows Terminal

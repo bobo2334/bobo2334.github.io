@@ -5,6 +5,7 @@
 - [正则表达式 - 维基百科，自由的百科全书](https://zh.wikipedia.org/zh-cn/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F)
 - [正则表达式速查表 - imlonghao](https://imlonghao.com/49.html)
 - [正则表达式 30 分钟入门教程](https://deerchao.cn/tutorials/regex/regex.htm)
+- [正则表达式匹配任意字符（包括换行符）- 月光博客](https://www.williamlong.info/archives/5781.html)
 
 ## 在线工具
 

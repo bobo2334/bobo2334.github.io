@@ -12,8 +12,6 @@ tags:
 
 后来我发现了 docker-remote-api-tls[^2] 项目，它提供了一个 Docker 镜像，在运行镜像之后它会自动完成证书签发和 API 转发步骤。
 
-<!-- more -->
-
 ## 部署
 
 可以通过 Docker Compose 方便地启动这个容器，下面是`docker-compose.yml`文件的内容。
@@ -50,7 +48,7 @@ services:
 
 该目录的结构如下：
 
-```
+```txt
 certs/
 ├── ca-cert.pem
 ├── ca-key.pem

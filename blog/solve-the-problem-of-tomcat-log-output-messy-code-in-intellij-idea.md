@@ -15,8 +15,6 @@ tags:
 
 ![Tomcat 日志出现乱码](./solve-the-problem-of-tomcat-log-output-messy-code-in-intellij-idea.assets/image-1024x475.png)
 
-<!-- more -->
-
 ## 原因分析
 
 可能是因为 IDEA 控制台中所采用的字符编码与 Tomcat 输出所采用的字符编码不一致，导致了出现乱码。

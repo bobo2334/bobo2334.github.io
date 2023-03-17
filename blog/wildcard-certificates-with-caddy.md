@@ -14,8 +14,6 @@ tags:
 
 通配符`*`只能放在最左边，如`*.example.com`、`*.foo.example.com`和`*.bar.example.com`等；不能写为`foo.*.example.com`。
 
-<!-- more -->
-
 ## 需要做的事情
 
 不像单域名证书可以使用文件验证的方式来完成申请，泛域名证书要求 DNS 验证，这要求你得有权限修改该域名的 DNS 记录，并且你的 DNS 服务商要被 Caddy 支持才可以。
@@ -68,35 +66,35 @@ COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
 ```caddyfile
 {
-	email example@gmail.com
+  email example@gmail.com
 }
 
 *.example.com {
-	tls {
-		dns cloudflare <CF_API_TOKEN>
-	}
+  tls {
+    dns cloudflare <CF_API_TOKEN>
+  }
 
-	@foo host foo.example.com
-	handle @foo {
-		reverse_proxy localhost:1000
-	}
+  @foo host foo.example.com
+  handle @foo {
+    reverse_proxy localhost:1000
+  }
 
-	@bar host bar.example.com
-	handle @bar {
-		reverse_proxy localhost:2000
-	}
+  @bar host bar.example.com
+  handle @bar {
+    reverse_proxy localhost:2000
+  }
 
-	handle {
-		abort
-	}
+  handle {
+    abort
+  }
 }
 
 example.com {
-	reverse_proxy localhost:3000
+  reverse_proxy localhost:3000
 }
 
 foo.bar.example.com {
-	reverse_proxy localhost:4000
+  reverse_proxy localhost:4000
 }
 ```
 
@@ -127,7 +125,7 @@ volumes:
 
 当前的目录结构如下。
 
-```
+```txt
 caddy
 ├── Dockerfile
 ├── Caddyfile
@@ -169,37 +167,37 @@ COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
 ### 编写 Caddyfile
 
-```
+```txt
 {
-	email example@gmail.com
+  email example@gmail.com
 }
 
 *.example.com {
-	tls {
-		dns dnspod <DNSPOD_TOKEN>
-	}
+  tls {
+    dns dnspod <DNSPOD_TOKEN>
+  }
 
-	@foo host foo.example.com
-	handle @foo {
-		reverse_proxy localhost:1000
-	}
+  @foo host foo.example.com
+  handle @foo {
+    reverse_proxy localhost:1000
+  }
 
-	@bar host bar.example.com
-	handle @bar {
-		reverse_proxy localhost:2000
-	}
+  @bar host bar.example.com
+  handle @bar {
+    reverse_proxy localhost:2000
+  }
 
-	handle {
-		abort
-	}
+  handle {
+    abort
+  }
 }
 
 example.com {
-	reverse_proxy localhost:3000
+  reverse_proxy localhost:3000
 }
 
 foo.bar.example.com {
-	reverse_proxy localhost:4000
+  reverse_proxy localhost:4000
 }
 ```
 
