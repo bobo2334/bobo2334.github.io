@@ -128,6 +128,21 @@ dnsproxy 直接注册为服务时不能启动，因为 dnsproxy 没有实现 Win
 
 如果你使用 IPv6 地址，就把 IPv6 关了，目前配合 IPv6 使用有问题。
 
+## 停止和删除服务
+
+如果你不想使用 dnsproxy 了，你可以使用以下命令停止和删除服务。
+
+```powershell
+# 注册服务
+.\WinSW.exe stop
+# 启动服务
+.\WinSW.exe uninstall
+# 查看服务状态
+.\WinSW.exe status
+```
+
+之后再把网卡 DNS 服务器地址改为自动获取即可。
+
 ## 参考资料
 
 - [Public DNS+——DNSPod 推出的域名递归解析服务](https://www.dnspod.cn/Products/publicdns)
