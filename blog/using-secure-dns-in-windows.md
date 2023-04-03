@@ -81,7 +81,6 @@ dnsproxy 直接注册为服务时不能启动，因为 dnsproxy 没有实现 Win
   <executable>D:\Personal\scoop\apps\dnsproxy\current\dnsproxy.exe</executable>
   <arguments>--config-path="C:\Users\gem\.config\dnsproxy\config.yml" --all-servers --cache --cache-size=1024000</arguments>
   <log mode="reset"/>
-  <onfailure action="restart" />
 </service>
 ```
 
