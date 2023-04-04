@@ -112,12 +112,13 @@ dnsproxy 直接注册为服务时不能启动，因为 dnsproxy 没有实现 Win
 
 ```txt
 ..\dnsproxy\
-├── config.yml
-├── WinSW.err.log       # dnsproxy 的错误输出
-├── WinSW.exe
-├── WinSW.out.log       # dnsproxy 的标准输出
-├── WinSW.wrapper.log   # WinSW 本身的日志
-└── WinSW.xml
+├── config.yml              # dnsproxy 配置文件
+├── logs
+│   ├── WinSW.err.log       # dnsproxy 的错误输出
+│   ├── WinSW.out.log       # dnsproxy 的标准输出
+│   └── WinSW.wrapper.log   # WinSW 本身的日志
+├── WinSW.exe               # WinSW 可执行文件
+└── WinSW.xml               # WinSW 配置文件
 ```
 
 ## 修改网卡 DNS 服务器地址
