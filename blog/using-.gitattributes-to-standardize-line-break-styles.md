@@ -32,4 +32,6 @@ git reset --hard
 - [Git - gitattributes Documentation](https://www.git-scm.com/docs/gitattributes)
 - [windows - Git replacing LF with CRLF - Stack Overflow](https://stackoverflow.com/questions/1967370/git-replacing-lf-with-crlf)
 - [配置 Git 处理行结束符 - GitHub 文档](https://docs.github.com/zh/get-started/getting-started-with-git/configuring-git-to-handle-line-endings)
-- [.gitattributes Best Practices - Muhammad Rehan Saeed](https://rehansaeed.com/gitattributes-best-practices/)
+[.gitattributes 正确使用姿势 - 掘金](https://juejin.cn/post/7084885453920272398)
+- [Gitattributes Generator](https://www.richie-bendall.ml/gitattributes-generator/)
+- [gitignore.io - 为你的项目创建必要的 .gitignore 文件](https://www.toptal.com/developers/gitignore)
