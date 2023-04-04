@@ -76,17 +76,24 @@ scoop install hysteria
 {
   "server": "your.domain.com:36712",
   "obfs": "xxxxxxxxxxxx",
+  "up_mbps": 20,
+  "down_mbps": 100,
   "socks5": {
     "listen": "127.0.0.1:10801"
   },
   "relay_tcps": [
     {
       "listen": "127.0.0.1:22221",
-      "remote": "127.0.0.1:22",
-      "timeout": 30
+      "remote": "127.0.0.1:22"
     }
   ]
 }
+```
+
+运行下面的命令来启动 Hysteria 客户端。
+
+```powershell
+hysteria client -c .\config.json
 ```
 
 ## 测试 SSH 连接
