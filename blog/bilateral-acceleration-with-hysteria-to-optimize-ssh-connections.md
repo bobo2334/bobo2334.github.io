@@ -29,7 +29,6 @@ date: 2023-03-10
     "email": "your@email.com"
   }
 }
-
 ```
 
 使用 Docker 运行服务器端。以下是`docker-compose.yml`文件的内容。注意`network_mode`使用 host 模式，这样在端口转发的时候填写`127.0.0.1`才能指向本地地址，不然`127.0.0.1`会指向容器本身，这样做是没意义的。
