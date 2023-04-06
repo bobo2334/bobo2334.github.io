@@ -62,11 +62,11 @@ scoop install SarasaGothic-SC
 
 | 后缀     | 西文字符                                           | CJK 字符                                                                                     | 其它说明                            |
 | ------ | ---------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------- |
-| Gothic | [Inter](https://github.com/rsms/inter)         | [Source Han Sans](https://github.com/adobe-fonts/source-han-sans/blob/master/README-CN.md) | 引号（`“”`）是一个字符宽度                 |
-| UI     | [Inter](https://github.com/rsms/inter)         | [Source Han Sans](https://github.com/adobe-fonts/source-han-sans/blob/master/README-CN.md) | 引号（`“”`）更窄                      |
-| Mono   | [Iosevka](https://github.com/be5invis/Iosevka) | [Source Han Sans](https://github.com/adobe-fonts/source-han-sans/blob/master/README-CN.md) | 破折号（`——`）是一个字符宽度                |
-| Term   | [Iosevka](https://github.com/be5invis/Iosevka) | [Source Han Sans](https://github.com/adobe-fonts/source-han-sans/blob/master/README-CN.md) | 破折号（`——`）是半个字符宽度                |
-| Fixed  | [Iosevka](https://github.com/be5invis/Iosevka) | [Source Han Sans](https://github.com/adobe-fonts/source-han-sans/blob/master/README-CN.md) | 没有连字（ligature），破折号（`——`）是半个字符宽度 |
+| Gothic | [Inter](https://github.com/rsms/inter)         | [思源黑体](https://github.com/adobe-fonts/source-han-sans/blob/master/README-CN.md) | 引号（`“”`）是一个字符宽度                 |
+| UI     | [Inter](https://github.com/rsms/inter)         | [思源黑体](https://github.com/adobe-fonts/source-han-sans/blob/master/README-CN.md) | 引号（`“”`）更窄                      |
+| Mono   | [Iosevka](https://github.com/be5invis/Iosevka) | [思源黑体](https://github.com/adobe-fonts/source-han-sans/blob/master/README-CN.md) | 破折号（`——`）是一个字符宽度                |
+| Term   | [Iosevka](https://github.com/be5invis/Iosevka) | [思源黑体](https://github.com/adobe-fonts/source-han-sans/blob/master/README-CN.md) | 破折号（`——`）是半个字符宽度                |
+| Fixed  | [Iosevka](https://github.com/be5invis/Iosevka) | [思源黑体](https://github.com/adobe-fonts/source-han-sans/blob/master/README-CN.md) | 没有连字（ligature），破折号（`——`）是半个字符宽度 |
 
 编程字体选`Sarasa Mono SC`，因为西文字体 Iosevka 更适合编程。
 
