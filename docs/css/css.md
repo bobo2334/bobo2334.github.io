@@ -295,6 +295,10 @@ HSL 分别为色相、饱和度和亮度。形如`hsl(0, 100%, 100%)`或`hsla(0,
 
 行内元素为了照顾兼容性，尽量只设置左右内外边距，不要设置上下内外边距。转为行内块元素和块级元素不受限制。
 
+### outline 轮廓线
+
+语法和`border`一样，区别是`outline`不会挤走其它元素，而是覆盖在其它元素上方，不会影响布局。
+
 ### 盒子阴影
 
 - `box-shadow`
@@ -492,6 +496,20 @@ font: 12px/1.5 'Microsoft YaHei';
    2. 如果行内元素添加了浮动就不需要再转为行内块元素就能直接设置宽度和高度
 4. 浮动元素不会压住下面标准流的内容，文字或图片会环绕显示
 
+### 子元素浮动时父元素高度塌陷
+
+在子元素设置浮动后，如果父元素没有设置浮动则会导致父元素的高度塌陷。可以通过给父元素设置`overflow: hidden`来使其能包裹浮动子元素。
+
+原理是开启了 BFC（Block formatting context）。
+
+通过以下的方式可以开启 BFC。
+
+1. 使用`float`
+2. `display: inline-block`
+3. `overflow`设置为非`visiable`值
+
+- [块格式化上下文 - Web 开发者指南 | MDN](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)
+
 ### 清除浮动
 
 希望浮动的子盒子能撑开父盒子的高度。
@@ -500,7 +518,7 @@ font: 12px/1.5 'Microsoft YaHei';
 
 清除浮动后，父盒子会根据子盒子自动设置高度，就不会影响父盒子后面的标准流了。
 
-- `clear`
+- `clear`，清除浮动元素对当前元素产生的影响
   - `left`
   - `right`
   - `both`

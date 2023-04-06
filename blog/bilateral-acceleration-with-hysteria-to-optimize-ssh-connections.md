@@ -29,7 +29,6 @@ date: 2023-03-10
     "email": "your@email.com"
   }
 }
-
 ```
 
 使用 Docker 运行服务器端。以下是`docker-compose.yml`文件的内容。注意`network_mode`使用 host 模式，这样在端口转发的时候填写`127.0.0.1`才能指向本地地址，不然`127.0.0.1`会指向容器本身，这样做是没意义的。
@@ -77,17 +76,24 @@ scoop install hysteria
 {
   "server": "your.domain.com:36712",
   "obfs": "xxxxxxxxxxxx",
+  "up_mbps": 20,
+  "down_mbps": 100,
   "socks5": {
     "listen": "127.0.0.1:10801"
   },
   "relay_tcps": [
     {
       "listen": "127.0.0.1:22221",
-      "remote": "127.0.0.1:22",
-      "timeout": 30
+      "remote": "127.0.0.1:22"
     }
   ]
 }
+```
+
+运行下面的命令来启动 Hysteria 客户端。
+
+```powershell
+hysteria client -c .\config.json
 ```
 
 ## 测试 SSH 连接
