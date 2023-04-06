@@ -24,7 +24,7 @@ Scoop 安装软件的过程依赖于 7-zip 和其它类型的解包软件如 inn
 
 下面的动态图片演示了使用 Scoop 安装 Python 的过程，你不需要手动下载安装包并配置环境变量了。
 
-![使用 Scoop 安装 Python](assets/061892c26abf89363d84db45492fe6c58187580b.gif)
+![使用 Scoop 安装 Python](scoop-the-windows-package-manager.assets/6aa75bf76fc447a162f5ee269352eff4d6f4bd03.gif)
 
 ## 安装前准备
 
@@ -128,9 +128,9 @@ scoop bucket add extras
 
 你可以使用`scoop search`命令搜索软件包；或者在 scoop.sh 网站中搜索软件包。
 
-![使用`scoop search`命令搜索软件包](assets/2023-03-23-19-57-18-image.png)
+![使用`scoop search`命令搜索软件包](scoop-the-windows-package-manager.assets/ecf7c630f79bbbf34d4d4b0740968231af73a215.png)
 
-![在 scoop.sh 中搜索软件包](assets/2023-03-23-19-57-49-image.png)
+![在 scoop.sh 中搜索软件包](scoop-the-windows-package-manager.assets/01a0192fe3bc862a9bde2c6bde75cd64439d8fba.png)
 
 ## Scoop 软件管理命令
 
