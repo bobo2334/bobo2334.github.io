@@ -8,7 +8,7 @@ date: 2023-03-02
 
 在 Windows 10 系统中运行`ssh-add`命令失败，详情如下。
 
-```pwsh
+```powershell
 PS C:\Users\uuu\.ssh> ssh-add .\id_ed25519
 Error connecting to agent: No such file or directory
 ```

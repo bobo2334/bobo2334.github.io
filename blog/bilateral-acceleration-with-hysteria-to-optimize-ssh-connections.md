@@ -33,7 +33,7 @@ date: 2023-03-10
 
 使用 Docker 运行服务器端。以下是`docker-compose.yml`文件的内容。注意`network_mode`使用 host 模式，这样在端口转发的时候填写`127.0.0.1`才能指向本地地址，不然`127.0.0.1`会指向容器本身，这样做是没意义的。
 
-```yml
+```yaml
 version: "3"
 services:
   hysteria:
@@ -64,7 +64,7 @@ docker-compose up -d
 
 Windows 用户可以使用 Scoop 快速安装 Hysteria。或者你可以手动在其 Github 仓库页面中下载编译好的可执行程序。
 
-```pwsh
+```powershell
 scoop install hysteria
 ```
 

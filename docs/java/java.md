@@ -350,7 +350,7 @@ n1 = n1 ^ n2;
 
 #### 三元运算符
 
-```
+```java
 （条件表达式） ? 表达式 1 : 表达式 2;
 ```
 
@@ -380,7 +380,7 @@ Java 程序在整体上是顺序结构的，依据语句书写的顺序从前往
     - `Enum`（JDK 5）
     - `String`（JDK 7）
   - `case`子句的值必须是常量，不能是变量名或者不确定值的表达式；
-  -  所有`case`字句的值应该互斥；
+  - 所有`case`字句的值应该互斥；
   - `break`关键字用于跳出`switch`结构，如果没有使用`break`则会接着向下执行，意味着可以匹配多个`case`；
   - `default`子句是可选的，位置也是灵活的（不一定要写在`case`语句之后），在没有匹配到`case`语句时会执行`default`子句中的表达式；
   - 如果`default`语句写在`case`语句之前，并且没有`break`，在匹配`default`语句之后还会向下执行`case`里的语句，直到遇到`break`或者执行完毕。这是一个很反直觉的行为，所以`default`子句尽量写在最后，并且如果不是特殊情况下，每条`case`语句都应包含一个`break`。
@@ -805,7 +805,7 @@ class C extends B implements A {
   - 捕获某种类型的异常，可以多个`catch`并列，在捕获到异常之后进行对应处理。
 - `finaly`
   - 不管有没有发生异常，该代码段都会执行，通常用于资源清理工作，确保无论何时资源都能被正常关闭。
-  - 如果该代码块里使用了`return`语句，那么在`try`或者`catch`代码块里的` return`语句将失效，因为在执行` try`代码块里的`return`语句之前会先执行`finally`代码段里的`return`，然后方法就终止了。
+  - 如果该代码块里使用了`return`语句，那么在`try`或者`catch`代码块里的`return`语句将失效，因为在执行`try`代码块里的`return`语句之前会先执行`finally`代码段里的`return`，然后方法就终止了。
   - 还有需要注意的是，如果在`finally`代码块里没有`return`语句的情况下，修改返回变量的值是无效的，在执行`finally`代码块之前就已经将返回值给到`return`处了，再执行`return`的时候不会拿最新的变量值，类似于`i++`的机制。
 
 #### `try-with-resoucees`
@@ -878,7 +878,7 @@ FutureTask<String> task = new FutureTask<>(cd);
 new Thread(task).start();
 log.info("Task started.");
 String result = task.get();
-log.info("Result got： {}", result);
+log.info("Result got: {}", result);
 ```
 
 #### 线程池
@@ -2049,7 +2049,7 @@ class Handler implements InvocationHandler {
 
 简化 SAM（Single Abstract Method）接口实现的语法糖。
 
-```
+```java
 （形参列表）->{Lambda 体}
 ```
 

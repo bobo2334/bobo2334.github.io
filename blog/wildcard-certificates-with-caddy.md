@@ -109,7 +109,7 @@ foo.bar.example.com {
 
 `docker-compose.yml`文件内容如下，用于快速运行容器。
 
-```yml
+```yaml
 version: "3"
 services:
   caddy:

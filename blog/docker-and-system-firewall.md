@@ -26,7 +26,7 @@ docker run -p 127.0.0.1:80:80 nginx
 
 使用`docker-compose`命令时，`docker-compose.yml`内容示例如下。
 
-```yml
+```yaml
 version: '3.3'
 services:
     nginx:

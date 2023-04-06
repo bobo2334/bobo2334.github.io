@@ -35,7 +35,7 @@ Gitea 没有集成 CI/CD 工具，因为 CI/CD 工具比较耗资源。
 
 以下是`docker-compose.yml`的内容示例。
 
-```yml
+```yaml
 version: "3"
 services:
   server:
