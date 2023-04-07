@@ -1,3 +1,7 @@
+---
+tags: [java]
+---
+
 # 解决 IntelliJ IDEA 中 Tomcat 日志输出乱码的问题
 
 ## 前言

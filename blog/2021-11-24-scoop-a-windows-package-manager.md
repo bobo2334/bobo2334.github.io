@@ -1,3 +1,7 @@
+---
+tags: [scoop]
+---
+
 # Scoop：Windows 包管理器
 
 ## 引入 Scoop

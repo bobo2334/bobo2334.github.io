@@ -1,3 +1,7 @@
+---
+tags: [linux]
+---
+
 # 在 Linux 中安装 Homebrew
 
 ## 前言

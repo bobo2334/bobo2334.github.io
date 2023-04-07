@@ -1,3 +1,7 @@
+---
+tags: [terminal]
+---
+
 # 使用 Windows Terminal
 
 ## 前言

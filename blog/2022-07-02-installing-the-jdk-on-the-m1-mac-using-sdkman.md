@@ -1,3 +1,7 @@
+---
+tags: [java]
+---
+
 # 使用 SDKMAN 在 M1 Mac 上安装 JDK
 
 ## 前言

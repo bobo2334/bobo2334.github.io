@@ -1,3 +1,7 @@
+---
+tags: [ssh]
+---
+
 # Github SSH 认证错误排查
 
 ## 前言

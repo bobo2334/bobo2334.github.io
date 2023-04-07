@@ -1,5 +1,6 @@
 ---
 draft: true
+tags: [scoop]
 ---
 
 # Scoop：Bucket 相关

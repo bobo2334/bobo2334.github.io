@@ -1,3 +1,7 @@
+---
+tags: [ssh]
+---
+
 # 在 Windows 中运行 ssh-add 命令
 
 ## 问题描述

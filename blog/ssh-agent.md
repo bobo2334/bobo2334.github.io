@@ -1,5 +1,6 @@
 ---
 draft: true
+tags: [ssh]
 ---
 
 # 使用 ssh-agent

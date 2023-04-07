@@ -1,3 +1,7 @@
+---
+tags: [ssh]
+---
+
 # Gitea SSH 认证失败，提示「no mutual signature algorithm」
 
 ## 前言

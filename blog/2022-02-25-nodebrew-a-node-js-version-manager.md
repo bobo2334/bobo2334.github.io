@@ -1,3 +1,7 @@
+---
+tags: [node-js]
+---
+
 # Nodebrew：Node.js 版本管理器
 
 ## 前言

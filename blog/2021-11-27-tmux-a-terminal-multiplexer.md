@@ -1,3 +1,7 @@
+---
+tags: [terminal]
+---
+
 # tmux：终端复用器
 
 ## 前言

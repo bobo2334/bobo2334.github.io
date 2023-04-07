@@ -1,3 +1,7 @@
+---
+tags: [terminal]
+---
+
 # 在 iterm2 中使用 tmux
 
 ## 前言

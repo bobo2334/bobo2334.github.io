@@ -1,3 +1,7 @@
+---
+tags: [node-js]
+---
+
 # 使用 yrm 来快速切换 npm 和 yarn 源
 
 ## 简介

@@ -1,3 +1,7 @@
+---
+tags: [linux]
+---
+
 # Proxmox VE 安装后配置
 
 ## 前言

@@ -1,3 +1,7 @@
+---
+tags: [terminal]
+---
+
 # 配置 oh-my-zsh
 
 ## 前言

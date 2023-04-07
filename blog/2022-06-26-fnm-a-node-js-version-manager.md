@@ -1,3 +1,7 @@
+---
+tags: [node-js]
+---
+
 # fnm：Node.js 版本管理器
 
 ## 前言

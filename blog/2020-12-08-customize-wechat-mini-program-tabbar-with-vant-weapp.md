@@ -1,3 +1,7 @@
+---
+tags: [javascript]
+---
+
 # 使用 Vant Weapp 自定义微信小程序 TabBar
 
 ## 前言

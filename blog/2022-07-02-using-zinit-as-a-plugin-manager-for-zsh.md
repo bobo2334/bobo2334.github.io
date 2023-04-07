@@ -1,3 +1,7 @@
+---
+tags: [terminal]
+---
+
 # 使用 zinit 作为 zsh 的插件管理器
 
 ## 前言

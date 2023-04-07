@@ -1,3 +1,7 @@
+---
+tags: [scoop]
+---
+
 # 使用 aria2 为 Scoop 下载提速
 
 ## 前言
