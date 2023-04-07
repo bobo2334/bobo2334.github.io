@@ -1,5 +1,5 @@
 ---
-tags: [ssh]
+tags: [ssh, git]
 ---
 
 # Gitea SSH 认证失败，提示「no mutual signature algorithm」

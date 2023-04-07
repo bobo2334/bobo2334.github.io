@@ -1,5 +1,5 @@
 ---
-tags: [ssh]
+tags: [ssh, git]
 ---
 
 # Github SSH 认证错误排查

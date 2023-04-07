@@ -1,3 +1,7 @@
+---
+tags: [synology]
+---
+
 # 在 Proxmox VE 中安装群晖 DSM 7
 
 ## 前言
