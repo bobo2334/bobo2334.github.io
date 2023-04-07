@@ -27,10 +27,8 @@
 - `y$`，复制到行尾
 - `y^`，复制到行首
 
-
 - `p`，粘贴
 - `3p`，粘贴 3 次
-
 
 - `dd`，删除 1 行
 - `3dd`，删除 3 行
@@ -38,12 +36,10 @@
 - `d$`，删除至行尾
 - `d^`，删除至行首
 
-
 - `x`，剪切当前光标上的字符
 - `X`，剪切当前光标前 1 个字符
 
 - `u`，撤销上一步操作
-
 
 - `e`，光标移动到当前单词末尾
 - `w`，光标移动到下一个单词
@@ -71,8 +67,8 @@
 - `:q`，退出
 - `:!`，强制执行
 - `/word`，查找「word」
-    - `n`，向后查找
-    - `N`，向前查找
+  - `n`，向后查找
+  - `N`，向前查找
 - `:noh`，取消高亮显示
 - `:set nu`，显示行号
 - `:set nonu`，取消显示行号
@@ -82,7 +78,7 @@
 
 ### 网络地址
 
-在 CentOS 7 中，网卡配置文件位于`/etc/sysconfig/network-scripts/ifcfg-ens33`，其中ens33是网卡名称。编辑该文件即可完成网络配置。
+在 CentOS 7 中，网卡配置文件位于`/etc/sysconfig/network-scripts/ifcfg-ens33`，其中 ens33 是网卡名称。编辑该文件即可完成网络配置。
 
 修改完成后使用命令`systemctl restart network`重启网络。
 
@@ -162,10 +158,10 @@ CentOS 7 的服务定义在`/usr/lib/systemd/system`目录下。
 - `poweroff`，关机，断电
 - `reboot`，重启
 - `shutdown`
-    - `shutdown -r now`，重启
-    - `shutdown -h now`，关机
-    - `shutdown -r +5`，5 分钟后重启
-    - `shutdown -c`，取消定时
+  - `shutdown -r now`，重启
+  - `shutdown -h now`，关机
+  - `shutdown -r +5`，5 分钟后重启
+  - `shutdown -c`，取消定时
 
 ## 常用基本命令
 

@@ -20,10 +20,10 @@ let b = true;
 | boolean |      | 布尔值                             |
 | 字面量  |      | 限制类型和值就只能是当前字面量本身 |
 | any     |      | 任意类型                           |
-| unknown |      | 类型安全的 any                      |
-| void    |      | 没有值或 undefined                  |
+| unknown |      | 类型安全的 any                     |
+| void    |      | 没有值或 undefined                 |
 | never   |      | 没有值，不能是任何值               |
-| object  |      | 任意 JavaScript 对象                 |
+| object  |      | 任意 JavaScript 对象               |
 | array   |      | 数组                               |
 | tuple   |      | 固定长度数组                       |
 | enum    |      | 枚举                               |

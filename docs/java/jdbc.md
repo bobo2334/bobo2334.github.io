@@ -46,25 +46,25 @@ public void testQuery() throws IOException, SQLException {
 ```java
 @Test
 public void testInsert2() throws Exception{
-	Connection conn = JDBCUtils.getConnection();
-	//1.设置为不自动提交数据
-	conn.setAutoCommit(false);
-	String sql = "insert into goods(name)values(?)";
-	PreparedStatement ps = conn.prepareStatement(sql);
-	for(int i = 1;i <= 1000000;i++){
-		ps.setString(1, "name_" + i);
-		//1.“攒”sql
-		ps.addBatch();
-		if(i % 500 == 0){
-			//2.执行
-			ps.executeBatch();
-			//3.清空
-			ps.clearBatch();
-		}
-	}
-	//2.提交数据
-	conn.commit();
-	JDBCUtils.closeResource(conn, ps);
+    Connection conn = JDBCUtils.getConnection();
+    //1.设置为不自动提交数据
+    conn.setAutoCommit(false);
+    String sql = "insert into goods(name)values(?)";
+    PreparedStatement ps = conn.prepareStatement(sql);
+    for(int i = 1;i <= 1000000;i++){
+        ps.setString(1, "name_" + i);
+        //1.“攒”sql
+        ps.addBatch();
+        if(i % 500 == 0){
+            //2.执行
+            ps.executeBatch();
+            //3.清空
+            ps.clearBatch();
+        }
+    }
+    //2.提交数据
+    conn.commit();
+    JDBCUtils.closeResource(conn, ps);
 }
 ```
 

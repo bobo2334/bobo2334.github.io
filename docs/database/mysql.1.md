@@ -899,10 +899,10 @@ ADD job_id varchar(15);
 # 修改列
 ALTER TABLE 表名 MODIFY 【COLUMN】 字段名1 字段类型 【DEFAULT 默认值】【FIRST|AFTER 字段名2】;
 
-ALTER TABLE	dept80
+ALTER TABLE dept80
 MODIFY last_name VARCHAR(30);
 
-ALTER TABLE	dept80
+ALTER TABLE dept80
 MODIFY salary double(9,2) default 1000;
 
 # 重名命列

@@ -11,5 +11,5 @@
 
 - [RegExr: Learn, Build, & Test RegEx](https://regexr.com/)
 - [regex101: build, test, and debug regex](https://regex101.com/)
-- [Regulex：JavaScript Regular Expression Visualizer](https://jex.im/regulex/)
+- [Regulex: JavaScript Regular Expression Visualizer](https://jex.im/regulex/)
 - [Regexper](https://regexper.com/)
