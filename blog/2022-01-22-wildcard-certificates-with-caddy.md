@@ -119,7 +119,7 @@ volumes:
 
 当前的目录结构如下。
 
-```txt
+```text
 caddy
 ├── Dockerfile
 ├── Caddyfile
@@ -161,7 +161,7 @@ COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
 ### 编写 Caddyfile（DNSPod）
 
-```txt
+```text
 {
   email example@gmail.com
 }

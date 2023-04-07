@@ -10,7 +10,7 @@
 
 搜索时使用如下请求，`%s`替换为搜索词。`gl`参数可以改为任意国家代码。
 
-```txt
+```text
 https://www.google.com/search?q=%s&pws=0&gl=cn&gws_rd=cr
 ```
 

@@ -42,7 +42,7 @@ services:
 
 该目录的结构如下：
 
-```txt
+```text
 certs/
 ├── ca-cert.pem
 ├── ca-key.pem

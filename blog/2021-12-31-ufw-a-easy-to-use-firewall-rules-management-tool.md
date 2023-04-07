@@ -120,7 +120,7 @@ ufw delete deny ssh
 
 服务名和端口号定义在`/etc/services`文件中。在其中有关`ssh`服务的部分是这样写的。
 
-```txt
+```text
 ssh   22/tcp        # SSH Remote Login Protocol
 ```
 

@@ -26,6 +26,9 @@ service mysqld restart
 
 ```bash
 mysql -uroot
+```
+
+```sql
 use mysql;
 update user set Password=password('newpass') where User='root';
 flush privileges;

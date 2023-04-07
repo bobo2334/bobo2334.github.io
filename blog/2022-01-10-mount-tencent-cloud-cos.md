@@ -30,13 +30,13 @@ dpkg -i cosfs_1.0.19-ubuntu20.04_amd64.deb
 
 配置文件应该存放在`/etc/passwd-cosfs`中。其中可以有多行，每行的格式如下。
 
-```txt
+```text
 <BucketName-APPID>:<SecretId>:<SecretKey>
 ```
 
 例如你可以这样写。
 
-```txt
+```text
 examplebucket-1250000000:AKIDHTVVaVR6e3****:PdkhT9e2rZCfy6****
 ```
 

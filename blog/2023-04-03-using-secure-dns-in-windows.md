@@ -47,7 +47,7 @@ dnsproxy --config-path="C:\Users\gem\.config\dnsproxy\config.yml" --all-servers 
 
 运行以下命令使用`nslookup`查询 DNS 记录。
 
-```cmd
+```batch
 nslookup 360.cn 127.0.0.1
 ```
 
@@ -106,7 +106,7 @@ dnsproxy 直接注册为服务时不能启动，因为 dnsproxy 没有实现 Win
 
 运行之后 WinSW 会在同级目录下生成日志文件，你可以检查日志文件来确定 dnsproxy 是否启动成功。
 
-```txt
+```text
 ..\dnsproxy\
 ├── config.yml              # dnsproxy 配置文件
 ├── logs

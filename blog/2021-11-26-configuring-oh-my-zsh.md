@@ -26,7 +26,7 @@ oh-my-zsh 默认自带了许多主题，这些主题文件存放在`~/.oh-my-zsh
 
 编辑`.zshrc`文件，修改`ZSH_THEME`配置，执行`exec zsh`命令或重启终端即可看到新主题的效果。
 
-```bash
+```text
 ZSH_THEME="robbyrussell"
 ```
 
@@ -50,7 +50,7 @@ ln -s ~/zsh-dracula/dracula.zsh-theme $ZSH_CUSTOM/themes/dracula.zsh-theme
 
 在安装完成之后编辑`.zshrc`文件，修改`ZSH_THEME`配置，执行`exec zsh`命令或重启终端即可看到新主题的效果。
 
-```bash
+```text
 ZSH_THEME="dracula"
 ```
 
@@ -60,7 +60,7 @@ oh-my-zsh 默认自带了许多插件，这些插件文件存放在`~/.oh-my-zsh
 
 编辑`.zshrc`文件，修改`plugins`配置，把插件名称写入其中即可启用插件，每个插件名称之间用空格或换行分隔，不要用逗号。注意过多的插件会影响启动时间。执行`exec zsh`命令或重启终端即可让配置文件生效。
 
-```bash
+```text
 plugins=(git theme)
 ```
 
@@ -111,7 +111,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/p
 
 编辑`.zshrc`文件，修改`plugins`配置，加上`zsh-syntax-highlighting`。
 
-```bash
+```text
 plugins=(git theme zsh-syntax-highl3ighting)
 ```
 

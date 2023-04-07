@@ -27,7 +27,7 @@ ssh -T -v git@ssh.github.com -p 443
 
 如果出现如下的欢迎消息则证明可以使用，如果没有则你需要根据输出的日志信息排查错误。
 
-```txt
+```text
 Hi <username>! You've successfully authenticated, but GitHub does not provide shell access.
 ```
 
@@ -35,7 +35,7 @@ Hi <username>! You've successfully authenticated, but GitHub does not provide sh
 
 修改`~/.ssh/config`，加入如下内容。
 
-```txt
+```text
 Host github.com
     Hostname ssh.github.com
     Port 443

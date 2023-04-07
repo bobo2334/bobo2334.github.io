@@ -43,13 +43,13 @@ yrm use cnpm
 
 npm 的配置文件位于`~/.npmrc`。以下是其中内容。
 
-```txt
+```text
 registry=http://r.cnpmjs.org/
 ```
 
 yarn 的配置文件位于`~/.yarnrc`。以下是其中内容。
 
-```txt
+```text
 registry "http://r.cnpmjs.org/"
 ```
 

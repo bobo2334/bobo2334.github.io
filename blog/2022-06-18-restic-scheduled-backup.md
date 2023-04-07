@@ -47,7 +47,7 @@ volumes:
 
 注意以`#`开头的行会被视为注释，如果你想排除某个以`#`开头的文件或文件夹，请使用`\#`来转义。
 
-```txt title="restic-backup-docker/excludes.txt"
+```text title="restic-backup-docker/excludes.txt"
 *log*
 *cache*
 tmp

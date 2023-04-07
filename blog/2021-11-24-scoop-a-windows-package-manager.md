@@ -109,7 +109,7 @@ scoop bucket add extras
 
 ## Scoop 的目录结构
 
-```txt
+```text
 .\scoop\      # Scoop 安装目录
 ├── apps      # 软件安装目录，其中以软件名为文件夹名称
 ├── buckets   # 软件仓库目录，每个仓库本质上都是一个 Git 工程，其中保存了软件的描述文件

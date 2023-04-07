@@ -24,7 +24,7 @@ IDEA 控制台输出采用的是 GBK 编码，Tomcat 输出采用的是 UTF-8 �
 
 在`vmoptions`中添加如下一行参数，之后重启 IDEA。
 
-```bash
+```text
 -Dfile.encoding=UTF-8
 ```
 

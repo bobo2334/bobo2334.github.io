@@ -26,7 +26,7 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 
 编辑`/etc/ssh/sshd_config`文件，找到对应的配置项并修改。
 
-```ini
+```text
 # 不允许密码直接登录
 PasswordAuthentication no
 # 不允许空密码登录

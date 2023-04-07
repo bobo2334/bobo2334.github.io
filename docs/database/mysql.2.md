@@ -380,7 +380,7 @@ ALTER TABLE tablename ALTER INDEX index_name VISIBLE;
 SHOW STATUS LIKE 'last_query_cost';
 ```
 
-```
+```text
 +-----------------+----------+
 | Variable_name   | Value    |
 +-----------------+----------+
@@ -437,19 +437,19 @@ EXPLAIN 语句输出的每条记录都对应着某个单表的访问方法。
 
 #### select_type
 
-| 名称                 | 描述                                                         |
-| -------------------- | ------------------------------------------------------------ |
-| SIMPLE               | Simple SELECT (not using UNION or subqueries)                |
-| PRIMARY              | Outermost SELECT                                             |
-| UNION                | Second or later SELECT statement in a UNION                  |
-| UNION RESULT         | ResultofaUNION                                               |
-| SUBQUERY             | First SELECT in subquery                                     |
-| DEPENDENT SUBQUERY   | First SELECT in subquery, dependent on outer query           |
-| DEPENDENT UNION      | Second or later SELECT statement in a UNION, dependent on outer query |
-| DERIVED              | Derived table                                                |
-| MATERIALIZED         | Materialized subquery                                        |
+| 名称                 | 描述                                                                                                      |
+| -------------------- | --------------------------------------------------------------------------------------------------------- |
+| SIMPLE               | Simple SELECT (not using UNION or subqueries)                                                             |
+| PRIMARY              | Outermost SELECT                                                                                          |
+| UNION                | Second or later SELECT statement in a UNION                                                               |
+| UNION RESULT         | ResultofaUNION                                                                                            |
+| SUBQUERY             | First SELECT in subquery                                                                                  |
+| DEPENDENT SUBQUERY   | First SELECT in subquery, dependent on outer query                                                        |
+| DEPENDENT UNION      | Second or later SELECT statement in a UNION, dependent on outer query                                     |
+| DERIVED              | Derived table                                                                                             |
+| MATERIALIZED         | Materialized subquery                                                                                     |
 | UNCACHEABLE SUBQUERY | A subquery for which the result cannot be cached and must be re-evaluated for each row of the outer query |
-| UNCACHEABLE UNION    | The second or later select in a UNION that belongs to an uncacheable subquery (see UNCACHEABLE SUBQUERY) |
+| UNCACHEABLE UNION    | The second or later select in a UNION that belongs to an uncacheable subquery (see UNCACHEABLE SUBQUERY)  |
 
 #### partitions
 

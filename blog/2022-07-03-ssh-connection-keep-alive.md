@@ -10,7 +10,7 @@
 
 修改`~/.ssh/config`文件。
 
-```txt
+```text
 Host *
   ServerAliveInterval 60
   ServerAliveCountMax 5
@@ -20,7 +20,7 @@ Host *
 
 修改`/etc/ssh/sshd_config`文件。
 
-```txt
+```text
 ClientAliveInterval 60
 ClientAliveCountMax 5
 ```

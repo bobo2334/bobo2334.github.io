@@ -23,7 +23,7 @@ ssh -D 2121 tunnel-host -N
 
 可以写在 ssh_config（`~/.ssh/config`）中。
 
-```txt
+```text
 DynamicForward <tunnel-host>:<local-port>
 ```
 
@@ -43,7 +43,7 @@ ssh -L 2121:www.example.com:80 tunnel-host -N
 
 可以写在 ssh_config（`~/.ssh/config`）中。
 
-```txt
+```text
 Host test.example.com
 LocalForward client-IP:client-port server-IP:server-port
 ```
@@ -64,7 +64,7 @@ ssh -R 8080:localhost:80 -N my.public.server
 
 可以写在 ssh_config（`~/.ssh/config`）中。
 
-```txt
+```text
 Host remote-forward
   HostName test.example.com
   RemoteForward remote-port target-host:target-port

@@ -269,7 +269,7 @@ gpg> save
 
 准备一个文件`message.txt`作为测试文件，其内容如下。
 
-```txt
+```text
 Hello
 ```
 

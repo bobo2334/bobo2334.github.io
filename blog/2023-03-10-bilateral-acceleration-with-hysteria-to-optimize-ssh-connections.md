@@ -44,7 +44,7 @@ services:
 
 将`hysteria.json`和`docker-compose.yml`放在同一目录下。可以是如下的目录结构。
 
-```txt
+```text
 .\hysteria\
 ├── docker-compose.yml
 └── hysteria.json

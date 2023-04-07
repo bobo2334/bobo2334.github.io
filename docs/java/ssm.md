@@ -6,7 +6,7 @@ SpringMVC 与 Spring 整合是为了分工明确。两个容器同时存在情�
 
 ### 工程结构
 
-```txt
+```text
 src
 ├── main
 │   ├── java
@@ -230,7 +230,7 @@ src
 
 ### 工程结构
 
-```txt
+```text
 src
 ├── main
 │   ├── java

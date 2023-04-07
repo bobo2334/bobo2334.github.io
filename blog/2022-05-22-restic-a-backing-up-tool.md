@@ -24,7 +24,7 @@ restic 是一个单文件的可执行程序，没有其它依赖。你可以手�
 
 在 restic 正确安装后，你可以得到一个`restic`命令。
 
-```txt
+```text
 ➜ ~ restic
 
 restic is a backup program which allows saving multiple revisions of files and

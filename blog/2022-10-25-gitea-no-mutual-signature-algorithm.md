@@ -30,7 +30,7 @@ ssh -T -v git@<host> -p <port>
 
 如果得到如下的欢迎信息则证明成功，如果没有则你需要根据输出的日志排查错误。
 
-```txt
+```text
 Hi there, <...>! You've successfully authenticated with the key named <...>, but Gitea does not provide shell access.
 ```
 

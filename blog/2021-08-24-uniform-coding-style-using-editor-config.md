@@ -8,7 +8,7 @@ EditorConfig 配置文件被许多优秀的代码编辑器默认支持，只要`
 
 ## 示例
 
-```ini
+```editorconfig
 # EditorConfig is awesome: https://EditorConfig.org
 
 root = true

@@ -130,7 +130,7 @@ systemctl daemon-reloadservice docker restart
 用`curl`命令测试，如果有 JSON 格式的信息输出则配置成功。
 
 ```bash
-curl https://你的 IP/info --cert cert-tx.pem --key key-tx.pem --cacert ca-tx.pem
+curl https://YOUR_IP/info --cert cert-tx.pem --key key-tx.pem --cacert ca-tx.pem
 ```
 
 ![image-20210816222600935-16291239626163](./2021-09-09-enabling-the-docker-remote-api-with-tls.assets/image-20210816222600935-16291239626163.png)

@@ -8,7 +8,7 @@
 
 在 Git 仓库的根目录创建`.gitattributes`文件，内容如下：
 
-```txt
+```text
 * text=auto eol=lf
 ```
 
