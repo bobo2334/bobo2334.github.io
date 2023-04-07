@@ -1,8 +1,5 @@
 ---
 draft: true
-date: 2022-06-19
-tags:
-    - ssh
 ---
 
 # 使用 ssh-agent
