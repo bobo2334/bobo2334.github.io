@@ -75,7 +75,7 @@ scoop install SarasaGothic-SC
 ```json
 {
   "editor.fontFamily": "'Fira Code', 'Sarasa Mono SC', Consolas, 'Courier New', monospace",
-  "terminal.integrated.fontFamily": "'CaskaydiaCove NFM', 'Sarasa Mono SC', Consolas, 'Courier New', monospace"
+  "terminal.integrated.fontFamily": "'CaskaydiaCove Nerd Font Mono', 'Sarasa Mono SC', Consolas, 'Courier New', monospace"
 }
 ```
 
